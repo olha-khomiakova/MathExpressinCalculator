@@ -2,7 +2,6 @@ package io.javaclasses.mathCalculator;
 
 import io.javaclasses.mathCalculator.fsm.ExpressionFiniteStateMachine;
 import io.javaclasses.mathCalculator.fsm.FiniteStateMachine;
-import io.javaclasses.mathCalculator.fsm.NumberFiniteStateMachine;
 import io.javaclasses.mathCalculator.math.ShuntingYard;
 
 import java.text.CharacterIterator;

@@ -32,6 +32,13 @@ public class MathCalculatorTest {
     }
 
     @Test
+    void testEvaluationOfExpressionWithParentheses()
+            throws IncorrectMathExpressionException {
+        double result = mathCalculator.evaluate("50.1*(5+(10/2))");
+        assertEquals((double)50.1*(5+(10/2)), result, "Evaluation of expression is failed");
+    }
+
+    @Test
     void testIncorrectMathematicalExpression()
             throws IncorrectMathExpressionException {
         DeadLock deadLock = assertThrows(DeadLock.class,() -> {
