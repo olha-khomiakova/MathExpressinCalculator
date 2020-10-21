@@ -1,14 +1,16 @@
 package io.javaclasses.mathCalculator.fsm;
 
+import static java.util.Arrays.asList;
+
 /**
  * Implementation of {@link FiniteStateMachine} for parsing number from string.
  */
-public class NumberFiniteStateMachine extends FiniteStateMachine {
+public class NumberFiniteStateMachine extends FiniteStateMachine<StringBuilder> {
     public NumberFiniteStateMachine() {
-        State negativeSign = new State(false, new SingleCharacterStateAcceptor('-'));
-        State intDigit = new State(true, new DigitCharacterStateAcceptor());
-        State point = new State(false, new SingleCharacterStateAcceptor('.'));
-        State decimalDigit = new State(true, new DigitCharacterStateAcceptor());
+        State<StringBuilder> negativeSign = new State(false, new SingleCharacterStateAcceptor('-'));
+        State<StringBuilder> intDigit = new State(true, new DigitCharacterStateAcceptor());
+        State<StringBuilder> point = new State(false, new SingleCharacterStateAcceptor('.'));
+        State<StringBuilder> decimalDigit = new State(true, new DigitCharacterStateAcceptor());
 
         negativeSign.addTransmission(intDigit);
         intDigit.addTransmission(intDigit);
@@ -16,6 +18,6 @@ public class NumberFiniteStateMachine extends FiniteStateMachine {
         point.addTransmission(decimalDigit);
         decimalDigit.addTransmission(decimalDigit);
 
-        registerPossibleStartState(negativeSign, intDigit);
+        registerPossibleStartState(asList(negativeSign, intDigit));
     }
 }

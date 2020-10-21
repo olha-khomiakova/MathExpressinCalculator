@@ -22,17 +22,17 @@ public class MathCalculator {
      *
      * @param mathExpression is an expression that should be calculated
      * @return result of the mathematical expression
-     * @throws IncorrectMathExpressionException
+     * @throws IncorrectMathExpressionException occours is the expression format is incorrect
      */
     public double evaluate(String mathExpression) throws IncorrectMathExpressionException {
         CharacterIterator stringNumber = new StringCharacterIterator(mathExpression);
         ShuntingYard result = new ShuntingYard();
         ExpressionFiniteStateMachine expressionFiniteStateMachine = new ExpressionFiniteStateMachine();
         FiniteStateMachine.Status status = expressionFiniteStateMachine.run(stringNumber, result);
-        if (status == FiniteStateMachine.Status.DEADLOCK) {
-            throw new DeadLock("Incorrectly entered mathematical expression.", stringNumber.getIndex());
-        } else if (status == FiniteStateMachine.Status.NOT_STARTED) {
-            throw new IncorrectMathExpressionException("Incorrectly entered mathematical expression.", stringNumber.getIndex());
+        if (status == FiniteStateMachine.Status.NOT_STARTED ||
+                stringNumber.getIndex()!=stringNumber.getEndIndex()) {
+            throw new IncorrectMathExpressionException("Incorrectly entered mathematical " +
+                    "expression in position" +stringNumber+".", stringNumber.getIndex());
         } else {
             return Double.parseDouble(result.popAllOperators().toString());
         }

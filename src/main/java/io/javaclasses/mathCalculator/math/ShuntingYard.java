@@ -1,6 +1,6 @@
 package io.javaclasses.mathCalculator.math;
 
-import java.util.*;
+import java.util.Stack;
 
 /**
  * This is implementation of shunting yard algorithm
@@ -8,38 +8,37 @@ import java.util.*;
  *
  */
 public class ShuntingYard {
-    private Deque<Double> operands = new ArrayDeque<>();
-    private Deque<BinaryOperator> operators = new ArrayDeque<>();
+    private final Stack<Double> operands = new Stack<>();
+    private final Stack<BinaryOperator> operators = new Stack<>();
 
     public void pushBinaryOperator(BinaryOperator operation) {
-        this.operators.addLast(operation);
+        this.operators.push(operation);
     }
 
     public void pushNumber(double number) {
-        if (operators.size() > 1) {
-            BinaryOperator operation = operators.pollLast();
-            BinaryOperator previousOperation = operators.peekLast();
-            if (operation.compareTo(previousOperation)==-1) {
-                this.operators.addLast(operation);
-                this.operands.addLast(number);
+        if (operators.size() >= 2) {
+            BinaryOperator operation = operators.pop();
+            BinaryOperator previousOperation = operators.peek();
+            if (operation.compareTo(previousOperation) < 0) {
+                this.operators.push(operation);
+                this.operands.push(number);
             } else {
-                double secondOperand = number;
-                double firstOperand = operands.pollLast();
+                double firstOperand = operands.pop();
                 //calculate(firstOperand, secondOperand, operation);
-                this.operands.addLast(operation.calculate(firstOperand,secondOperand));
+                this.operands.push(operation.calculate(firstOperand, number));
             }
         } else
-            this.operands.addLast(number);
+            this.operands.push(number);
 
     }
 
     public Double popAllOperators() {
         while (!operators.isEmpty()){
-            double secondOperand = operands.pollLast();
-            double firstOperand = operands.pollLast();
-            BinaryOperator currentBinaryOperator = operators.pollLast();
-            this.operands.addLast(currentBinaryOperator.calculate(firstOperand,secondOperand));
+            double secondOperand = operands.pop();
+            double firstOperand = operands.pop();
+            BinaryOperator currentBinaryOperator = operators.pop();
+            this.operands.push(currentBinaryOperator.calculate(firstOperand,secondOperand));
         }
-        return operands.peekLast();
+        return operands.peek();
     }
 }

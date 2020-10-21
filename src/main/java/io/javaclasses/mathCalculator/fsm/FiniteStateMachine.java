@@ -2,7 +2,6 @@ package io.javaclasses.mathCalculator.fsm;
 
 import java.text.CharacterIterator;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -16,11 +15,10 @@ import java.util.Optional;
 public class FiniteStateMachine<T> {
     public enum Status {
         NOT_STARTED,
-        DEADLOCK,
         FINISHED
     }
 
-    private final Collection<State> possibleStartStateList = new ArrayList<>();
+    private final Collection<State<T>> possibleStartStateList = new ArrayList<>();
 
     /**
      * This is API that change from one state to another.
@@ -30,29 +28,25 @@ public class FiniteStateMachine<T> {
      * @return status that indicates at what stage the FSM finished work
      */
     public Status run(CharacterIterator inputChain, T outputChain) {
-        Optional<State> currentState = Optional.empty();
+        Optional<State<T>> currentState = Optional.empty();
         while (true) {
-            Collection<State> transitions = defineTransitions(currentState);
-            Optional<State> nextState = stepForward(inputChain, outputChain, transitions);
+            Collection<State<T>> transitions = currentState.isPresent() ?
+                    currentState.get().transitions() : possibleStartStateList;
+            Optional<State<T>> nextState = stepForward(inputChain, outputChain, transitions);
             if (!nextState.isPresent()) {
-                return defineStatus(currentState);
+                return currentState.filter(State::canBeFinish).map(state -> Status.FINISHED).orElse(Status.NOT_STARTED);
             }
             currentState = nextState;
         }
     }
 
-    protected void registerPossibleStartState(State... states) {
-        this.possibleStartStateList.addAll(Arrays.asList(states));
+    protected void registerPossibleStartState(Collection<State<T>> states) {
+        this.possibleStartStateList.addAll(states);
     }
 
-    private Status defineStatus(Optional<State> currentState) {
-        return currentState.map(state -> state.canBeFinish() ? Status.FINISHED
-                : Status.DEADLOCK).orElse(Status.NOT_STARTED);
-    }
-
-    private Optional<State> stepForward(CharacterIterator inputChain, T outputChain,
-                                        Iterable<State> transitions) {
-        for (State state : transitions) {
+    private Optional<State<T>> stepForward(CharacterIterator inputChain, T outputChain,
+                                        Iterable<State<T>> transitions) {
+        for (State<T> state : transitions) {
             if (state.accept(inputChain, outputChain)) {
                 return Optional.of(state);
             }
@@ -60,7 +54,4 @@ public class FiniteStateMachine<T> {
         return Optional.empty();
     }
 
-    private Collection<State> defineTransitions(Optional<State> currentState) {
-        return currentState.isPresent() ? currentState.get().transitions() : possibleStartStateList;
-    }
 }

@@ -13,9 +13,9 @@ import java.util.Collections;
  */
 public class State <T>{
     private final boolean canBeFinish;
-    private final StateAcceptor acceptor;
-    private final Collection<State> transitions = new ArrayList<>();
-    public State(boolean canBeFinish, StateAcceptor acceptor)
+    private final StateAcceptor<T> acceptor;
+    private final Collection<State<T>> transitions = new ArrayList<>();
+    public State(boolean canBeFinish, StateAcceptor<T> acceptor)
     {
         this.canBeFinish=canBeFinish;
         if(acceptor == null)
@@ -27,14 +27,14 @@ public class State <T>{
     public boolean accept(CharacterIterator inputChain, T outputChain) {
         return acceptor.accept(inputChain, outputChain);
     }
-    public void addTransmission(State state)
+    public void addTransmission(State<T> state)
     {
         this.transitions.add(state);
     }
     public boolean canBeFinish() {
         return canBeFinish;
     }
-    public Collection<State> transitions()
+    public Collection<State<T>> transitions()
     {
         return Collections.unmodifiableCollection(this.transitions);
     }

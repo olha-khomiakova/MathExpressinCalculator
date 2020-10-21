@@ -12,7 +12,7 @@ import java.text.CharacterIterator;
 public class ExpressionStateAcceptor implements StateAcceptor<ShuntingYard> {
     @Override
     public boolean accept(CharacterIterator inputChain, ShuntingYard outputChain) {
-        FiniteStateMachine expressionFiniteStateMachine = new ExpressionFiniteStateMachine();
+        FiniteStateMachine<ShuntingYard> expressionFiniteStateMachine = new ExpressionFiniteStateMachine();
         ShuntingYard shuntingYard = new ShuntingYard();
         if (expressionFiniteStateMachine.run(inputChain, shuntingYard) == FiniteStateMachine.Status.FINISHED) {
             outputChain.pushNumber(Double.parseDouble(shuntingYard.popAllOperators().toString()));

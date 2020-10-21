@@ -2,6 +2,8 @@ package io.javaclasses.mathCalculator.fsm;
 
 import io.javaclasses.mathCalculator.math.ShuntingYard;
 
+import static java.util.Arrays.asList;
+
 /**
  * Implementation of {@link FiniteStateMachine} for parsing and evaluating expression from string.
  * For example, mathematical expression may be like these:
@@ -11,14 +13,14 @@ import io.javaclasses.mathCalculator.math.ShuntingYard;
  */
 public class ExpressionFiniteStateMachine extends FiniteStateMachine<ShuntingYard> {
     public ExpressionFiniteStateMachine() {
-        State number = new State(true, new NumberStateAcceptor());
-        State binaryOperation = new State(false, new BinaryOperatorStateAcceptor());
-        State expressionWithParenthesis = new State(true, new ExpressionWithParenthesisStateAcceptor());
+        @SuppressWarnings("unchecked") State<ShuntingYard> number = new State(true, new <ShuntingYard>NumberStateAcceptor());
+        State<ShuntingYard> binaryOperation = new State(false, new <ShuntingYard>BinaryOperatorStateAcceptor());
+        State<ShuntingYard> expressionWithParenthesis = new State(true, new <ShuntingYard>ExpressionWithBracketsStateAcceptor());
 
         number.addTransmission(binaryOperation);
         binaryOperation.addTransmission(number);
         binaryOperation.addTransmission(expressionWithParenthesis);
         expressionWithParenthesis.addTransmission(binaryOperation);
-        registerPossibleStartState(number, expressionWithParenthesis);
+        registerPossibleStartState(asList(number, expressionWithParenthesis));
     }
 }

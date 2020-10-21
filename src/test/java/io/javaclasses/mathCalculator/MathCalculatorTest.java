@@ -1,7 +1,6 @@
 package io.javaclasses.mathCalculator;
 
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -17,33 +16,33 @@ public class MathCalculatorTest {
     private final MathCalculator mathCalculator = new MathCalculator();
 
     @ParameterizedTest
-    @CsvSource({"123hjk,123" , "0,0" , "67.89f,67.89" , "-98.098,-98.098"})
-    void testEvaluationOfNumber(String input, String expected)
+    @CsvSource({"123,123" , "0,0" , "67.89,67.89" , "-98.098,-98.098"})
+    void testEvaluationOfNumber(double expected, String input)
             throws IncorrectMathExpressionException {
         double result = mathCalculator.evaluate(input);
-        assertEquals(Double.parseDouble(expected), result, "Evaluation of number is failed");
+        assertEquals(expected, result, "Evaluation of number is failed.");
     }
 
     @Test
     void testEvaluationOfExpression()
             throws IncorrectMathExpressionException {
-        double result = mathCalculator.evaluate("5.99+7*8/2-11.01");
-        assertEquals((double)5.99+7*8/2-11.01, result, "Evaluation of expression is failed");
+        double result = mathCalculator.evaluate("5.99+7*8.5/2-11.01");
+        assertEquals(5.99+7*8.5/2-11.01, result, "Evaluation of expression is failed");
     }
 
     @Test
-    void testEvaluationOfExpressionWithParentheses()
+    void testEvaluationOfExpressionWithBrackets()
             throws IncorrectMathExpressionException {
-        double result = mathCalculator.evaluate("50.1*(5+(10/2))");
-        assertEquals((double)50.1*(5+(10/2)), result, "Evaluation of expression is failed");
+        double result = mathCalculator.evaluate("50.1*(5+(10.6/2))");
+        assertEquals(50.1*(5+(10.6/2)), result, "Evaluation of expression is failed");
     }
 
     @Test
     void testIncorrectMathematicalExpression()
             throws IncorrectMathExpressionException {
-        DeadLock deadLock = assertThrows(DeadLock.class,() -> {
-            mathCalculator.evaluate("5.3+64*");
-        });
-        assertEquals(deadLock.getMessage(), "Incorrectly entered mathematical expression.");
+
+                assertThrows(IncorrectMathExpressionException.class,() -> mathCalculator.evaluate("5.3++64"));
+        //assertEqualsO( "Incorrectly entered mathematical expression in position 4.",
+          //      "Incorrectly entered mathematical expression in position "+e.position()+"." );
     }
 }
