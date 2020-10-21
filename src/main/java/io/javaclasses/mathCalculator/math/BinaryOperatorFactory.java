@@ -1,33 +1,38 @@
 package io.javaclasses.mathCalculator.math;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 public class BinaryOperatorFactory {
-    public BinaryOperator getRequiredBinaryOperator(char requiredOperator) {
-        switch (requiredOperator) {
-            case '+': {
-                return new AdditionalBinaryOperator();
+    private final Map<Character, BinaryOperator> binaryOperatorMap = new HashMap<>();
+
+    public BinaryOperatorFactory() {
+        binaryOperatorMap.put('+', new Creator() {
+            private BinaryOperator create() {
+                return new AdditionalBinaryOperator(BinaryOperator.priority.LOW);
             }
-            case '-': {
-                return new SubtractionBinaryOperator();
+        }.create());
+        binaryOperatorMap.put('-', new Creator() {
+            private BinaryOperator create() {
+                return new SubtractionBinaryOperator(BinaryOperator.priority.LOW);
             }
-            case '*': {
-                return new MultiplicationBinaryOperator();
+        }.create());
+        binaryOperatorMap.put('*', new Creator() {
+            private BinaryOperator create() {
+                return new MultiplicationBinaryOperator(BinaryOperator.priority.MEDIUM);
             }
-            case '/': {
-                return new DivisionBinaryOperator();
+        }.create());
+        binaryOperatorMap.put('/', new Creator() {
+            private BinaryOperator create() {
+                return new DivisionBinaryOperator(BinaryOperator.priority.MEDIUM);
             }
-        }
-        return null;
+        }.create());
     }
 
-    public boolean isBinaryOperator(char requiredOperator) {
-        switch (requiredOperator) {
-            case '+':
-            case '-':
-            case '*':
-            case '/': {
-                return true;
-            }
-        }
-        return false;
+    public Optional<BinaryOperator> getRequiredBinaryOperator(char requiredOperator) {
+        return Optional.ofNullable(binaryOperatorMap.get(requiredOperator));
+    }
+    interface Creator {
     }
 }

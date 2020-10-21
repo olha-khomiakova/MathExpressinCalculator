@@ -4,7 +4,11 @@ package io.javaclasses.mathCalculator.math;
  * Implementation of {@link BinaryOperator}.
  */
 public class MultiplicationBinaryOperator implements BinaryOperator {
-    private final int priority = 1;
+    private final BinaryOperator.priority priority;
+
+    public MultiplicationBinaryOperator(BinaryOperator.priority priority) {
+        this.priority = priority;
+    }
 
     /**
      * Calculates the multiplication of two operands
@@ -18,12 +22,12 @@ public class MultiplicationBinaryOperator implements BinaryOperator {
         return firstOperand * secondOperand;
     }
 
-    @Override
-    public int compareTo(BinaryOperator binaryOperator) {
-        return priority < binaryOperator.priority() ? 1 : -1;
+    public BinaryOperator.priority priority() {
+        return priority;
     }
 
-    public int priority() {
-        return priority;
+    @Override
+    public int compareTo(BinaryOperator anotherBinaryOperator) {
+        return this.priority.compareTo(anotherBinaryOperator.priority());
     }
 }

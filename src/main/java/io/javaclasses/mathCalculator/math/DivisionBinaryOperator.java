@@ -4,8 +4,11 @@ package io.javaclasses.mathCalculator.math;
  * Implementation of {@link BinaryOperator}.
  */
 public class DivisionBinaryOperator implements BinaryOperator {
-    private final int priority = 1;
-
+    private final BinaryOperator.priority priority;
+    public DivisionBinaryOperator(BinaryOperator.priority priority)
+    {
+        this.priority = priority;
+    }
     /**
      * Calculates the division of two operands
      *
@@ -18,12 +21,13 @@ public class DivisionBinaryOperator implements BinaryOperator {
         return firstOperand / secondOperand;
     }
 
-    @Override
-    public int compareTo(BinaryOperator binaryOperator) {
-        return priority < binaryOperator.priority() ? 1 : -1;
-    }
 
-    public int priority() {
+    public BinaryOperator.priority priority() {
         return priority;
+    }
+    @Override
+    public int compareTo(BinaryOperator anotherBinaryOperator)
+    {
+        return this.priority.compareTo(anotherBinaryOperator.priority());
     }
 }

@@ -4,8 +4,11 @@ package io.javaclasses.mathCalculator.math;
  * Implementation of {@link BinaryOperator}.
  */
 public class AdditionalBinaryOperator implements BinaryOperator {
-    private final int priority = 2;
-
+    private final BinaryOperator.priority priority;
+    public AdditionalBinaryOperator(BinaryOperator.priority priority)
+    {
+        this.priority = priority;
+    }
     /**
      * Calculates the sum of two operands
      * @param firstOperand double left operands
@@ -18,11 +21,12 @@ public class AdditionalBinaryOperator implements BinaryOperator {
     }
 
     @Override
-    public int compareTo(BinaryOperator binaryOperator) {
-        return priority < binaryOperator.priority() ? 1 : -1;
+    public BinaryOperator.priority priority() {
+        return this.priority;
     }
-
-    public int priority() {
-        return priority;
+    @Override
+    public int compareTo(BinaryOperator anotherBinaryOperator)
+    {
+        return this.priority.compareTo(anotherBinaryOperator.priority());
     }
 }

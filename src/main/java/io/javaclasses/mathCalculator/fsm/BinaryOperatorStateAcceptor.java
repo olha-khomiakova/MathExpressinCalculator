@@ -1,9 +1,11 @@
 package io.javaclasses.mathCalculator.fsm;
 
+import io.javaclasses.mathCalculator.math.BinaryOperator;
 import io.javaclasses.mathCalculator.math.BinaryOperatorFactory;
 import io.javaclasses.mathCalculator.math.ShuntingYard;
 
 import java.text.CharacterIterator;
+import java.util.Optional;
 
 /**
  * Implementation of {@link StateAcceptor}.
@@ -14,9 +16,10 @@ public class BinaryOperatorStateAcceptor implements StateAcceptor<ShuntingYard> 
     @Override
     public boolean accept(CharacterIterator inputChain, ShuntingYard outputChain) {
         char currentCharacter = inputChain.current();
-        if (new BinaryOperatorFactory().isBinaryOperator(currentCharacter)) {
-            outputChain.pushBinaryOperator(new BinaryOperatorFactory()
-                    .getRequiredBinaryOperator(currentCharacter));
+        Optional<BinaryOperator> binaryOperator =
+                new BinaryOperatorFactory().getRequiredBinaryOperator(currentCharacter);
+        if (binaryOperator.isPresent()) {
+            outputChain.pushBinaryOperator(binaryOperator.get());
             inputChain.next();
             return true;
         }

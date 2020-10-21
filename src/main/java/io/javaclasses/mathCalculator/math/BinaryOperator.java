@@ -3,7 +3,13 @@ package io.javaclasses.mathCalculator.math;
 /**
  * Interface of variable binary operations.
  */
-public interface BinaryOperator extends Comparable<BinaryOperator> {
+public interface BinaryOperator {
+    enum priority {
+        LOW, // - +
+        MEDIUM //* /
+    }
+
     double calculate(double firstOperand, double secondOperand);
-    int priority();
+    priority priority();
+    int compareTo(BinaryOperator binaryOperator);
 }
