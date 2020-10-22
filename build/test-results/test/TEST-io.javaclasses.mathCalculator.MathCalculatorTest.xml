@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="io.javaclasses.mathCalculator.MathCalculatorTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2020-10-21T13:14:39" hostname="USER-PC" time="0.244">
+<testsuite name="io.javaclasses.mathCalculator.MathCalculatorTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2020-10-22T21:03:03" hostname="USER-PC" time="2.197">
   <properties/>
-  <testcase name="testIncorrectMathematicalExpression()" classname="io.javaclasses.mathCalculator.MathCalculatorTest" time="0.039"/>
-  <testcase name="testEvaluationOfExpression()" classname="io.javaclasses.mathCalculator.MathCalculatorTest" time="0.01"/>
-  <testcase name="testEvaluationOfNumber(double, String)[1]" classname="io.javaclasses.mathCalculator.MathCalculatorTest" time="0.031"/>
-  <testcase name="testEvaluationOfNumber(double, String)[2]" classname="io.javaclasses.mathCalculator.MathCalculatorTest" time="0.008"/>
-  <testcase name="testEvaluationOfNumber(double, String)[3]" classname="io.javaclasses.mathCalculator.MathCalculatorTest" time="0.003"/>
-  <testcase name="testEvaluationOfNumber(double, String)[4]" classname="io.javaclasses.mathCalculator.MathCalculatorTest" time="0.004"/>
-  <testcase name="testEvaluationOfExpressionWithBrackets()" classname="io.javaclasses.mathCalculator.MathCalculatorTest" time="0.005"/>
+  <testcase name="testEvaluationOfExpressionWithBrackets_Positive(String, double)[1]" classname="io.javaclasses.mathCalculator.MathCalculatorTest" time="2.151"/>
+  <testcase name="testEvaluationOfExpressionWithBrackets_Positive(String, double)[2]" classname="io.javaclasses.mathCalculator.MathCalculatorTest" time="0.007"/>
+  <testcase name="testEvaluationOfExpressionWithBrackets_Positive(String, double)[3]" classname="io.javaclasses.mathCalculator.MathCalculatorTest" time="0.006"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
