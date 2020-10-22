@@ -1,6 +1,8 @@
 package io.javaclasses.mathCalculator.fsm.base;
 
 import io.javaclasses.mathCalculator.IncorrectMathExpressionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.CharacterIterator;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ public class FiniteStateMachine<T> {
     }
 
     private final Collection<State<T>> possibleStartStateList = new ArrayList<>();
+    Logger LOGGER = LoggerFactory.getLogger(FiniteStateMachine.class);
 
     /**
      * This is API that change from one state to another.
@@ -30,16 +33,26 @@ public class FiniteStateMachine<T> {
      * @return status that indicates at what stage the FSM finished work
      */
     public Status run(CharacterIterator inputChain, T outputChain) throws IncorrectMathExpressionException {
+        //LOGGER.error(this.getClass() + " started.");
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(this.getClass() + " started.");
+        }
         Optional<State<T>> currentState = Optional.empty();
         while (true) {
             Collection<State<T>> transitions = currentState.isPresent() ?
                     currentState.get().transitions() : possibleStartStateList;
             Optional<State<T>> nextState = stepForward(inputChain, outputChain, transitions);
             if (!nextState.isPresent()) {
+                if (LOGGER.isInfoEnabled()) {
+                    LOGGER.info(this.getClass() + " ended with status "
+                            + currentState.filter(State::canBeFinish)
+                            .map(state -> Status.FINISHED).orElse(Status.NOT_STARTED));
+                }
                 return currentState.filter(State::canBeFinish).map(state -> Status.FINISHED).orElse(Status.NOT_STARTED);
             }
             currentState = nextState;
         }
+
     }
 
     protected void registerPossibleStartState(Collection<State<T>> states) {
@@ -47,7 +60,7 @@ public class FiniteStateMachine<T> {
     }
 
     private Optional<State<T>> stepForward(CharacterIterator inputChain, T outputChain,
-                                        Iterable<State<T>> transitions) throws IncorrectMathExpressionException {
+                                           Iterable<State<T>> transitions) throws IncorrectMathExpressionException {
         for (State<T> state : transitions) {
             if (state.accept(inputChain, outputChain)) {
                 return Optional.of(state);
