@@ -75,6 +75,12 @@ fabric.properties
 # .idea/misc.xml
 # *.ipr
 
+
+.build/classes/java
+.build/reports/tests/test
+.build/test-results/test
+
+
 # Sonarlint plugin
 # https://plugins.jetbrains.com/plugin/7973-sonarlint
 .idea/**/sonarlint/
