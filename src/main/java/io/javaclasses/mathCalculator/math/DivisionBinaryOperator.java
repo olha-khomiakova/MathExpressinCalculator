@@ -25,9 +25,4 @@ public class DivisionBinaryOperator implements BinaryOperator {
     public BinaryOperator.priority priority() {
         return priority;
     }
-    @Override
-    public int compareTo(BinaryOperator anotherBinaryOperator)
-    {
-        return this.priority.compareTo(anotherBinaryOperator.priority());
-    }
 }

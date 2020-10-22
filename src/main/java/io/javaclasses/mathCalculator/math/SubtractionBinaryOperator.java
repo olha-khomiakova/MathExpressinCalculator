@@ -26,8 +26,4 @@ public class SubtractionBinaryOperator implements BinaryOperator {
         return priority;
     }
 
-    @Override
-    public int compareTo(BinaryOperator anotherBinaryOperator) {
-        return this.priority.compareTo(anotherBinaryOperator.priority());
-    }
 }

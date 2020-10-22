@@ -1,5 +1,8 @@
 package io.javaclasses.mathCalculator.fsm;
 
+import io.javaclasses.mathCalculator.fsm.acceptors.*;
+import io.javaclasses.mathCalculator.fsm.base.FiniteStateMachine;
+import io.javaclasses.mathCalculator.fsm.base.State;
 import io.javaclasses.mathCalculator.math.ShuntingYard;
 
 import static java.util.Arrays.asList;
@@ -13,14 +16,17 @@ import static java.util.Arrays.asList;
  */
 public class ExpressionFiniteStateMachine extends FiniteStateMachine<ShuntingYard> {
     public ExpressionFiniteStateMachine() {
-        @SuppressWarnings("unchecked") State<ShuntingYard> number = new State(true, new <ShuntingYard>NumberStateAcceptor());
-        State<ShuntingYard> binaryOperation = new State(false, new <ShuntingYard>BinaryOperatorStateAcceptor());
-        State<ShuntingYard> expressionWithParenthesis = new State(true, new <ShuntingYard>ExpressionWithBracketsStateAcceptor());
+        State<ShuntingYard> number = new State<>(true, new NumberStateAcceptor());
+        State<ShuntingYard> binaryOperation = new State<>(false,  new BinaryOperatorStateAcceptor());
+        State<ShuntingYard> expressionWithParenthesis = new State<>(true, new ExpressionWithBracketsStateAcceptor());
+        State<ShuntingYard> function = new State<>(false, new FunctionStateAcceptor());
 
         number.addTransmission(binaryOperation);
         binaryOperation.addTransmission(number);
         binaryOperation.addTransmission(expressionWithParenthesis);
         expressionWithParenthesis.addTransmission(binaryOperation);
-        registerPossibleStartState(asList(number, expressionWithParenthesis));
+        function.addTransmission(binaryOperation);
+        binaryOperation.addTransmission(function);
+        registerPossibleStartState(asList(number, expressionWithParenthesis, function));
     }
 }

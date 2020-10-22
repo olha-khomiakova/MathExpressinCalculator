@@ -1,7 +1,7 @@
 package io.javaclasses.mathCalculator;
 
 import io.javaclasses.mathCalculator.fsm.ExpressionFiniteStateMachine;
-import io.javaclasses.mathCalculator.fsm.FiniteStateMachine;
+import io.javaclasses.mathCalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathCalculator.math.ShuntingYard;
 
 import java.text.CharacterIterator;
@@ -32,7 +32,7 @@ public class MathCalculator {
         if (status == FiniteStateMachine.Status.NOT_STARTED ||
                 stringNumber.getIndex()!=stringNumber.getEndIndex()) {
             throw new IncorrectMathExpressionException("Incorrectly entered mathematical " +
-                    "expression in position" +stringNumber+".", stringNumber.getIndex());
+                    "expression in position " +stringNumber.getIndex()+".", stringNumber.getIndex());
         } else {
             return Double.parseDouble(result.popAllOperators().toString());
         }

@@ -24,9 +24,4 @@ public class AdditionalBinaryOperator implements BinaryOperator {
     public BinaryOperator.priority priority() {
         return this.priority;
     }
-    @Override
-    public int compareTo(BinaryOperator anotherBinaryOperator)
-    {
-        return this.priority.compareTo(anotherBinaryOperator.priority());
-    }
 }

@@ -1,4 +1,6 @@
-package io.javaclasses.mathCalculator.fsm;
+package io.javaclasses.mathCalculator.fsm.base;
+
+import io.javaclasses.mathCalculator.IncorrectMathExpressionException;
 
 import java.text.CharacterIterator;
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ public class State <T>{
         }
         this.acceptor = acceptor;
     }
-    public boolean accept(CharacterIterator inputChain, T outputChain) {
+    public boolean accept(CharacterIterator inputChain, T outputChain) throws IncorrectMathExpressionException {
         return acceptor.accept(inputChain, outputChain);
     }
     public void addTransmission(State<T> state)

@@ -11,5 +11,4 @@ public interface BinaryOperator {
 
     double calculate(double firstOperand, double secondOperand);
     priority priority();
-    int compareTo(BinaryOperator binaryOperator);
 }

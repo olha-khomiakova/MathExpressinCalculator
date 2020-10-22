@@ -1,5 +1,9 @@
-package io.javaclasses.mathCalculator.fsm;
+package io.javaclasses.mathCalculator.fsm.acceptors;
 
+import io.javaclasses.mathCalculator.IncorrectMathExpressionException;
+import io.javaclasses.mathCalculator.fsm.ExpressionWithBracketsFiniteStateMachine;
+import io.javaclasses.mathCalculator.fsm.base.FiniteStateMachine;
+import io.javaclasses.mathCalculator.fsm.base.StateAcceptor;
 import io.javaclasses.mathCalculator.math.ShuntingYard;
 
 import java.text.CharacterIterator;
@@ -11,11 +15,11 @@ import java.text.CharacterIterator;
  */
 public class ExpressionWithBracketsStateAcceptor implements StateAcceptor<ShuntingYard> {
     @Override
-    public boolean accept(CharacterIterator inputChain, ShuntingYard outputChain) {
+    public boolean accept(CharacterIterator inputChain, ShuntingYard outputChain) throws IncorrectMathExpressionException {
         FiniteStateMachine<ShuntingYard> expressionWithParenthesisFiniteStateMachine = new ExpressionWithBracketsFiniteStateMachine();
         ShuntingYard shuntingYard = new ShuntingYard();
         if (expressionWithParenthesisFiniteStateMachine.run(inputChain, shuntingYard) == FiniteStateMachine.Status.FINISHED) {
-            outputChain.pushNumber(Double.parseDouble(shuntingYard.popAllOperators().toString()));
+            outputChain.pushOperand(Double.parseDouble(shuntingYard.popAllOperators().toString()));
             return true;
         }
         return false;

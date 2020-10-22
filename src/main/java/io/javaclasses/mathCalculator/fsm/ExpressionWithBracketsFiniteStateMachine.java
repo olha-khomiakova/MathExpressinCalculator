@@ -1,8 +1,12 @@
 package io.javaclasses.mathCalculator.fsm;
 
+import io.javaclasses.mathCalculator.fsm.acceptors.BracketsStateAcceptor;
+import io.javaclasses.mathCalculator.fsm.acceptors.ExpressionStateAcceptor;
+import io.javaclasses.mathCalculator.fsm.base.FiniteStateMachine;
+import io.javaclasses.mathCalculator.fsm.base.State;
 import io.javaclasses.mathCalculator.math.ShuntingYard;
 
-import static java.util.Arrays.asList;
+import java.util.Collections;
 
 /**
  * Implementation of {@link FiniteStateMachine} for parsing
@@ -14,15 +18,15 @@ import static java.util.Arrays.asList;
  */
 public class ExpressionWithBracketsFiniteStateMachine extends FiniteStateMachine<ShuntingYard> {
     public ExpressionWithBracketsFiniteStateMachine() {
-        State openingBrackets = new State(false,
+        State<ShuntingYard> openingBrackets = new State<>(false,
                 new BracketsStateAcceptor('('));
-        State closingParenthesis = new State(true,
+        State<ShuntingYard> closingParenthesis = new State<>(true,
                 new BracketsStateAcceptor(')'));
-        State expression = new State(false, new ExpressionStateAcceptor());
+        State<ShuntingYard> expression = new State<>(false, new ExpressionStateAcceptor());
 
         expression.addTransmission(closingParenthesis);
         openingBrackets.addTransmission(expression);
 
-        registerPossibleStartState(asList(openingBrackets));
+        registerPossibleStartState(Collections.singletonList(openingBrackets));
     }
 }

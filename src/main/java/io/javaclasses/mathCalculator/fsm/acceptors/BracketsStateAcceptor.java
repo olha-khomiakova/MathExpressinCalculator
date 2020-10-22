@@ -1,5 +1,6 @@
-package io.javaclasses.mathCalculator.fsm;
+package io.javaclasses.mathCalculator.fsm.acceptors;
 
+import io.javaclasses.mathCalculator.fsm.base.StateAcceptor;
 import io.javaclasses.mathCalculator.math.ShuntingYard;
 
 import java.text.CharacterIterator;

@@ -1,4 +1,6 @@
-package io.javaclasses.mathCalculator.fsm;
+package io.javaclasses.mathCalculator.fsm.base;
+
+import io.javaclasses.mathCalculator.IncorrectMathExpressionException;
 
 import java.text.CharacterIterator;
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ public class FiniteStateMachine<T> {
      * @param outputChain result of work FSM
      * @return status that indicates at what stage the FSM finished work
      */
-    public Status run(CharacterIterator inputChain, T outputChain) {
+    public Status run(CharacterIterator inputChain, T outputChain) throws IncorrectMathExpressionException {
         Optional<State<T>> currentState = Optional.empty();
         while (true) {
             Collection<State<T>> transitions = currentState.isPresent() ?
@@ -45,7 +47,7 @@ public class FiniteStateMachine<T> {
     }
 
     private Optional<State<T>> stepForward(CharacterIterator inputChain, T outputChain,
-                                        Iterable<State<T>> transitions) {
+                                        Iterable<State<T>> transitions) throws IncorrectMathExpressionException {
         for (State<T> state : transitions) {
             if (state.accept(inputChain, outputChain)) {
                 return Optional.of(state);
