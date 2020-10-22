@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="io.javaclasses.mathCalculator.MathCalculatorTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2020-10-22T21:03:03" hostname="USER-PC" time="2.197">
-  <properties/>
-  <testcase name="testEvaluationOfExpressionWithBrackets_Positive(String, double)[1]" classname="io.javaclasses.mathCalculator.MathCalculatorTest" time="2.151"/>
-  <testcase name="testEvaluationOfExpressionWithBrackets_Positive(String, double)[2]" classname="io.javaclasses.mathCalculator.MathCalculatorTest" time="0.007"/>
-  <testcase name="testEvaluationOfExpressionWithBrackets_Positive(String, double)[3]" classname="io.javaclasses.mathCalculator.MathCalculatorTest" time="0.006"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
