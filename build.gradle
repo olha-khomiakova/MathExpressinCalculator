@@ -8,14 +8,20 @@ version '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
-
+ext {
+    log4jVersion = '2.13.3'
+    slf4jVersion = '1.7.30'
+    truthVersion = '1.1'
+    junitJupiterVersion = '5.4.2'
+    junitVeersion = '4.12'
+}
 dependencies {
-    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.13.3'
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
-    testImplementation "com.google.truth:truth:1.1"
-    implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
-    testImplementation 'junit:junit:4.12'
-    implementation 'junit:junit:4.12'
+    compile 'org.apache.logging.log4j:log4j-slf4j-impl:' + "${log4jVersion}"
+    compile group: 'org.slf4j', name: 'slf4j-api', version:  "${slf4jVersion}"
+    testImplementation "com.google.truth:truth:" +"${truthVersion}"
+    implementation 'org.junit.jupiter:junit-jupiter:' + "${junitJupiterVersion}"
+    testImplementation 'junit:junit:' + "${junitVeersion}"
+    implementation 'junit:junit:' + "${junitVeersion}"
 }
 test {
     useJUnitPlatform()
