@@ -1,8 +1,6 @@
 package io.javaclasses.mathCalculator.math;
 
 
-import io.javaclasses.mathCalculator.IncorrectMathExpressionException;
-
 /**
  * This is implementation mathematical function that finds the minimum parameters of the two.
  */
@@ -12,11 +10,15 @@ public class MaxFunction extends Function {
         super(minimumNumberOfParameters, maximumNumberOfParameters, "max");
     }
 
+    /**
+     * This API finds the maximum parameters.
+     *
+     * @return double maximum parameters
+     */
     @Override
-    public double calculate() throws IncorrectMathExpressionException {
+    public double calculate() {
         this.accept();
-        return Math.max(functionDataStructure.getFunctionParameters().get(0),
-                functionDataStructure.getFunctionParameters().get(1));
+        return functionDataStructure.getFunctionParameters().stream().max(Double::compareTo).get();
     }
 
 }

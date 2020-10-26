@@ -1,18 +1,18 @@
 package io.javaclasses.mathCalculator.math;
 
 /**
- * Implementation of {@link BinaryOperator}.
+ * Implementation of {@link BinaryOperator} that calculates the addition of two operands .
  */
-public class AdditionalBinaryOperator implements BinaryOperator {
+public class AdditionBinaryOperator implements BinaryOperator {
     private final BinaryOperator.priority priority;
-    public AdditionalBinaryOperator(BinaryOperator.priority priority)
+    public AdditionBinaryOperator(BinaryOperator.priority priority)
     {
         this.priority = priority;
     }
     /**
      * Calculates the sum of two operands
-     * @param firstOperand double left operands
-     * @param secondOperand double right operands
+     * @param firstOperand is double left operands
+     * @param secondOperand is double right operands
      * @return addition result
      */
     @Override

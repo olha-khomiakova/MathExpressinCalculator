@@ -1,7 +1,6 @@
-package io.javaclasses.mathCalculator.fsm.acceptors;
+package io.javaclasses.mathCalculator.fsm;
 
 import io.javaclasses.mathCalculator.IncorrectMathExpressionException;
-import io.javaclasses.mathCalculator.fsm.NumberFiniteStateMachine;
 import io.javaclasses.mathCalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathCalculator.fsm.base.StateAcceptor;
 import io.javaclasses.mathCalculator.math.ShuntingYard;
@@ -9,11 +8,20 @@ import io.javaclasses.mathCalculator.math.ShuntingYard;
 import java.text.CharacterIterator;
 
 /**
- * Implementation of {@link StateAcceptor}.
- * It starts {@link NumberFiniteStateMachine}.
- * It defines whether the transition from one state to number state is possible.
+ * Implementation of {@link StateAcceptor} that starts {@link ExpressionStateAcceptor},
+ * defines whether the transition from one state to number state is possible
+ * and if possible adds result to the outputChain.
  */
 public class NumberStateAcceptor implements StateAcceptor<ShuntingYard> {
+    /**
+     * This API creates {@link StringBuilder} for {@link NumberFiniteStateMachine}, starts FSM
+     * and adds result of shunting yard to the outputChain.
+     *
+     * @param inputChain  is an iterable string with input data
+     * @param outputChain is an {@link ShuntingYard} to which will be added result of NumberFSM.
+     * @return the truth if the FSM has worked successfully
+     * and added the result to the outputChain, otherwise it returns false
+     */
     @Override
     public boolean accept(CharacterIterator inputChain, ShuntingYard outputChain) throws IncorrectMathExpressionException {
         NumberFiniteStateMachine numberFiniteStateMachine = new NumberFiniteStateMachine();

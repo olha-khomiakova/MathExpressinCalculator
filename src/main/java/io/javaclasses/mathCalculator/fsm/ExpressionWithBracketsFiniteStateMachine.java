@@ -1,7 +1,5 @@
 package io.javaclasses.mathCalculator.fsm;
 
-import io.javaclasses.mathCalculator.fsm.acceptors.BracketsStateAcceptor;
-import io.javaclasses.mathCalculator.fsm.acceptors.ExpressionStateAcceptor;
 import io.javaclasses.mathCalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathCalculator.fsm.base.State;
 import io.javaclasses.mathCalculator.math.ShuntingYard;
@@ -10,11 +8,11 @@ import java.util.Collections;
 
 /**
  * Implementation of {@link FiniteStateMachine} for parsing
- * and evaluating expression with brackets from string.
- * The expression looks like this pattern: "("+"simple mathematical expression"+")".
+ * and evaluating mathematical expression with brackets from string.
+ * The expression looks like this pattern: "("+"{@link ExpressionFiniteStateMachine}"+")".
  * For example:
- * 1) (5+2):
- * 2) (7.5+65*0.1).
+ * 1) (5+2);
+ * 2) (min(3.5,2)*0.1).
  */
 public class ExpressionWithBracketsFiniteStateMachine extends FiniteStateMachine<ShuntingYard> {
     public ExpressionWithBracketsFiniteStateMachine() {

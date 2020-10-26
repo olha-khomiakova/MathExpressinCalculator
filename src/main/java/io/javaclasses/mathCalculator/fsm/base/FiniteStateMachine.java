@@ -10,11 +10,11 @@ import java.util.Collection;
 import java.util.Optional;
 
 /**
- * This is general representing of a finite state machine.
- * The FSM can change from one state to another in response to some inputs.
+ * This is general representing of a finite state machine
+ * that change from one state to another in response to some inputs.
  * You can read more at {@link "https://en.wikipedia.org/wiki/Finite-state_machine" }
  *
- * @param <T> output data type
+ * @param <T> is a data structure in which fsm writes the result of its work
  */
 public class FiniteStateMachine<T> {
     public enum Status {
@@ -23,17 +23,16 @@ public class FiniteStateMachine<T> {
     }
 
     private final Collection<State<T>> possibleStartStateList = new ArrayList<>();
-    Logger LOGGER = LoggerFactory.getLogger(FiniteStateMachine.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(FiniteStateMachine.class);
 
     /**
-     * This is API that change from one state to another.
+     * This is API that changes from one state to another.
      *
-     * @param inputChain  An original expression
+     * @param inputChain  is an iterable string with expression
      * @param outputChain result of work FSM
      * @return status that indicates at what stage the FSM finished work
      */
     public Status run(CharacterIterator inputChain, T outputChain) throws IncorrectMathExpressionException {
-        //LOGGER.error(this.getClass() + " started.");
         if (LOGGER.isInfoEnabled()) {
             LOGGER.info(this.getClass() + " started.");
         }

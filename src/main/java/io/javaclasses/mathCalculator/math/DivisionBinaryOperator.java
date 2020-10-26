@@ -1,7 +1,7 @@
 package io.javaclasses.mathCalculator.math;
 
 /**
- * Implementation of {@link BinaryOperator}.
+ * Implementation of {@link BinaryOperator} that calculates the division of two operands .
  */
 public class DivisionBinaryOperator implements BinaryOperator {
     private final BinaryOperator.priority priority;
@@ -12,8 +12,8 @@ public class DivisionBinaryOperator implements BinaryOperator {
     /**
      * Calculates the division of two operands
      *
-     * @param firstOperand  double left operands
-     * @param secondOperand double right operands
+     * @param firstOperand  is double left operands
+     * @param secondOperand is double right operands
      * @return division result
      */
     @Override

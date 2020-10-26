@@ -1,7 +1,7 @@
 package io.javaclasses.mathCalculator.math;
 
 /**
- * Implementation of {@link BinaryOperator}.
+ * Implementation of {@link BinaryOperator} that calculates the subtraction of two operands .
  */
 public class SubtractionBinaryOperator implements BinaryOperator {
     private final BinaryOperator.priority priority;
@@ -13,8 +13,8 @@ public class SubtractionBinaryOperator implements BinaryOperator {
     /**
      * Calculates the subtraction of two operands
      *
-     * @param firstOperand  double left operands
-     * @param secondOperand double right operands
+     * @param firstOperand  is double left operands
+     * @param secondOperand is double right operands
      * @return subtraction result
      */
     @Override

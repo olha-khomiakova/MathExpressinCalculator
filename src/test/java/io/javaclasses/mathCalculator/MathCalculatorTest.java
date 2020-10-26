@@ -26,7 +26,7 @@ public class MathCalculatorTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"123g", "0y", "67.89gfhk", "-98.098tgyvf"})
+    @CsvSource({"123g", "0y", "67.89error", "-98.098error"})
     void testEvaluationOfNumber_Negative(String input) {
         IncorrectMathExpressionException e =
                 assertThrows(IncorrectMathExpressionException.class, () ->

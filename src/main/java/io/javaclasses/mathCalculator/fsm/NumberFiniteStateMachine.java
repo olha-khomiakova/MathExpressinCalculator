@@ -1,7 +1,5 @@
 package io.javaclasses.mathCalculator.fsm;
 
-import io.javaclasses.mathCalculator.fsm.acceptors.DigitCharacterStateAcceptor;
-import io.javaclasses.mathCalculator.fsm.acceptors.SingleCharacterStateAcceptor;
 import io.javaclasses.mathCalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathCalculator.fsm.base.State;
 
@@ -9,6 +7,7 @@ import static java.util.Arrays.asList;
 
 /**
  * Implementation of {@link FiniteStateMachine} for parsing number from string.
+ * Numbers are integer or decimal, positive or negative.
  */
 public class NumberFiniteStateMachine extends FiniteStateMachine<StringBuilder> {
     public NumberFiniteStateMachine() {

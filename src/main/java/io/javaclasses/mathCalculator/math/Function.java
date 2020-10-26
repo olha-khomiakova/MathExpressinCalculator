@@ -1,18 +1,23 @@
 package io.javaclasses.mathCalculator.math;
 
 import io.javaclasses.mathCalculator.IncorrectMathExpressionException;
-
+/**
+ * This is general representing of function that stores information about it
+ * and have abstract method calculate() that should be implemented by a descendant of this class.
+ */
 abstract public class Function {
     public FunctionDataStructure functionDataStructure = new FunctionDataStructure();
-    protected final int minimumNumberOfParameters;
-    protected final int maximumNumberOfParameters;
-    protected final String functionName;
+    private final int minimumNumberOfParameters;
+    private final int maximumNumberOfParameters;
+    private final String functionName;
 
     public Function(int minimumNumberOfParameters, int maximumNumberOfParameters, String functionName) {
         this.minimumNumberOfParameters = minimumNumberOfParameters;
         this.maximumNumberOfParameters = maximumNumberOfParameters;
         this.functionName = functionName;
     }
+
+    abstract public double calculate();
 
     protected void accept() throws IncorrectMathExpressionException {
         if (!(this.maximumNumberOfParameters >= functionDataStructure.getFunctionParameters().size()) ||
@@ -22,7 +27,6 @@ abstract public class Function {
                     maximumNumberOfParameters + " parameters.");
         }
     }
-    abstract public double calculate() throws IncorrectMathExpressionException;
 
     public void setFunctionDataStructure(FunctionDataStructure functionDataStructure) {
         this.functionDataStructure = functionDataStructure;

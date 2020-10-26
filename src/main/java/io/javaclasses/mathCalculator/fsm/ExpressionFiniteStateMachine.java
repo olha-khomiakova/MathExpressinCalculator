@@ -1,6 +1,5 @@
 package io.javaclasses.mathCalculator.fsm;
 
-import io.javaclasses.mathCalculator.fsm.acceptors.*;
 import io.javaclasses.mathCalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathCalculator.fsm.base.State;
 import io.javaclasses.mathCalculator.math.ShuntingYard;
@@ -8,11 +7,12 @@ import io.javaclasses.mathCalculator.math.ShuntingYard;
 import static java.util.Arrays.asList;
 
 /**
- * Implementation of {@link FiniteStateMachine} for parsing and evaluating expression from string.
+ * Implementation of {@link FiniteStateMachine} for parsing
+ * and evaluating mathematical expression from string.
  * For example, mathematical expression may be like these:
  * <p>
  * 1) "5.25+(10*2.1)-7.77"
- * 2) "0.1*(5+(10/2))"
+ * 2) "0.1*max(5,10)/2"
  */
 public class ExpressionFiniteStateMachine extends FiniteStateMachine<ShuntingYard> {
     public ExpressionFiniteStateMachine() {

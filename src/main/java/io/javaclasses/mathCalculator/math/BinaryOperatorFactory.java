@@ -10,7 +10,7 @@ public class BinaryOperatorFactory {
     public BinaryOperatorFactory() {
         binaryOperatorMap.put('+', new Creator() {
             private BinaryOperator create() {
-                return new AdditionalBinaryOperator(BinaryOperator.priority.LOW);
+                return new AdditionBinaryOperator(BinaryOperator.priority.LOW);
             }
         }.create());
         binaryOperatorMap.put('-', new Creator() {
