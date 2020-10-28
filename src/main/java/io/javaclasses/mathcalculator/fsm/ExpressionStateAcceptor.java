@@ -1,12 +1,12 @@
 package io.javaclasses.mathcalculator.fsm;
 
-import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
-import io.javaclasses.mathcalculator.math.ShuntingYard;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.javaclasses.mathcalculator.runtime.Command;
+import io.javaclasses.mathcalculator.runtime.ShuntingYard;
 
 import java.text.CharacterIterator;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation of {@link StateAcceptor} that starts {@link ExpressionStateAcceptor},
@@ -14,7 +14,7 @@ import java.text.CharacterIterator;
  * and if possible adds result to the outputChain.
  */
 @SuppressWarnings({"ClassWithTooManyTransitiveDependencies", "CyclicClassDependency"})
-public class ExpressionStateAcceptor implements StateAcceptor<ShuntingYard> {
+public class ExpressionStateAcceptor implements StateAcceptor<List<Command>> {
 
     /**
      * This API creates {@link ShuntingYard} for {@link ExpressionFiniteStateMachine}, starts FSM
@@ -28,20 +28,16 @@ public class ExpressionStateAcceptor implements StateAcceptor<ShuntingYard> {
      *         and added the result to the outputChain, otherwise it returns false
      */
     @Override
-    public boolean accept(CharacterIterator inputChain, ShuntingYard outputChain) {
-        final Logger logger = LoggerFactory.getLogger(ExpressionStateAcceptor.class);
+    public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
 
-        FiniteStateMachine<ShuntingYard> expressionFSM = new ExpressionFiniteStateMachine();
-        ShuntingYard shuntingYard = new ShuntingYard();
-        if (expressionFSM.run(inputChain, shuntingYard) == FiniteStateMachine.Status.FINISHED) {
-            outputChain.pushOperand(Double.parseDouble(shuntingYard.popAllOperators()
-                                                                   .toString()));
-            if (logger.isInfoEnabled()) {
-                logger.info(this.getClass() + " :" + shuntingYard.popAllOperators()
-                                                                 .toString());
-            }
+        ExpressionFiniteStateMachine expressionFSM = new ExpressionFiniteStateMachine();
+        Optional<Command> command = expressionFSM.expression(inputChain, outputChain);
+        if (command.isPresent()) {
+            outputChain.add(command.get());
             return true;
         }
-        return false;
+
+        return true;
+
     }
 }

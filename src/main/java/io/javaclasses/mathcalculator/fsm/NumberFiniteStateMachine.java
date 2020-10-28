@@ -2,8 +2,12 @@ package io.javaclasses.mathcalculator.fsm;
 
 import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.State;
+import io.javaclasses.mathcalculator.runtime.Command;
+import io.javaclasses.mathcalculator.runtime.PushOperandCommand;
 
 import java.io.StringWriter;
+import java.text.CharacterIterator;
+import java.util.Optional;
 
 import static java.util.Arrays.asList;
 
@@ -27,5 +31,14 @@ class NumberFiniteStateMachine extends FiniteStateMachine<StringWriter> {
         decimalDigit.addTransmission(decimalDigit);
 
         registerPossibleStartState(asList(negativeSign, intDigit));
+    }
+
+    public Optional<Command> number(CharacterIterator input, StringWriter output) {
+        Status status = run(input, output);
+        if (status == Status.FINISHED) {
+            return Optional.of(new PushOperandCommand(Double.parseDouble(output.toString())));
+        }
+
+        return Optional.empty();
     }
 }

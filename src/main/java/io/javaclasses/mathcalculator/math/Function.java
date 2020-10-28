@@ -1,13 +1,13 @@
 package io.javaclasses.mathcalculator.math;
 
+import java.util.List;
+
 /**
  * This is general representing of function that stores information about it
  * and have abstract method calculate() that should be implemented by a descendant of this class.
  */
-@SuppressWarnings({"ClassWithTooManyTransitiveDependencies", "CyclicClassDependency"})
 public abstract class Function {
 
-    private FunctionDataStructure functionDataStructure = new FunctionDataStructure();
     private final int minimumNumberOfParameters;
     private final int maximumNumberOfParameters;
     private final String functionName;
@@ -18,13 +18,11 @@ public abstract class Function {
         this.functionName = functionName;
     }
 
-    public abstract double calculate();
+    public abstract double calculate(List<Double> parameters);
 
-    void accept() {
-        if (!(this.maximumNumberOfParameters >= functionDataStructure.getFunctionParameters()
-                                                                     .size()) ||
-                !(this.minimumNumberOfParameters <= functionDataStructure.getFunctionParameters()
-                                                                         .size())) {
+    public void accept(int numberOfParameters) {
+        if (numberOfParameters < maximumNumberOfParameters ||
+                numberOfParameters > minimumNumberOfParameters) {
             throw new IncorrectMathFunctionException("Wrong number of function parameters! " +
                                                              functionName + " function can have " +
                                                              minimumNumberOfParameters + " to " +
@@ -33,11 +31,4 @@ public abstract class Function {
         }
     }
 
-    public void setFunctionDataStructure(FunctionDataStructure dataStructure) {
-        this.functionDataStructure = dataStructure;
-    }
-
-    FunctionDataStructure functionDataStructure() {
-        return this.functionDataStructure;
-    }
 }

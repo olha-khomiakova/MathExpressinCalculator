@@ -1,8 +1,7 @@
 package io.javaclasses.mathcalculator.fsm;
 
-import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
-import io.javaclasses.mathcalculator.math.FunctionDataStructure;
+import io.javaclasses.mathcalculator.runtime.FunctionDataStructure;
 
 import java.text.CharacterIterator;
 
@@ -11,9 +10,9 @@ public class FunctionNameStateAcceptor implements StateAcceptor<FunctionDataStru
     @Override
     public boolean accept(CharacterIterator inputChain, FunctionDataStructure outputChain) {
 
-        FiniteStateMachine<FunctionDataStructure> functionNameFSM =
+        FunctionNameFiniteStateMachine functionNameFSM =
                 new FunctionNameFiniteStateMachine();
-        return functionNameFSM.run(inputChain, outputChain)
-                == FiniteStateMachine.Status.FINISHED;
+        return functionNameFSM.functionName(inputChain, outputChain);
+
     }
 }

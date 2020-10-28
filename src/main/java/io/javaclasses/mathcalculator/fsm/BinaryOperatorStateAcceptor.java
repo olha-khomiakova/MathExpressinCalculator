@@ -3,11 +3,12 @@ package io.javaclasses.mathcalculator.fsm;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
 import io.javaclasses.mathcalculator.math.BinaryOperator;
 import io.javaclasses.mathcalculator.math.BinaryOperatorFactory;
-import io.javaclasses.mathcalculator.math.ShuntingYard;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.javaclasses.mathcalculator.runtime.Command;
+import io.javaclasses.mathcalculator.runtime.PushBinaryOperatorCommand;
+import io.javaclasses.mathcalculator.runtime.ShuntingYard;
 
 import java.text.CharacterIterator;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Optional;
  * whether the transition from one state to binary operator state is possible.
  * And if possible adds it to the outputChain and moves an iterator forward in an inputChain.
  */
-public class BinaryOperatorStateAcceptor implements StateAcceptor<ShuntingYard> {
+public class BinaryOperatorStateAcceptor implements StateAcceptor<List<Command>> {
 
     /**
      * This API creates binary operator, adds it to the {@link ShuntingYard}
@@ -29,18 +30,14 @@ public class BinaryOperatorStateAcceptor implements StateAcceptor<ShuntingYard> 
      *         and add it to the outputChain, otherwise it returns false
      */
     @Override
-    public boolean accept(CharacterIterator inputChain, ShuntingYard outputChain) {
-        Logger logger = LoggerFactory.getLogger(BinaryOperatorStateAcceptor.class);
+    public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
         char currentCharacter = inputChain.current();
         Optional<BinaryOperator> binaryOperator =
                 new BinaryOperatorFactory().getRequiredBinaryOperator(currentCharacter);
         if (binaryOperator.isPresent()) {
-            outputChain.pushBinaryOperator(binaryOperator.get());
+            outputChain.add(new PushBinaryOperatorCommand(binaryOperator.get()));
+
             inputChain.next();
-            if (logger.isInfoEnabled()) {
-                logger.info(this.getClass() + " :" + binaryOperator.get()
-                                                                   .getClass());
-            }
             return true;
         }
         return false;

@@ -2,8 +2,9 @@ package io.javaclasses.mathcalculator.fsm;
 
 import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.State;
-import io.javaclasses.mathcalculator.math.FunctionDataStructure;
+import io.javaclasses.mathcalculator.runtime.FunctionDataStructure;
 
+import java.text.CharacterIterator;
 import java.util.Collections;
 
 /**
@@ -18,5 +19,10 @@ class FunctionNameFiniteStateMachine extends FiniteStateMachine<FunctionDataStru
         letter.addTransmission(letter);
 
         registerPossibleStartState(Collections.singletonList(letter));
+    }
+
+    public boolean functionName(CharacterIterator inputChain, FunctionDataStructure function) {
+        Status status = run(inputChain, function);
+        return status == Status.FINISHED;
     }
 }

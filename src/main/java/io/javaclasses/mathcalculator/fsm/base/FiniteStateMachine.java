@@ -37,7 +37,7 @@ public class FiniteStateMachine<T> {
      *         result of work FSM
      * @return status that indicates at what stage the FSM finished work
      */
-    public Status run(CharacterIterator inputChain, T outputChain) {
+    protected Status run(CharacterIterator inputChain, T outputChain) {
         if (logger.isInfoEnabled()) {
             logger.info(this.getClass() + " started.");
         }

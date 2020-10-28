@@ -1,18 +1,19 @@
 package io.javaclasses.mathcalculator.fsm;
 
-import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
-import io.javaclasses.mathcalculator.math.ShuntingYard;
+import io.javaclasses.mathcalculator.runtime.Command;
+import io.javaclasses.mathcalculator.runtime.ShuntingYard;
 
 import java.text.CharacterIterator;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation of {@link StateAcceptor} that starts {@link ExpressionWithBracketsFiniteStateMachine},
  * defines whether the transition from one state to expression with brackets state is possible
  * and if possible adds result to the outputChain.
  */
-@SuppressWarnings({"ClassWithTooManyTransitiveDependencies", "CyclicClassDependency"})
-public class ExpressionWithBracketsStateAcceptor implements StateAcceptor<ShuntingYard> {
+public class ExpressionWithBracketsStateAcceptor implements StateAcceptor<List<Command>> {
 
     /**
      * This API creates {@link ShuntingYard} for {@link ExpressionWithBracketsFiniteStateMachine},
@@ -27,15 +28,15 @@ public class ExpressionWithBracketsStateAcceptor implements StateAcceptor<Shunti
      *         and added the result to the outputChain, otherwise it returns false
      */
     @Override
-    public boolean accept(CharacterIterator inputChain, ShuntingYard outputChain) {
+    public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
 
-        FiniteStateMachine<ShuntingYard> expressionWithBracketsFSM
+        ExpressionWithBracketsFiniteStateMachine expressionWithBracketsFSM
                 = new ExpressionWithBracketsFiniteStateMachine();
-        ShuntingYard shuntingYard = new ShuntingYard();
-        if (expressionWithBracketsFSM.run(inputChain, shuntingYard)
-                == FiniteStateMachine.Status.FINISHED) {
-            outputChain.pushOperand(Double.parseDouble(shuntingYard.popAllOperators()
-                                                                   .toString()));
+        Optional<Command> command = expressionWithBracketsFSM.expressionWithBrackets(inputChain,
+                                                                                     outputChain);
+
+        if (command.isPresent()) {
+            outputChain.add(command.get());
             return true;
         }
         return false;

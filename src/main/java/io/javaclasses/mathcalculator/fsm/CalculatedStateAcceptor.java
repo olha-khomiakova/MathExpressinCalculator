@@ -1,18 +1,18 @@
 package io.javaclasses.mathcalculator.fsm;
 
-import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
-import io.javaclasses.mathcalculator.math.ShuntingYard;
+import io.javaclasses.mathcalculator.runtime.Command;
+import io.javaclasses.mathcalculator.runtime.ShuntingYard;
 
 import java.text.CharacterIterator;
+import java.util.List;
 
 /**
  * Implementation of {@link StateAcceptor} that starts {@link ExpressionStateAcceptor},
  * defines whether the transition from one state to calculated state is possible
  * and if possible adds result to the outputChain.
  */
-@SuppressWarnings("CyclicClassDependency")
-public class CalculatedStateAcceptor implements StateAcceptor<ShuntingYard> {
+public class CalculatedStateAcceptor implements StateAcceptor<List<Command>> {
 
     /**
      * This API creates {@link ShuntingYard} for {@link CalculatedFiniteStateMachine}, starts FSM
@@ -26,14 +26,8 @@ public class CalculatedStateAcceptor implements StateAcceptor<ShuntingYard> {
      *         and added the result to the outputChain, otherwise it returns false
      */
     @Override
-    public boolean accept(CharacterIterator inputChain, ShuntingYard outputChain) {
+    public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
         CalculatedFiniteStateMachine calculatedFSM = new CalculatedFiniteStateMachine();
-        ShuntingYard shuntingYard = new ShuntingYard();
-        if (calculatedFSM.run(inputChain, shuntingYard) == FiniteStateMachine.Status.FINISHED) {
-            outputChain.pushOperand(Double.parseDouble(shuntingYard.popAllOperators()
-                                                                   .toString()));
-            return true;
-        }
-        return false;
+        return calculatedFSM.calculated(inputChain, outputChain);
     }
 }

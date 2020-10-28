@@ -2,7 +2,10 @@ package io.javaclasses.mathcalculator.fsm;
 
 import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.State;
-import io.javaclasses.mathcalculator.math.ShuntingYard;
+import io.javaclasses.mathcalculator.runtime.Command;
+
+import java.text.CharacterIterator;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 
@@ -11,15 +14,19 @@ import static java.util.Arrays.asList;
  * and evaluating calculated expression from string.
  * It may be numbers, function, expression in brackets.
  */
-@SuppressWarnings({"ClassWithTooManyTransitiveDependencies", "CyclicClassDependency"})
-class CalculatedFiniteStateMachine extends FiniteStateMachine<ShuntingYard> {
+class CalculatedFiniteStateMachine extends FiniteStateMachine<List<Command>> {
 
     CalculatedFiniteStateMachine() {
-        State<ShuntingYard> number = new State<>(true, new NumberStateAcceptor());
-        State<ShuntingYard> expressionWithBrackets = new State<>(true,
-                                                                 new ExpressionWithBracketsStateAcceptor());
-        State<ShuntingYard> function = new State<>(true, new FunctionStateAcceptor());
+        State<List<Command>> number = new State<>(true, new NumberStateAcceptor());
+        State<List<Command>> expressionWithBrackets = new State<>(true,
+                                                                  new ExpressionWithBracketsStateAcceptor());
+        State<List<Command>> function = new State<>(true, new FunctionStateAcceptor());
 
         registerPossibleStartState(asList(number, expressionWithBrackets, function));
+    }
+
+    public boolean calculated(CharacterIterator input, List<Command> output) {
+        Status status = run(input, output);
+        return status == Status.FINISHED;
     }
 }

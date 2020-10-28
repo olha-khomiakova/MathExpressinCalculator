@@ -1,20 +1,20 @@
 package io.javaclasses.mathcalculator.fsm;
 
-import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
-import io.javaclasses.mathcalculator.math.ShuntingYard;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.javaclasses.mathcalculator.runtime.Command;
+import io.javaclasses.mathcalculator.runtime.PushOperandCommand;
+import io.javaclasses.mathcalculator.runtime.ShuntingYard;
 
 import java.io.StringWriter;
 import java.text.CharacterIterator;
+import java.util.List;
 
 /**
  * Implementation of {@link StateAcceptor} that starts {@link ExpressionStateAcceptor},
  * defines whether the transition from one state to number state is possible
  * and if possible adds result to the outputChain.
  */
-public class NumberStateAcceptor implements StateAcceptor<ShuntingYard> {
+public class NumberStateAcceptor implements StateAcceptor<List<Command>> {
 
     /**
      * This API creates {@link StringBuilder} for {@link NumberFiniteStateMachine}, starts FSM
@@ -28,17 +28,13 @@ public class NumberStateAcceptor implements StateAcceptor<ShuntingYard> {
      *         and added the result to the outputChain, otherwise it returns false
      */
     @Override
-    public boolean accept(CharacterIterator inputChain, ShuntingYard outputChain) {
-        Logger logger = LoggerFactory.getLogger(NumberStateAcceptor.class);
+    public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
 
         NumberFiniteStateMachine numberFiniteStateMachine = new NumberFiniteStateMachine();
         StringWriter stringBuilder = new StringWriter();
-        if (numberFiniteStateMachine.run(inputChain, stringBuilder) ==
-                FiniteStateMachine.Status.FINISHED) {
-            outputChain.pushOperand(Double.parseDouble(stringBuilder.toString()));
-            if (logger.isInfoEnabled()) {
-                logger.info(this.getClass() + " :" + stringBuilder.toString());
-            }
+        if (numberFiniteStateMachine.number(inputChain, stringBuilder)
+                                    .isPresent()) {
+            outputChain.add(new PushOperandCommand(Double.parseDouble(stringBuilder.toString())));
             return true;
         }
         return false;

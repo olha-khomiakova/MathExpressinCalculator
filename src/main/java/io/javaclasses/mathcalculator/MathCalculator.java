@@ -1,11 +1,14 @@
 package io.javaclasses.mathcalculator;
 
 import io.javaclasses.mathcalculator.fsm.ExpressionFiniteStateMachine;
-import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
-import io.javaclasses.mathcalculator.math.ShuntingYard;
+import io.javaclasses.mathcalculator.runtime.Command;
+import io.javaclasses.mathcalculator.runtime.RuntimeEnvironment;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * This service calculates result of any mathematical expression.
@@ -26,23 +29,24 @@ class MathCalculator {
      * @param mathExpression
      *         is an expression that should be calculated
      * @return result of the mathematical expression
-     * @throws IncorrectMathExpressionException
      *         occurs if the expression format is incorrect
      */
-    public double evaluate(String mathExpression) throws IncorrectMathExpressionException {
+    public double evaluate(String mathExpression) {
         CharacterIterator stringNumber = new StringCharacterIterator(mathExpression);
-        ShuntingYard result = new ShuntingYard();
+        RuntimeEnvironment environment = new RuntimeEnvironment();
         ExpressionFiniteStateMachine expressionFSM = new ExpressionFiniteStateMachine();
-        FiniteStateMachine.Status status = expressionFSM.run(stringNumber, result);
-        if (status == FiniteStateMachine.Status.NOT_STARTED ||
-                stringNumber.getIndex() != stringNumber.getEndIndex()) {
+        List<Command> commandList = new ArrayList<>();
+        Optional<Command> command = expressionFSM.expression(stringNumber, commandList);
+        if (stringNumber.getIndex() != stringNumber.getEndIndex() || !command.isPresent()) {
             throw new IncorrectMathExpressionException("Incorrectly entered mathematical " +
                                                                "expression in position " +
                                                                stringNumber.getIndex() + '.',
                                                        stringNumber.getIndex());
-        } else {
-            return Double.parseDouble(result.popAllOperators()
-                                            .toString());
         }
+        command.get()
+               .execute(environment);
+
+        return environment.stack()
+                          .result().get();
     }
 }

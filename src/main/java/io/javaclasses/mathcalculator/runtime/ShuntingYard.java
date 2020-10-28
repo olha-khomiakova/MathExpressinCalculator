@@ -1,4 +1,6 @@
-package io.javaclasses.mathcalculator.math;
+package io.javaclasses.mathcalculator.runtime;
+
+import io.javaclasses.mathcalculator.math.BinaryOperator;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -18,13 +20,16 @@ public class ShuntingYard {
     /**
      * This API calculates expression that is in shunting yard.
      *
-     * @return result of calculated mathematical expression
      */
-    public Double popAllOperators() {
+    private void popAllOperators() {
         while (!operators.isEmpty()) {
             calculatePreviousOperator();
         }
-        return operands.peekFirst();
+    }
+
+    public Optional<Double> result() {
+        popAllOperators();
+        return Optional.ofNullable(operands.poll());
     }
 
     public void pushBinaryOperator(BinaryOperator operator) {

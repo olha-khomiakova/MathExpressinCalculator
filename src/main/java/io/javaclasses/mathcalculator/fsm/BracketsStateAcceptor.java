@@ -1,15 +1,17 @@
 package io.javaclasses.mathcalculator.fsm;
 
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
-import io.javaclasses.mathcalculator.math.ShuntingYard;
+import io.javaclasses.mathcalculator.runtime.Command;
+import io.javaclasses.mathcalculator.runtime.ShuntingYard;
 
 import java.text.CharacterIterator;
+import java.util.List;
 
 /**
  * Implementation of {@link StateAcceptor} that defines whether the transition from one state
  * to brackets state is possible and if it possible moves an iterator forward in an inputChain.
  */
-public class BracketsStateAcceptor implements StateAcceptor<ShuntingYard> {
+public class BracketsStateAcceptor implements StateAcceptor<List<Command>> {
 
     private final char requiredCharacter;
 
@@ -28,7 +30,7 @@ public class BracketsStateAcceptor implements StateAcceptor<ShuntingYard> {
      *         otherwise it returns false
      */
     @Override
-    public boolean accept(CharacterIterator inputChain, ShuntingYard outputChain) {
+    public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
         char currentCharacter = inputChain.current();
         if (this.requiredCharacter == currentCharacter) {
             inputChain.next();

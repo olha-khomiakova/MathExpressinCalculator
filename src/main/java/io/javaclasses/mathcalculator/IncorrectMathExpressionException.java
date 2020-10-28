@@ -5,7 +5,7 @@ package io.javaclasses.mathcalculator;
  */
 class IncorrectMathExpressionException extends RuntimeException {
 
-    private static final long serialVersionUID = 8921937012141363525L;
+    private static final long serialVersionUID = -7819103504187683995L;
     private final int errorPosition;
 
     IncorrectMathExpressionException(String message, int position) {

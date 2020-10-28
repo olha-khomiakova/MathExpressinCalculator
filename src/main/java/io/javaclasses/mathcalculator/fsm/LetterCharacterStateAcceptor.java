@@ -1,7 +1,7 @@
 package io.javaclasses.mathcalculator.fsm;
 
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
-import io.javaclasses.mathcalculator.math.FunctionDataStructure;
+import io.javaclasses.mathcalculator.runtime.FunctionDataStructure;
 
 import java.text.CharacterIterator;
 

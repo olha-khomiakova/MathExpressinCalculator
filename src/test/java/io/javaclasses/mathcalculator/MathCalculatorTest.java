@@ -20,8 +20,7 @@ class MathCalculatorTest {
 
     @ParameterizedTest
     @CsvSource({"123,123", "0,0", "67.89,67.89", "-98.098,-98.098"})
-    void testCorrectEvaluationOfNumber(String input, double expected)
-            throws IncorrectMathExpressionException {
+    void testCorrectEvaluationOfNumber(String input, double expected) {
         double result = mathCalculator.evaluate(input);
         assertWithMessage("Evaluation of number is failed.")
                 .that(result)
@@ -41,8 +40,7 @@ class MathCalculatorTest {
 
     @ParameterizedTest
     @CsvSource({"7+2.25/2.25, 8", "1+4/2.5*5-2.5+1*-2, 4.5", "5.01-7*8/2-11.01,-34"})
-    void testCorrectEvaluationOfExpression(String input, Double expected)
-            throws IncorrectMathExpressionException {
+    void testCorrectEvaluationOfExpression(String input, Double expected) {
         double result = mathCalculator.evaluate(input);
         assertWithMessage("Calculation of mathematical expression is failed.")
                 .that(result)
@@ -57,7 +55,7 @@ class MathCalculatorTest {
                 assertThrows(IncorrectMathExpressionException.class, () ->
                         result.set(mathCalculator.evaluate(input)));
         assertThat(ex).hasMessageThat()
-                     .contains(" in position " + ex.errorPosition());
+                      .contains(" in position " + ex.errorPosition());
     }
 
     @ParameterizedTest
@@ -71,7 +69,7 @@ class MathCalculatorTest {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"min(5,2)+6:8", "max(3,10.1)+2:12.1"}, delimiter = ':')
+    @CsvSource(value = {"min(5,2):2", "min(5,2)+6:8", "max(3,10.1)+2:12.1"}, delimiter = ':')
     void testCorrectEvaluationOfExpressionWithFunction(String input, double expected) {
         double result = mathCalculator.evaluate(input);
         assertWithMessage("Calculation of mathematical expression with function is failed.")

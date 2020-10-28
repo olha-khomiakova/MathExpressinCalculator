@@ -1,20 +1,19 @@
 package io.javaclasses.mathcalculator.fsm;
 
-import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
-import io.javaclasses.mathcalculator.math.FunctionDataStructure;
-import io.javaclasses.mathcalculator.math.ShuntingYard;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.javaclasses.mathcalculator.runtime.FunctionDataStructure;
+import io.javaclasses.mathcalculator.runtime.Command;
+import io.javaclasses.mathcalculator.runtime.ShuntingYard;
 
 import java.text.CharacterIterator;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation of {@link StateAcceptor} that defines
  * whether the transition from one state to function state is possible.
  */
-@SuppressWarnings({"ClassWithTooManyTransitiveDependencies", "CyclicClassDependency"})
-public class FunctionStateAcceptor implements StateAcceptor<ShuntingYard> {
+public class FunctionStateAcceptor implements StateAcceptor<List<Command>> {
 
     /**
      * This API creates {@link FunctionFiniteStateMachine}
@@ -33,19 +32,14 @@ public class FunctionStateAcceptor implements StateAcceptor<ShuntingYard> {
      *         otherwise it returns false
      */
     @Override
-    public boolean accept(CharacterIterator inputChain, ShuntingYard outputChain) {
-        Logger logger = LoggerFactory.getLogger(FunctionStateAcceptor.class);
-
+    public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
         FunctionDataStructure functionDataStructure = new FunctionDataStructure();
-        FunctionFiniteStateMachine functionFSM =
-                new FunctionFiniteStateMachine();
-        if (functionFSM.run(inputChain, functionDataStructure) ==
-                FiniteStateMachine.Status.FINISHED) {
-            outputChain.pushOperand(functionDataStructure.calculate());
-            if (logger.isInfoEnabled()) {
-                logger.info(this.getClass() + " :" + functionDataStructure.functionNameBuilder() +
-                                    "()");
-            }
+        FunctionFiniteStateMachine functionFSM = new FunctionFiniteStateMachine();
+        Optional<Command> command = functionFSM.function(inputChain, functionDataStructure);
+        if (command.isPresent()) {
+            functionDataStructure.validateFunction();
+            outputChain.add(command.get());
+
             return true;
         }
         return false;
