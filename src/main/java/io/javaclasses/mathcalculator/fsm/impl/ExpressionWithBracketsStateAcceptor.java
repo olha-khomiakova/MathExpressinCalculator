@@ -1,12 +1,16 @@
-package io.javaclasses.mathcalculator.fsm;
+package io.javaclasses.mathcalculator.fsm.impl;
 
+import io.javaclasses.mathcalculator.fsm.FSMFactoryImpl;
+import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
+import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
 import io.javaclasses.mathcalculator.runtime.Command;
+import io.javaclasses.mathcalculator.runtime.PushExpressionCommand;
 import io.javaclasses.mathcalculator.runtime.ShuntingYard;
 
 import java.text.CharacterIterator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Implementation of {@link StateAcceptor} that starts {@link ExpressionWithBracketsFiniteStateMachine},
@@ -30,13 +34,14 @@ public class ExpressionWithBracketsStateAcceptor implements StateAcceptor<List<C
     @Override
     public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
 
-        ExpressionWithBracketsFiniteStateMachine expressionWithBracketsFSM
-                = new ExpressionWithBracketsFiniteStateMachine();
-        Optional<Command> command = expressionWithBracketsFSM.expressionWithBrackets(inputChain,
-                                                                                     outputChain);
+        FSMFactory<List<Command>> factory = new FSMFactoryImpl<>();
+        FiniteStateMachine<List<Command>> fsm = factory.create(
+                FSMFactory.TypeFSM.EXPRESSION_WITH_BRACKETS);
 
-        if (command.isPresent()) {
-            outputChain.add(command.get());
+        List<Command> commands = new ArrayList<>();
+        FiniteStateMachine.Status status = fsm.run(inputChain, commands);
+        if (status == FiniteStateMachine.Status.FINISHED) {
+            outputChain.add(new PushExpressionCommand(commands));
             return true;
         }
         return false;

@@ -2,11 +2,13 @@ package io.javaclasses.mathcalculator.runtime;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RuntimeEnvironment {
 
     private final Deque<ShuntingYard> stack = new ArrayDeque<>();
-    //private final Map<String, Double> memory = new HashMap<>();
+    private final Map<String, Double> memory = new HashMap<>();
     //private final PrintStream output = new PrintStream(new ByteArrayOutputStream());
 
     public RuntimeEnvironment() {
@@ -25,9 +27,9 @@ public class RuntimeEnvironment {
         return stack.peek();
     }
 
-//    public Map<String, Double> memory() {
-//        return memory;
-//    }
+    public Map<String, Double> memory() {
+        return memory;
+    }
 
 //    public PrintStream output() {
 //        return output;

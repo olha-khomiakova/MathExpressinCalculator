@@ -1,4 +1,4 @@
-package io.javaclasses.mathcalculator.fsm;
+package io.javaclasses.mathcalculator.fsm.impl;
 
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
 import io.javaclasses.mathcalculator.math.BinaryOperator;

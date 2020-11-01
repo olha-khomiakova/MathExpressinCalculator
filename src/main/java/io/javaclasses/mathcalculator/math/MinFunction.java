@@ -8,8 +8,6 @@ import java.util.Optional;
  */
 public class MinFunction extends Function {
 
-
-
     MinFunction(int minimumNumber, int maximumNumber) {
         super(minimumNumber, maximumNumber, "min");
 
@@ -24,8 +22,7 @@ public class MinFunction extends Function {
     public double calculate(List<Double> parameters) {
         Optional<Double> result = parameters.stream()
                                             .min(Double::compareTo);
-        if(result.isPresent())
-        {
+        if (result.isPresent()) {
             return result.get();
         }
         return 0;

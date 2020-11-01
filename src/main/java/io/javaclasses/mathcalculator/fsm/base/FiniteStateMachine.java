@@ -17,7 +17,6 @@ import static org.slf4j.LoggerFactory.getLogger;
  * @param <T>
  *         is a data structure in which fsm writes the result of its work
  */
-@SuppressWarnings("ClassWithTooManyDependents")
 public class FiniteStateMachine<T> {
 
     public enum Status {
@@ -37,7 +36,8 @@ public class FiniteStateMachine<T> {
      *         result of work FSM
      * @return status that indicates at what stage the FSM finished work
      */
-    protected Status run(CharacterIterator inputChain, T outputChain) {
+
+    public Status run(CharacterIterator inputChain, T outputChain) {
         if (logger.isInfoEnabled()) {
             logger.info(this.getClass() + " started.");
         }

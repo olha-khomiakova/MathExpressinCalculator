@@ -19,7 +19,6 @@ public class ShuntingYard {
 
     /**
      * This API calculates expression that is in shunting yard.
-     *
      */
     private void popAllOperators() {
         while (!operators.isEmpty()) {

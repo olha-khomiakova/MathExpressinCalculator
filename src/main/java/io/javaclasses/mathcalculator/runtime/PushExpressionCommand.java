@@ -6,12 +6,12 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Optional;
 
-public class PushShuntingYardCommand implements Command {
+public class PushExpressionCommand implements Command {
 
     private final Logger logger = LoggerFactory.getLogger(PushBinaryOperatorCommand.class);
     private final List<Command> stack;
 
-    public PushShuntingYardCommand(List<Command> stack) {
+    public PushExpressionCommand(List<Command> stack) {
         this.stack = stack;
     }
 
@@ -22,16 +22,15 @@ public class PushShuntingYardCommand implements Command {
             command.execute(environment);
         }
         Optional<Double> result = environment.stack()
-                                           .result();
+                                             .result();
         environment.closeStack();
-        if(result.isPresent())
-        {
-            environment.stack().pushOperand(result.get());
+        if (result.isPresent()) {
+            environment.stack()
+                       .pushOperand(result.get());
             if (logger.isInfoEnabled()) {
                 logger.info(this.getClass() + " :" + result);
             }
         }
-
 
     }
 }

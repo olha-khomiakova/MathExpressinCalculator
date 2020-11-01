@@ -1,5 +1,8 @@
-package io.javaclasses.mathcalculator.fsm;
+package io.javaclasses.mathcalculator.fsm.impl;
 
+import io.javaclasses.mathcalculator.fsm.FSMFactoryImpl;
+import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
+import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
 import io.javaclasses.mathcalculator.runtime.Command;
 import io.javaclasses.mathcalculator.runtime.PushOperandCommand;
@@ -10,14 +13,14 @@ import java.text.CharacterIterator;
 import java.util.List;
 
 /**
- * Implementation of {@link StateAcceptor} that starts {@link ExpressionStateAcceptor},
+ * Implementation of {@link StateAcceptor} that starts {@link ExpressionStateAcceptorListCommands},
  * defines whether the transition from one state to number state is possible
  * and if possible adds result to the outputChain.
  */
 public class NumberStateAcceptor implements StateAcceptor<List<Command>> {
 
     /**
-     * This API creates {@link StringBuilder} for {@link NumberFiniteStateMachine}, starts FSM
+     * This API creates {@link StringWriter} for {@link NumberFiniteStateMachine}, starts FSM
      * and adds result of shunting yard to the outputChain.
      *
      * @param inputChain
@@ -30,10 +33,11 @@ public class NumberStateAcceptor implements StateAcceptor<List<Command>> {
     @Override
     public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
 
-        NumberFiniteStateMachine numberFiniteStateMachine = new NumberFiniteStateMachine();
         StringWriter stringBuilder = new StringWriter();
-        if (numberFiniteStateMachine.number(inputChain, stringBuilder)
-                                    .isPresent()) {
+
+        FSMFactory<StringWriter> factory = new FSMFactoryImpl<>();
+        FiniteStateMachine<StringWriter> fsm = factory.create(FSMFactory.TypeFSM.NUMBER);
+        if (fsm.run(inputChain, stringBuilder) == FiniteStateMachine.Status.FINISHED) {
             outputChain.add(new PushOperandCommand(Double.parseDouble(stringBuilder.toString())));
             return true;
         }

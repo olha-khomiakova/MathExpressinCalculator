@@ -20,9 +20,8 @@ public class MaxFunction extends Function {
     @Override
     public double calculate(List<Double> parameters) {
         Optional<Double> result = parameters.stream()
-                         .max(Double::compareTo);
-        if(result.isPresent())
-        {
+                                            .max(Double::compareTo);
+        if (result.isPresent()) {
             return result.get();
         }
         return 0;

@@ -1,4 +1,4 @@
-package io.javaclasses.mathcalculator.fsm;
+package io.javaclasses.mathcalculator.fsm.impl;
 
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
 
@@ -10,11 +10,11 @@ import java.text.CharacterIterator;
  * next state is possible.
  * And if possible move an iterator forward in an inputChain.
  */
-public class SingleCharacterStateAcceptor implements StateAcceptor<StringWriter> {
+public class RequiredCharacterStateAcceptorStringWriter implements StateAcceptor<StringWriter> {
 
     private final char requiredCharacter;
 
-    SingleCharacterStateAcceptor(char requiredCharacter) {
+    RequiredCharacterStateAcceptorStringWriter(char requiredCharacter) {
         this.requiredCharacter = requiredCharacter;
     }
 

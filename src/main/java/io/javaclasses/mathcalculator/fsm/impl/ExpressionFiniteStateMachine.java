@@ -1,15 +1,11 @@
-package io.javaclasses.mathcalculator.fsm;
+package io.javaclasses.mathcalculator.fsm.impl;
 
 import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.State;
 import io.javaclasses.mathcalculator.runtime.Command;
-import io.javaclasses.mathcalculator.runtime.PushShuntingYardCommand;
 
-import java.text.CharacterIterator;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Implementation of {@link FiniteStateMachine} for parsing
@@ -32,13 +28,13 @@ public class ExpressionFiniteStateMachine extends FiniteStateMachine<List<Comman
         registerPossibleStartState(Collections.singletonList(calculated));
     }
 
-    public Optional<Command> expression(CharacterIterator inputChain, List<Command> output) {
-
-        List<Command> commands = new ArrayList<>();
-        Status status = run(inputChain, commands);
-        if (status == Status.FINISHED) {
-            return Optional.of(new PushShuntingYardCommand(commands));
-        }
-        return Optional.empty();
-    }
+//    public Optional<Command> expression(CharacterIterator inputChain, List<Command> output) {
+//
+//        List<Command> commands = new ArrayList<>();
+//        Status status = run(inputChain, commands);
+//        if (status == Status.FINISHED) {
+//            return Optional.of(new PushExpressionCommand(commands));
+//        }
+//        return Optional.empty();
+//    }
 }

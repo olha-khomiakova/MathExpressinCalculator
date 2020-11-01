@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Test for API MathCalculator.
  */
-@SuppressWarnings({"ClassIndependentOfModule", "ClassOnlyUsedInOneModule", "ClassWithTooManyTransitiveDependencies"})
 class MathCalculatorTest {
 
     private final MathCalculator mathCalculator = new MathCalculator();

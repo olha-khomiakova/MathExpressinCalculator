@@ -1,13 +1,16 @@
-package io.javaclasses.mathcalculator.fsm;
+package io.javaclasses.mathcalculator.fsm.impl;
 
+import io.javaclasses.mathcalculator.fsm.FSMFactoryImpl;
+import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
+import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
-import io.javaclasses.mathcalculator.runtime.FunctionDataStructure;
 import io.javaclasses.mathcalculator.runtime.Command;
+import io.javaclasses.mathcalculator.runtime.FunctionDataStructure;
+import io.javaclasses.mathcalculator.runtime.PushFunctionCommand;
 import io.javaclasses.mathcalculator.runtime.ShuntingYard;
 
 import java.text.CharacterIterator;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Implementation of {@link StateAcceptor} that defines
@@ -33,15 +36,16 @@ public class FunctionStateAcceptor implements StateAcceptor<List<Command>> {
      */
     @Override
     public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
+        int index = inputChain.getIndex();
         FunctionDataStructure functionDataStructure = new FunctionDataStructure();
-        FunctionFiniteStateMachine functionFSM = new FunctionFiniteStateMachine();
-        Optional<Command> command = functionFSM.function(inputChain, functionDataStructure);
-        if (command.isPresent()) {
+        FSMFactory<FunctionDataStructure> factory = new FSMFactoryImpl<>();
+        FiniteStateMachine<FunctionDataStructure> fsm = factory.create(FSMFactory.TypeFSM.FUNCTION);
+        if (fsm.run(inputChain, functionDataStructure) == FiniteStateMachine.Status.FINISHED) {
             functionDataStructure.validateFunction();
-            outputChain.add(command.get());
-
+            outputChain.add(new PushFunctionCommand(functionDataStructure));
             return true;
         }
+        inputChain.setIndex(index);
         return false;
     }
 

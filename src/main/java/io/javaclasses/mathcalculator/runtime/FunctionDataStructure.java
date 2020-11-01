@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 public class FunctionDataStructure {
 
-    private final StringWriter functionNameBuilder = new StringWriter();
+    private StringWriter functionNameBuilder;
     private final List<Command> functionParameters = new ArrayList<>();
     private Function function;
 
@@ -28,8 +28,9 @@ public class FunctionDataStructure {
     public double calculate(List<Double> parameters) {
         return function.calculate(parameters);
     }
-    public void addCharacterToFunctionName(char character) {
-        this.functionNameBuilder.append(character);
+
+    public void addFunctionName(StringWriter character) {
+        this.functionNameBuilder = character;
     }
 
     public void validateFunction() {
@@ -46,8 +47,6 @@ public class FunctionDataStructure {
     public List<Command> functionParameters() {
         return Collections.unmodifiableList(functionParameters);
     }
-
-
 
     public StringWriter functionNameBuilder() {
         return functionNameBuilder;

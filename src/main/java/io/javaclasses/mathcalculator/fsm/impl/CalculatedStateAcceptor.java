@@ -1,5 +1,8 @@
-package io.javaclasses.mathcalculator.fsm;
+package io.javaclasses.mathcalculator.fsm.impl;
 
+import io.javaclasses.mathcalculator.fsm.FSMFactoryImpl;
+import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
+import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
 import io.javaclasses.mathcalculator.runtime.Command;
 import io.javaclasses.mathcalculator.runtime.ShuntingYard;
@@ -8,7 +11,7 @@ import java.text.CharacterIterator;
 import java.util.List;
 
 /**
- * Implementation of {@link StateAcceptor} that starts {@link ExpressionStateAcceptor},
+ * Implementation of {@link StateAcceptor} that starts {@link ExpressionStateAcceptorListCommands},
  * defines whether the transition from one state to calculated state is possible
  * and if possible adds result to the outputChain.
  */
@@ -27,7 +30,8 @@ public class CalculatedStateAcceptor implements StateAcceptor<List<Command>> {
      */
     @Override
     public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
-        CalculatedFiniteStateMachine calculatedFSM = new CalculatedFiniteStateMachine();
-        return calculatedFSM.calculated(inputChain, outputChain);
+        FSMFactory<List<Command>> factory = new FSMFactoryImpl<>();
+        FiniteStateMachine<List<Command>> fsm = factory.create(FSMFactory.TypeFSM.CALCULATED);
+        return fsm.run(inputChain, outputChain) == FiniteStateMachine.Status.FINISHED;
     }
 }

@@ -1,20 +1,23 @@
-package io.javaclasses.mathcalculator.fsm;
+package io.javaclasses.mathcalculator.fsm.impl;
 
+import io.javaclasses.mathcalculator.fsm.FSMFactoryImpl;
+import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
+import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
 import io.javaclasses.mathcalculator.runtime.Command;
+import io.javaclasses.mathcalculator.runtime.PushExpressionCommand;
 import io.javaclasses.mathcalculator.runtime.ShuntingYard;
 
 import java.text.CharacterIterator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
- * Implementation of {@link StateAcceptor} that starts {@link ExpressionStateAcceptor},
+ * Implementation of {@link StateAcceptor} that starts {@link ExpressionStateAcceptorListCommands},
  * defines whether the transition from one state to expression state is possible
  * and if possible adds result to the outputChain.
  */
-@SuppressWarnings({"ClassWithTooManyTransitiveDependencies", "CyclicClassDependency"})
-public class ExpressionStateAcceptor implements StateAcceptor<List<Command>> {
+public class ExpressionStateAcceptorListCommands implements StateAcceptor<List<Command>> {
 
     /**
      * This API creates {@link ShuntingYard} for {@link ExpressionFiniteStateMachine}, starts FSM
@@ -29,15 +32,13 @@ public class ExpressionStateAcceptor implements StateAcceptor<List<Command>> {
      */
     @Override
     public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
-
-        ExpressionFiniteStateMachine expressionFSM = new ExpressionFiniteStateMachine();
-        Optional<Command> command = expressionFSM.expression(inputChain, outputChain);
-        if (command.isPresent()) {
-            outputChain.add(command.get());
+        List<Command> commands = new ArrayList<>();
+        FSMFactory<List<Command>> factory = new FSMFactoryImpl<>();
+        FiniteStateMachine<List<Command>> fsm = factory.create(FSMFactory.TypeFSM.EXPRESSION);
+        if (fsm.run(inputChain, commands) == FiniteStateMachine.Status.FINISHED) {
+            outputChain.add(new PushExpressionCommand(commands));
             return true;
         }
-
-        return true;
-
+        return false;
     }
 }

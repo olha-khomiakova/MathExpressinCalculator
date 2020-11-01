@@ -1,6 +1,8 @@
 package io.javaclasses.mathcalculator;
 
-import io.javaclasses.mathcalculator.fsm.ExpressionFiniteStateMachine;
+import io.javaclasses.mathcalculator.fsm.FSMFactoryImpl;
+import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
+import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.runtime.Command;
 import io.javaclasses.mathcalculator.runtime.RuntimeEnvironment;
 
@@ -8,7 +10,6 @@ import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * This service calculates result of any mathematical expression.
@@ -34,19 +35,23 @@ class MathCalculator {
     public double evaluate(String mathExpression) {
         CharacterIterator stringNumber = new StringCharacterIterator(mathExpression);
         RuntimeEnvironment environment = new RuntimeEnvironment();
-        ExpressionFiniteStateMachine expressionFSM = new ExpressionFiniteStateMachine();
+        FSMFactory<List<Command>> factory = new FSMFactoryImpl<>();
+        FiniteStateMachine<List<Command>> expressionFSM = factory.create(
+                FSMFactory.TypeFSM.EXPRESSION);
         List<Command> commandList = new ArrayList<>();
-        Optional<Command> command = expressionFSM.expression(stringNumber, commandList);
-        if (stringNumber.getIndex() != stringNumber.getEndIndex() || !command.isPresent()) {
+        FiniteStateMachine.Status accepted = expressionFSM.run(stringNumber, commandList);
+        if (stringNumber.getIndex() != stringNumber.getEndIndex() || accepted ==
+                FiniteStateMachine.Status.NOT_STARTED) {
             throw new IncorrectMathExpressionException("Incorrectly entered mathematical " +
                                                                "expression in position " +
                                                                stringNumber.getIndex() + '.',
                                                        stringNumber.getIndex());
         }
-        command.get()
-               .execute(environment);
-
+        for (Command command : commandList) {
+            command.execute(environment);
+        }
         return environment.stack()
-                          .result().get();
+                          .result()
+                          .get();
     }
 }

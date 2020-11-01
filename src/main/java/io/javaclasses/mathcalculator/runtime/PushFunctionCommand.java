@@ -21,8 +21,9 @@ public class PushFunctionCommand implements Command {
         List<Double> parameters = new ArrayList<>();
         for (Command command : dataStructure.functionParameters()) {
             command.execute(environment);
-            Optional<Double> result =environment.stack().result();
-            if(result.isPresent()){
+            Optional<Double> result = environment.stack()
+                                                 .result();
+            if (result.isPresent()) {
 
             }
             parameters.add(result.get());
