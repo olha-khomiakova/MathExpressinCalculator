@@ -5,6 +5,8 @@ package io.javaclasses.mathcalculator.runtime;
  */
 public class CallingANonExistentVariableException extends RuntimeException {
 
+    private static final long serialVersionUID = -2664630958058185614L;
+
     CallingANonExistentVariableException(String message) {
         super(message);
     }

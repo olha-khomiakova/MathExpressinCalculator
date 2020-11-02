@@ -15,11 +15,11 @@ import java.util.Optional;
  * Implementation of {@link StateAcceptor} that defines
  * whether the transition from one state to function state is possible.
  */
-public class FunctionStateAcceptor implements StateAcceptor<List<Command>> {
+public class ProcedureStateAcceptor implements StateAcceptor<List<Command>> {
 
     private final FSMFactory factory;
 
-    FunctionStateAcceptor(FSMFactory factory) {
+    ProcedureStateAcceptor(FSMFactory factory) {
         this.factory = factory;
     }
 
@@ -42,7 +42,7 @@ public class FunctionStateAcceptor implements StateAcceptor<List<Command>> {
     @Override
     public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
         int index = inputChain.getIndex();
-        CompilerElement compilerElement = factory.create(FSMFactory.TypeFSM.FUNCTION);
+        CompilerElement compilerElement = factory.create(FSMFactory.TypeFSM.PROCEDURE);
         Optional<Command> command = compilerElement.compile(inputChain);
         if (command.isPresent()) {
             outputChain.add(command.get());

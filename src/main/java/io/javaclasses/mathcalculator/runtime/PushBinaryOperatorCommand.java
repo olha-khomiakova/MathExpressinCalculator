@@ -1,6 +1,6 @@
 package io.javaclasses.mathcalculator.runtime;
 
-import io.javaclasses.mathcalculator.math.BinaryOperator;
+import io.javaclasses.mathcalculator.math.binaryoperator.BinaryOperator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

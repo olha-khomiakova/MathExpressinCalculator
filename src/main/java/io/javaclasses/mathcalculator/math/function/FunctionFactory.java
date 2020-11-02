@@ -1,4 +1,4 @@
-package io.javaclasses.mathcalculator.math;
+package io.javaclasses.mathcalculator.math.function;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class FunctionFactory {
     public Optional<Function> getRequiredFunction(String name) {
         if (!functionMap.containsKey(name)) {
             throw new IncorrectMathFunctionException(
-                    "The entered function is not processed in this calculator");
+                    "The entered procedure is not processed in this compiler");
         }
         return Optional.of(functionMap.get(name));
     }

@@ -1,4 +1,4 @@
-package io.javaclasses.mathcalculator.math;
+package io.javaclasses.mathcalculator.math.binaryoperator;
 
 /**
  * Interface of variable binary operations.

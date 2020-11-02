@@ -1,16 +1,15 @@
 package io.javaclasses.mathcalculator.fsm.impl;
 
-import io.javaclasses.mathcalculator.fsm.FSMFactoryImpl;
+import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
 import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
-import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
 import io.javaclasses.mathcalculator.runtime.Command;
-import io.javaclasses.mathcalculator.runtime.PushOperandCommand;
 import io.javaclasses.mathcalculator.runtime.ShuntingYard;
 
 import java.io.StringWriter;
 import java.text.CharacterIterator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation of {@link StateAcceptor} that starts {@link ExpressionStateAcceptorListCommands},
@@ -18,6 +17,10 @@ import java.util.List;
  * and if possible adds result to the outputChain.
  */
 public class NumberStateAcceptor implements StateAcceptor<List<Command>> {
+    private final FSMFactory factory;
+    NumberStateAcceptor(FSMFactory factory) {
+        this.factory=factory;
+    }
 
     /**
      * This API creates {@link StringWriter} for {@link NumberFiniteStateMachine}, starts FSM
@@ -33,12 +36,10 @@ public class NumberStateAcceptor implements StateAcceptor<List<Command>> {
     @Override
     public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
 
-        StringWriter stringBuilder = new StringWriter();
-
-        FSMFactory<StringWriter> factory = new FSMFactoryImpl<>();
-        FiniteStateMachine<StringWriter> fsm = factory.create(FSMFactory.TypeFSM.NUMBER);
-        if (fsm.run(inputChain, stringBuilder) == FiniteStateMachine.Status.FINISHED) {
-            outputChain.add(new PushOperandCommand(Double.parseDouble(stringBuilder.toString())));
+        CompilerElement compilerElement = factory.create(FSMFactory.TypeFSM.NUMBER);
+        Optional<Command> command = compilerElement.compile(inputChain);
+        if (command.isPresent()) {
+            outputChain.add(command.get());
             return true;
         }
         return false;

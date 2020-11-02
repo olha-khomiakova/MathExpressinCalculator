@@ -17,6 +17,7 @@ import java.util.List;
 
 public class VariableStateAcceptor implements StateAcceptor<List<Command>> {
 
+
     /**
      * This API adds variable to the memory and move an iterator forward in an inputChain.
      *

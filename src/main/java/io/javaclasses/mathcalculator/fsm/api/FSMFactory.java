@@ -1,8 +1,6 @@
 package io.javaclasses.mathcalculator.fsm.api;
 
-import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
-
-public interface FSMFactory<T> {
+public interface FSMFactory {
 
     enum TypeFSM {
         NUMBER,
@@ -11,8 +9,9 @@ public interface FSMFactory<T> {
         FUNCTION,
         CALCULATED,
         INITIALIZATION,
-        STATEMENT
+        STATEMENT,
+        PROCEDURE
     }
 
-    FiniteStateMachine<T> create(TypeFSM typeFSM);
+    CompilerElement create(TypeFSM typeFSM);
 }

@@ -1,4 +1,4 @@
-package io.javaclasses.mathcalculator.math;
+package io.javaclasses.mathcalculator.math.function;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,22 +6,21 @@ import java.util.Optional;
 /**
  * This is implementation mathematical function that finds the minimum parameters of the two.
  */
-public class MinFunction extends Function {
+public class MaxFunction extends Function {
 
-    MinFunction(int minimumNumber, int maximumNumber) {
-        super(minimumNumber, maximumNumber, "min");
-
+    MaxFunction(int minimumNumber, int maximumNumber) {
+        super(minimumNumber, maximumNumber, "max");
     }
 
     /**
-     * This API finds the minimum parameters.
+     * This API finds the maximum parameters.
      *
-     * @return double minimum parameters
+     * @return double maximum parameters
      */
     @Override
     public double calculate(List<Double> parameters) {
         Optional<Double> result = parameters.stream()
-                                            .min(Double::compareTo);
+                                            .max(Double::compareTo);
         if (result.isPresent()) {
             return result.get();
         }

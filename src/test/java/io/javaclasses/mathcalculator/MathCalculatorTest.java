@@ -1,6 +1,6 @@
 package io.javaclasses.mathcalculator;
 
-import io.javaclasses.mathcalculator.math.IncorrectMathFunctionException;
+import io.javaclasses.mathcalculator.math.function.IncorrectMathFunctionException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 

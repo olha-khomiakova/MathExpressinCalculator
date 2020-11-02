@@ -1,37 +1,37 @@
 package io.javaclasses.mathcalculator.runtime;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RuntimeEnvironment {
 
     private final Deque<ShuntingYard> stack = new ArrayDeque<>();
-    private final Map<String, Double> memory = new HashMap<>();
-    //private final PrintStream output = new PrintStream(new ByteArrayOutputStream());
+    private final Memory memory = new Memory();
+    private final PrintStream output = new PrintStream(System.out);
 
     public RuntimeEnvironment() {
         startStack();
     }
 
-    public final void startStack() {
+    final void startStack() {
         stack.push(new ShuntingYard());
     }
 
-    public void closeStack() {
-        stack.poll();
+    void closeStack() {
+         stack.poll();
     }
 
     public ShuntingYard stack() {
         return stack.peek();
     }
 
-    public Map<String, Double> memory() {
-        return memory;
+    Memory memory() {
+        return this.memory;
     }
-
-//    public PrintStream output() {
-//        return output;
-//    }
+    public PrintStream output()
+    {
+        return this.output;
+    }
 }

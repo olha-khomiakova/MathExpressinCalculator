@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * This is a data structure that stores a name and value variable.
  */
-public class VariableNameAndValuePair {
+public class NameAndValuePair {
 
     private StringWriter name;
     private final List<Command> value = new ArrayList<>();
@@ -21,11 +21,11 @@ public class VariableNameAndValuePair {
         this.value.add(command);
     }
 
-    public StringWriter getName() {
+    StringWriter name() {
         return name;
     }
 
-    public List<Command> getValue() {
+    List<Command> value() {
         return Collections.unmodifiableList(value);
     }
 }
