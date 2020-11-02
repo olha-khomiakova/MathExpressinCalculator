@@ -1,6 +1,6 @@
 package io.javaclasses.mathcalculator.runtime;
 
-import io.javaclasses.mathcalculator.math.BinaryOperator;
+import io.javaclasses.mathcalculator.math.binaryoperator.BinaryOperator;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -28,7 +28,7 @@ public class ShuntingYard {
 
     public Optional<Double> result() {
         popAllOperators();
-        return Optional.ofNullable(operands.poll());
+        return Optional.ofNullable(operands.peek());
     }
 
     public void pushBinaryOperator(BinaryOperator operator) {

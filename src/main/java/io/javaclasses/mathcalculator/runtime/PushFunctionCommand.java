@@ -20,13 +20,14 @@ public class PushFunctionCommand implements Command {
     public void execute(RuntimeEnvironment environment) {
         List<Double> parameters = new ArrayList<>();
         for (Command command : dataStructure.functionParameters()) {
+            environment.startStack();
             command.execute(environment);
             Optional<Double> result = environment.stack()
                                                  .result();
             if (result.isPresent()) {
-
+                parameters.add(result.get());
+                environment.closeStack();
             }
-            parameters.add(result.get());
         }
         environment.stack()
                    .pushOperand(dataStructure.calculate(parameters));

@@ -1,4 +1,4 @@
-package io.javaclasses.mathcalculator.math;
+package io.javaclasses.mathcalculator.math.binaryoperator;
 
 /**
  * Implementation of {@link BinaryOperator} that calculates the addition of two operands .

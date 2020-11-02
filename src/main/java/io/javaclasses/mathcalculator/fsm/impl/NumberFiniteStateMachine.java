@@ -1,10 +1,14 @@
 package io.javaclasses.mathcalculator.fsm.impl;
 
-import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
+import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
 import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.State;
+import io.javaclasses.mathcalculator.runtime.Command;
+import io.javaclasses.mathcalculator.runtime.PushOperandCommand;
 
 import java.io.StringWriter;
+import java.text.CharacterIterator;
+import java.util.Optional;
 
 import static java.util.Arrays.asList;
 
@@ -12,11 +16,7 @@ import static java.util.Arrays.asList;
  * Implementation of {@link FiniteStateMachine} for parsing number from string.
  * Numbers are integer or decimal, positive or negative.
  */
-public class NumberFiniteStateMachine extends FiniteStateMachine<StringWriter> {
-
-    public NumberFiniteStateMachine(FSMFactory factory) {
-
-    }
+public class NumberFiniteStateMachine extends FiniteStateMachine<StringWriter> implements CompilerElement {
 
     public NumberFiniteStateMachine() {
         State<StringWriter> negativeSign = new State<>(false,
@@ -37,12 +37,15 @@ public class NumberFiniteStateMachine extends FiniteStateMachine<StringWriter> {
         registerPossibleStartState(asList(negativeSign, intDigit));
     }
 
-//    public Optional<Command> create(CharacterIterator input, StringWriter output) {
-//        Status status = run(input, output);
-//        if (status == Status.FINISHED) {
-//            return Optional.of(new PushOperandCommand(Double.parseDouble(output.toString())));
-//        }
-//
-//        return Optional.empty();
-//    }
+
+    @Override
+    public Optional<Command> compile(CharacterIterator input) {
+        StringWriter output = new StringWriter();
+        Status status = run(input, output);
+        if (status == Status.FINISHED) {
+            return Optional.of(new PushOperandCommand(Double.parseDouble(output.toString())));
+        }
+
+        return Optional.empty();
+    }
 }

@@ -1,25 +1,26 @@
 package io.javaclasses.mathcalculator.fsm.impl;
 
-import io.javaclasses.mathcalculator.fsm.FSMFactoryImpl;
+import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
 import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
-import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
 import io.javaclasses.mathcalculator.runtime.Command;
 import io.javaclasses.mathcalculator.runtime.FunctionDataStructure;
-import io.javaclasses.mathcalculator.runtime.PushExpressionCommand;
 import io.javaclasses.mathcalculator.runtime.ShuntingYard;
-import io.javaclasses.mathcalculator.runtime.VariableNameAndValuePair;
+import io.javaclasses.mathcalculator.runtime.NameAndValuePair;
 
 import java.text.CharacterIterator;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation of {@link StateAcceptor} that starts {@link ExpressionStateAcceptorNameAndValuePair},
  * defines whether the transition from one state to expression state is possible
  * and if possible adds result as a function parameter to the outputChain.
  */
-public class ExpressionStateAcceptorNameAndValuePair implements StateAcceptor<VariableNameAndValuePair> {
+public class ExpressionStateAcceptorNameAndValuePair implements StateAcceptor<NameAndValuePair> {
+private final FSMFactory factory;
+     ExpressionStateAcceptorNameAndValuePair(FSMFactory factory) {
+        this.factory=factory;
+    }
 
     /**
      * This API creates {@link ShuntingYard} for {@link ExpressionFiniteStateMachine},
@@ -33,12 +34,11 @@ public class ExpressionStateAcceptorNameAndValuePair implements StateAcceptor<Va
      *         and added the result to the outputChain, otherwise it returns false
      */
     @Override
-    public boolean accept(CharacterIterator inputChain, VariableNameAndValuePair outputChain) {
-        List<Command> commands = new ArrayList<>();
-        FSMFactory<List<Command>> factory = new FSMFactoryImpl<>();
-        FiniteStateMachine<List<Command>> fsm = factory.create(FSMFactory.TypeFSM.EXPRESSION);
-        if (fsm.run(inputChain, commands) == FiniteStateMachine.Status.FINISHED) {
-            outputChain.addValue(new PushExpressionCommand(commands));
+    public boolean accept(CharacterIterator inputChain, NameAndValuePair outputChain) {
+        CompilerElement compilerElement = factory.create(FSMFactory.TypeFSM.EXPRESSION);
+        Optional<Command> command = compilerElement.compile(inputChain);
+        if (command.isPresent()) {
+            outputChain.addValue(command.get());
             return true;
         }
         return false;

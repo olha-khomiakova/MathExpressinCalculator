@@ -1,33 +1,32 @@
-package io.javaclasses.mathcalculator.math;
+package io.javaclasses.mathcalculator.math.binaryoperator;
 
 /**
- * Implementation of {@link BinaryOperator} that calculates the multiplication of two operands .
+ * Implementation of {@link BinaryOperator} that calculates the division of two operands .
  */
-public class MultiplicationBinaryOperator implements BinaryOperator {
+public class DivisionBinaryOperator implements BinaryOperator {
 
     private final BinaryOperator.priority priority;
 
-    public MultiplicationBinaryOperator(BinaryOperator.priority priority) {
+    public DivisionBinaryOperator(BinaryOperator.priority priority) {
         this.priority = priority;
     }
 
     /**
-     * Calculates the multiplication of two operands.
+     * Calculates the division of two operands.
      *
      * @param firstOperand
      *         is double left operands
      * @param secondOperand
      *         is double right operands
-     * @return multiplication result
+     * @return division result
      */
     @Override
     public double calculate(double firstOperand, double secondOperand) {
-        return firstOperand * secondOperand;
+        return firstOperand / secondOperand;
     }
 
     @Override
     public BinaryOperator.priority priority() {
         return priority;
     }
-
 }

@@ -1,10 +1,16 @@
 package io.javaclasses.mathcalculator.fsm.impl;
 
+import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
+import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
 import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.State;
-import io.javaclasses.mathcalculator.runtime.VariableNameAndValuePair;
+import io.javaclasses.mathcalculator.runtime.Command;
+import io.javaclasses.mathcalculator.runtime.PushVariableCommand;
+import io.javaclasses.mathcalculator.runtime.NameAndValuePair;
 
+import java.text.CharacterIterator;
 import java.util.Collections;
+import java.util.Optional;
 
 /**
  * Implementation of {@link FiniteStateMachine} for parsing
@@ -14,16 +20,16 @@ import java.util.Collections;
  * 1) "a=5;"
  * 2) "print(a);"
  */
-public class InitializationFiniteStateMachine extends FiniteStateMachine<VariableNameAndValuePair> {
+public class InitializationFiniteStateMachine extends FiniteStateMachine<NameAndValuePair> implements CompilerElement {
 
-    public InitializationFiniteStateMachine() {
-        State<VariableNameAndValuePair> variable = new State<>(false,
-                                                               new VariableNameStateAcceptor());
-        State<VariableNameAndValuePair> equalSign = new State<>(false,
-                                                                new RequiredCharacterStateAcceptorNameAndValuePair(
+    public InitializationFiniteStateMachine(FSMFactory factory) {
+        State<NameAndValuePair> variable = new State<>(false,
+                                                       new NameStateAcceptor());
+        State<NameAndValuePair> equalSign = new State<>(false,
+                                                        new RequiredCharacterStateAcceptorNameAndValuePair(
                                                                         '='));
-        State<VariableNameAndValuePair> expression = new State<>(true,
-                                                                 new ExpressionStateAcceptorNameAndValuePair());
+        State<NameAndValuePair> expression = new State<>(true,
+                                                         new ExpressionStateAcceptorNameAndValuePair(factory));
 
         variable.addTransmission(equalSign);
         equalSign.addTransmission(expression);
@@ -31,13 +37,14 @@ public class InitializationFiniteStateMachine extends FiniteStateMachine<Variabl
         registerPossibleStartState(Collections.singletonList(variable));
     }
 
-//    public Optional<Command> expression(CharacterIterator inputChain, List<Command> output) {
-//
-//        List<Command> commands = new ArrayList<>();
-//        Status status = run(inputChain, commands);
-//        if (status == Status.FINISHED) {
-//            return Optional.of(new PushExpressionCommand(commands));
-//        }
-//        return Optional.empty();
-//    }
+    @Override
+    public Optional<Command> compile(CharacterIterator input) {
+        NameAndValuePair pair = new NameAndValuePair();
+        Status status = run(input, pair);
+        if (status == Status.FINISHED) {
+            return Optional.of(new PushVariableCommand(pair));
+        }
+        return Optional.empty();
+    }
+
 }

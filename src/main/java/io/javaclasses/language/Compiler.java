@@ -1,33 +1,31 @@
 package io.javaclasses.language;
 
-import io.javaclasses.mathcalculator.fsm.FSMFactoryImpl;
+import io.javaclasses.mathcalculator.fsm.impl.FSMFactoryImpl;
+import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
 import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
-import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.runtime.Command;
 import io.javaclasses.mathcalculator.runtime.RuntimeEnvironment;
 
+import java.io.PrintStream;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
-public class Compiler {
+class Compiler {
 
-    public void compile(String code) {
+    public PrintStream compile(String code) {
         CharacterIterator stringNumber = new StringCharacterIterator(code);
         RuntimeEnvironment environment = new RuntimeEnvironment();
-        FSMFactory<List<Command>> factory = new FSMFactoryImpl<>();
-        FiniteStateMachine<List<Command>> fsm = factory.create(FSMFactory.TypeFSM.STATEMENT);
-        List<Command> commandList = new ArrayList<>();
-        FiniteStateMachine.Status accepted = fsm.run(stringNumber, commandList);
-        if (stringNumber.getIndex() != stringNumber.getEndIndex() || accepted ==
-                FiniteStateMachine.Status.NOT_STARTED) {
+        FSMFactory factory = new FSMFactoryImpl();
+        CompilerElement compilerElement = factory.create(
+                FSMFactory.TypeFSM.STATEMENT);
+        Optional<Command> command = compilerElement.compile(stringNumber);
+        if (stringNumber.getIndex() != stringNumber.getEndIndex()||!command.isPresent()) {
             throw new IncorrectStatementException("Incorrectly entered statement in position " +
                                                           stringNumber.getIndex() + '.',
                                                   stringNumber.getIndex());
         }
-        for (Command command : commandList) {
-            command.execute(environment);
-        }
+        command.get().execute(environment);
+        return environment.output();
     }
 }

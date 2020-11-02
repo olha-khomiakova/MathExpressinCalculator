@@ -11,11 +11,11 @@ import java.text.CharacterIterator;
  * and returns decision whether the transition to the next state is accepted.
  * And if possible move an iterator forward in an inputChain.
  */
-public class FunctionSingleCharacterStateAcceptor implements StateAcceptor<FunctionDataStructure> {
+public class RequiredCharacterStateAcceptorFunction implements StateAcceptor<FunctionDataStructure> {
 
     private final char requiredCharacter;
 
-    public FunctionSingleCharacterStateAcceptor(char requiredCharacter) {
+    public RequiredCharacterStateAcceptorFunction(char requiredCharacter) {
         this.requiredCharacter = requiredCharacter;
     }
 

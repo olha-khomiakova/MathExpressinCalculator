@@ -1,4 +1,4 @@
-package io.javaclasses.mathcalculator.math;
+package io.javaclasses.mathcalculator.math.binaryoperator;
 
 import java.util.HashMap;
 import java.util.Map;

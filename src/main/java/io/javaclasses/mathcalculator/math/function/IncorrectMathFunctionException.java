@@ -1,4 +1,4 @@
-package io.javaclasses.mathcalculator.math;
+package io.javaclasses.mathcalculator.math.function;
 
 /**
  * This is exception that appears if required function does not exist or the number of

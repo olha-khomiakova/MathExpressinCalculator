@@ -1,16 +1,14 @@
 package io.javaclasses.mathcalculator.fsm.impl;
 
-import io.javaclasses.mathcalculator.fsm.FSMFactoryImpl;
+import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
 import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
-import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
 import io.javaclasses.mathcalculator.runtime.Command;
-import io.javaclasses.mathcalculator.runtime.PushExpressionCommand;
 import io.javaclasses.mathcalculator.runtime.ShuntingYard;
 
 import java.text.CharacterIterator;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation of {@link StateAcceptor} that starts {@link ExpressionStateAcceptorListCommands},
@@ -18,6 +16,12 @@ import java.util.List;
  * and if possible adds result to the outputChain.
  */
 public class ExpressionStateAcceptorListCommands implements StateAcceptor<List<Command>> {
+
+    private final FSMFactory factory;
+
+    ExpressionStateAcceptorListCommands(FSMFactory factory) {
+        this.factory = factory;
+    }
 
     /**
      * This API creates {@link ShuntingYard} for {@link ExpressionFiniteStateMachine}, starts FSM
@@ -32,11 +36,10 @@ public class ExpressionStateAcceptorListCommands implements StateAcceptor<List<C
      */
     @Override
     public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
-        List<Command> commands = new ArrayList<>();
-        FSMFactory<List<Command>> factory = new FSMFactoryImpl<>();
-        FiniteStateMachine<List<Command>> fsm = factory.create(FSMFactory.TypeFSM.EXPRESSION);
-        if (fsm.run(inputChain, commands) == FiniteStateMachine.Status.FINISHED) {
-            outputChain.add(new PushExpressionCommand(commands));
+        CompilerElement compilerElement = factory.create(FSMFactory.TypeFSM.EXPRESSION);
+        Optional<Command> command =compilerElement.compile(inputChain);
+        if (command.isPresent()) {
+            outputChain.add(command.get());
             return true;
         }
         return false;

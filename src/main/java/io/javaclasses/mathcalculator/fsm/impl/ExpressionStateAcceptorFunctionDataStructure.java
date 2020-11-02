@@ -1,17 +1,14 @@
 package io.javaclasses.mathcalculator.fsm.impl;
 
-import io.javaclasses.mathcalculator.fsm.FSMFactoryImpl;
+import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
 import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
-import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
 import io.javaclasses.mathcalculator.runtime.Command;
 import io.javaclasses.mathcalculator.runtime.FunctionDataStructure;
-import io.javaclasses.mathcalculator.runtime.PushExpressionCommand;
 import io.javaclasses.mathcalculator.runtime.ShuntingYard;
 
 import java.text.CharacterIterator;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation of {@link StateAcceptor} that starts {@link ExpressionStateAcceptorListCommands},
@@ -19,6 +16,10 @@ import java.util.List;
  * and if possible adds result as a function parameter to the outputChain.
  */
 public class ExpressionStateAcceptorFunctionDataStructure implements StateAcceptor<FunctionDataStructure> {
+private final FSMFactory factory;
+    ExpressionStateAcceptorFunctionDataStructure(FSMFactory factory) {
+        this.factory=factory;
+    }
 
     /**
      * This API creates {@link ShuntingYard} for {@link ExpressionFiniteStateMachine},
@@ -33,11 +34,10 @@ public class ExpressionStateAcceptorFunctionDataStructure implements StateAccept
      */
     @Override
     public boolean accept(CharacterIterator inputChain, FunctionDataStructure outputChain) {
-        List<Command> commands = new ArrayList<>();
-        FSMFactory<List<Command>> factory = new FSMFactoryImpl<>();
-        FiniteStateMachine<List<Command>> fsm = factory.create(FSMFactory.TypeFSM.EXPRESSION);
-        if (fsm.run(inputChain, commands) == FiniteStateMachine.Status.FINISHED) {
-            outputChain.addFunctionParameter(new PushExpressionCommand(commands));
+        CompilerElement compilerElement = factory.create(FSMFactory.TypeFSM.EXPRESSION);
+        Optional<Command> command=compilerElement.compile(inputChain);
+        if (command.isPresent()) {
+            outputChain.addFunctionParameter(command.get());
             return true;
         }
         return false;

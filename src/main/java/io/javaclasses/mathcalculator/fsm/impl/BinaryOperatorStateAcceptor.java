@@ -1,8 +1,8 @@
 package io.javaclasses.mathcalculator.fsm.impl;
 
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
-import io.javaclasses.mathcalculator.math.BinaryOperator;
-import io.javaclasses.mathcalculator.math.BinaryOperatorFactory;
+import io.javaclasses.mathcalculator.math.binaryoperator.BinaryOperator;
+import io.javaclasses.mathcalculator.math.binaryoperator.BinaryOperatorFactory;
 import io.javaclasses.mathcalculator.runtime.Command;
 import io.javaclasses.mathcalculator.runtime.PushBinaryOperatorCommand;
 import io.javaclasses.mathcalculator.runtime.ShuntingYard;

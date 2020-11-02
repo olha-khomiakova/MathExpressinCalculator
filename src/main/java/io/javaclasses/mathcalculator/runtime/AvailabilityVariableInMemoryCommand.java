@@ -18,12 +18,15 @@ public class AvailabilityVariableInMemoryCommand implements Command {
     public void execute(RuntimeEnvironment environment) {
         if (environment.memory()
                        .containsKey(name.toString())) {
+            Double value = environment.memory().get(name.toString());
+            environment.memory().remove(name.toString());
+            environment.memory().put(name.toString(),value);
             environment.stack()
                        .pushOperand(environment.memory()
                                                .get(name.toString()));
             if (logger.isInfoEnabled()) {
                 logger.info(this.getClass() + " :" + name +
-                                    "exists");
+                                    " exists");
             }
         } else {
             throw new CallingANonExistentVariableException("Cannot resolve symbol " + name);

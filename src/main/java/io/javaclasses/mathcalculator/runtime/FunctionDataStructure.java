@@ -1,7 +1,7 @@
 package io.javaclasses.mathcalculator.runtime;
 
-import io.javaclasses.mathcalculator.math.Function;
-import io.javaclasses.mathcalculator.math.FunctionFactory;
+import io.javaclasses.mathcalculator.math.function.Function;
+import io.javaclasses.mathcalculator.math.function.FunctionFactory;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 public class FunctionDataStructure {
 
-    private StringWriter functionNameBuilder;
+    private StringWriter name;
     private final List<Command> functionParameters = new ArrayList<>();
     private Function function;
 
@@ -30,12 +30,12 @@ public class FunctionDataStructure {
     }
 
     public void addFunctionName(StringWriter character) {
-        this.functionNameBuilder = character;
+        this.name = character;
     }
 
     public void validateFunction() {
         FunctionFactory factory = new FunctionFactory();
-        Optional<Function> func = factory.getRequiredFunction(functionNameBuilder.toString());
+        Optional<Function> func = factory.getRequiredFunction(name.toString());
         func.ifPresent(value -> function = value);
         function.accept(functionParameters.size());
     }
@@ -49,6 +49,6 @@ public class FunctionDataStructure {
     }
 
     public StringWriter functionNameBuilder() {
-        return functionNameBuilder;
+        return name;
     }
 }

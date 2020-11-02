@@ -1,15 +1,13 @@
 package io.javaclasses.mathcalculator.fsm.impl;
 
-import io.javaclasses.mathcalculator.fsm.FSMFactoryImpl;
+import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
 import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
-import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
 import io.javaclasses.mathcalculator.runtime.Command;
-import io.javaclasses.mathcalculator.runtime.PushVariableCommand;
-import io.javaclasses.mathcalculator.runtime.VariableNameAndValuePair;
 
 import java.text.CharacterIterator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation of {@link StateAcceptor} that defines whether the initialization is possible.
@@ -18,6 +16,12 @@ import java.util.List;
  */
 
 public class InitializationStateAcceptor implements StateAcceptor<List<Command>> {
+
+    private final FSMFactory factory;
+
+    public InitializationStateAcceptor(FSMFactory factory) {
+        this.factory = factory;
+    }
 
     /**
      * This API adds a variable and a value to the memory and moves an iterator forward in an
@@ -32,14 +36,14 @@ public class InitializationStateAcceptor implements StateAcceptor<List<Command>>
      */
     @Override
     public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
-        VariableNameAndValuePair pair = new VariableNameAndValuePair();
-        FSMFactory<VariableNameAndValuePair> factory = new FSMFactoryImpl<>();
-        FiniteStateMachine<VariableNameAndValuePair> fsm = factory.create(
-                FSMFactory.TypeFSM.INITIALIZATION);
-        if (fsm.run(inputChain, pair) == FiniteStateMachine.Status.FINISHED) {
-            outputChain.add(new PushVariableCommand(pair));
+        int indexInputChain = inputChain.getIndex();
+        CompilerElement compilerElement = factory.create(FSMFactory.TypeFSM.INITIALIZATION);
+        Optional<Command> command = compilerElement.compile(inputChain);
+        if (command.isPresent()) {
+            outputChain.add(command.get());
             return true;
         }
+        inputChain.setIndex(indexInputChain);
         return false;
     }
 }

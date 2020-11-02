@@ -3,7 +3,7 @@ package io.javaclasses.mathcalculator.fsm.impl;
 import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
 import io.javaclasses.mathcalculator.runtime.Command;
-import io.javaclasses.mathcalculator.runtime.VariableNameAndValuePair;
+import io.javaclasses.mathcalculator.runtime.NameAndValuePair;
 
 import java.io.StringWriter;
 import java.text.CharacterIterator;
@@ -15,7 +15,7 @@ import java.util.List;
  * And if possible adds variable to the memory and move an iterator forward in an inputChain.
  */
 
-public class VariableNameStateAcceptor implements StateAcceptor<VariableNameAndValuePair> {
+public class NameStateAcceptor implements StateAcceptor<NameAndValuePair> {
 
     /**
      * This API adds variable to the memory and move an iterator forward in an inputChain.
@@ -28,7 +28,7 @@ public class VariableNameStateAcceptor implements StateAcceptor<VariableNameAndV
      *         otherwise it returns false
      */
     @Override
-    public boolean accept(CharacterIterator inputChain, VariableNameAndValuePair outputChain) {
+    public boolean accept(CharacterIterator inputChain, NameAndValuePair outputChain) {
         FiniteStateMachine<StringWriter> fsm =
                 new NameBuilderFiniteStateMachine();
         StringWriter stringWriter = new StringWriter();

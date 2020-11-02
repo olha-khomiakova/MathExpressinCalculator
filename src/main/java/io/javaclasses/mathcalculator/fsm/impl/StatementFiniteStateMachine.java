@@ -1,11 +1,18 @@
 package io.javaclasses.mathcalculator.fsm.impl;
 
+import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
+import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
 import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.State;
 import io.javaclasses.mathcalculator.runtime.Command;
+import io.javaclasses.mathcalculator.runtime.PushExpressionCommand;
 
-import java.util.Collections;
+import java.text.CharacterIterator;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static java.util.Arrays.asList;
 
 /**
  * Implementation of {@link FiniteStateMachine} for parsing
@@ -15,26 +22,31 @@ import java.util.List;
  * 1) "a=5;"
  * 2) "print(a);"
  */
-public class StatementFiniteStateMachine extends FiniteStateMachine<List<Command>> {
+public class StatementFiniteStateMachine extends FiniteStateMachine<List<Command>> implements CompilerElement {
 
-    public StatementFiniteStateMachine() {
-        State<List<Command>> initialization = new State<>(false, new InitializationStateAcceptor());
+    StatementFiniteStateMachine(FSMFactory factory) {
+        State<List<Command>> initialization = new State<>(false, new InitializationStateAcceptor(factory));
         State<List<Command>> semicolon = new State<>(true,
                                                      new RequiredCharacterStateAcceptorListCommands(
                                                              ';'));
+        State<List<Command>> procedure = new State<>(true, new ProcedureStateAcceptor(factory));
+
+
         initialization.addTransmission(semicolon);
         semicolon.addTransmission(initialization);
+        procedure.addTransmission(semicolon);
+        semicolon.addTransmission(procedure);
 
-        registerPossibleStartState(Collections.singletonList(initialization));
+        registerPossibleStartState(asList(initialization,procedure));
     }
 
-//    public Optional<Command> expression(CharacterIterator inputChain, List<Command> output) {
-//
-//        List<Command> commands = new ArrayList<>();
-//        Status status = run(inputChain, commands);
-//        if (status == Status.FINISHED) {
-//            return Optional.of(new PushExpressionCommand(commands));
-//        }
-//        return Optional.empty();
-//    }
+    @Override
+    public Optional<Command> compile(CharacterIterator input) {
+        List<Command> commands = new ArrayList<>();
+        Status status = run(input, commands);
+        if (status == Status.FINISHED) {
+            return Optional.of(new PushExpressionCommand(commands));
+        }
+        return Optional.empty();
+    }
 }

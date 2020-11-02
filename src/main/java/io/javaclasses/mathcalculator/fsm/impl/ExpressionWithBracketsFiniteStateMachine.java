@@ -1,5 +1,7 @@
 package io.javaclasses.mathcalculator.fsm.impl;
 
+import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
+import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
 import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.State;
 import io.javaclasses.mathcalculator.runtime.Command;
@@ -19,9 +21,9 @@ import java.util.Optional;
  * 1) (5+2);
  * 2) (min(3.5,2)*0.1).
  */
-public class ExpressionWithBracketsFiniteStateMachine extends FiniteStateMachine<List<Command>> {
+public class ExpressionWithBracketsFiniteStateMachine extends FiniteStateMachine<List<Command>> implements CompilerElement {
 
-    public ExpressionWithBracketsFiniteStateMachine() {
+    public ExpressionWithBracketsFiniteStateMachine(FSMFactory factory) {
         State<List<Command>> openingBrackets = new State<>(false,
                                                            new RequiredCharacterStateAcceptorListCommands(
                                                                    '('));
@@ -29,7 +31,7 @@ public class ExpressionWithBracketsFiniteStateMachine extends FiniteStateMachine
                                                               new RequiredCharacterStateAcceptorListCommands(
                                                                       ')'));
         State<List<Command>> expression = new State<>(false,
-                                                      new ExpressionStateAcceptorListCommands());
+                                                      new ExpressionStateAcceptorListCommands(factory));
 
         expression.addTransmission(closingParenthesis);
         openingBrackets.addTransmission(expression);
@@ -37,10 +39,10 @@ public class ExpressionWithBracketsFiniteStateMachine extends FiniteStateMachine
         registerPossibleStartState(Collections.singletonList(openingBrackets));
     }
 
-    public Optional<Command> expressionWithBrackets
-            (CharacterIterator inputChain, List<Command> outputChain) {
+    @Override
+    public Optional<Command> compile(CharacterIterator input) {
         List<Command> commands = new ArrayList<>();
-        Status status = run(inputChain, commands);
+        Status status = run(input, commands);
         if (status == Status.FINISHED) {
             return Optional.of(new PushExpressionCommand(commands));
         }
