@@ -22,7 +22,7 @@ public class PushExpressionCommand implements Command {
         for (Command command : commandList) {
             command.execute(environment);
         }
-        Optional<Double> result = environment.stack()
+        Optional<ValueHolder> result = environment.stack()
                                              .result();
         environment.closeStack();
         if (result.isPresent()) {

@@ -15,12 +15,14 @@ import java.util.Optional;
  * inputChain.
  */
 
-public class InitializationStateAcceptor implements StateAcceptor<List<Command>> {
+public class FSMStateAcceptor implements StateAcceptor<List<Command>> {
 
     private final FSMFactory factory;
+    private final FSMFactory.TypeFSM typeFSM;
 
-    public InitializationStateAcceptor(FSMFactory factory) {
+    FSMStateAcceptor(FSMFactory factory, FSMFactory.TypeFSM typeFSM) {
         this.factory = factory;
+        this.typeFSM=typeFSM;
     }
 
     /**
@@ -37,7 +39,7 @@ public class InitializationStateAcceptor implements StateAcceptor<List<Command>>
     @Override
     public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
         int indexInputChain = inputChain.getIndex();
-        CompilerElement compilerElement = factory.create(FSMFactory.TypeFSM.INITIALIZATION);
+        CompilerElement compilerElement = factory.create(typeFSM);
         Optional<Command> command = compilerElement.compile(inputChain);
         if (command.isPresent()) {
             outputChain.add(command.get());
@@ -45,5 +47,10 @@ public class InitializationStateAcceptor implements StateAcceptor<List<Command>>
         }
         inputChain.setIndex(indexInputChain);
         return false;
+    }
+
+    @Override
+    public boolean isLexeme() {
+        return true;
     }
 }

@@ -1,4 +1,4 @@
-package io.javaclasses.mathcalculator.math.function;
+package io.javaclasses.mathcalculator.runtime;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,8 +8,8 @@ import java.util.Optional;
  */
 public class MinFunction extends Function {
 
-    MinFunction(int minimumNumber, int maximumNumber) {
-        super(minimumNumber, maximumNumber, "min");
+    MinFunction(int minimumNumber, int maximumNumber, List<Command> commands) {
+        super(minimumNumber, maximumNumber, "min", commands);
 
     }
 
@@ -19,7 +19,7 @@ public class MinFunction extends Function {
      * @return double minimum parameters
      */
     @Override
-    public double calculate(List<Double> parameters) {
+    public double apply(List<Double> parameters) {
         Optional<Double> result = parameters.stream()
                                             .min(Double::compareTo);
         if (result.isPresent()) {
@@ -28,4 +28,9 @@ public class MinFunction extends Function {
         return 0;
     }
 
+    @Override
+    public void execute(RuntimeEnvironment environment) {
+        environment.stack()
+                   .pushOperand(new DoubleValueHolder(apply(parameters(environment))));
+    }
 }

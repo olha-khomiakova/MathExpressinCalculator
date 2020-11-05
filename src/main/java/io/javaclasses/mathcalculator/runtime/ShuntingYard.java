@@ -7,14 +7,15 @@ import java.util.Deque;
 import java.util.Objects;
 import java.util.Optional;
 
+import static io.javaclasses.mathcalculator.runtime.DoubleValueReader.readDouble;
+
 /**
  * This is implementation of shunting yard algorithm
  * You can read about it at {@link "https://en.wikipedia.org/wiki/Shunting-yard_algorithm#:~:text=In%20computer%20science%2C%20the%20shunting,abstract%20syntax%20tree%20(AST)."}
  */
-@SuppressWarnings("ClassWithTooManyDependents")
 public class ShuntingYard {
 
-    private final Deque<Double> operands = new ArrayDeque<>();
+    private final Deque<ValueHolder> operands = new ArrayDeque<>();
     private final Deque<BinaryOperator> operators = new ArrayDeque<>();
 
     /**
@@ -26,7 +27,7 @@ public class ShuntingYard {
         }
     }
 
-    public Optional<Double> result() {
+    public Optional<ValueHolder> result() {
         popAllOperators();
         return Optional.ofNullable(operands.peek());
     }
@@ -48,15 +49,13 @@ public class ShuntingYard {
 
     private void calculatePreviousOperator() {
         BinaryOperator operator = operators.pollLast();
-        Optional<Double> secondOperand = Optional.ofNullable(operands.pollLast());
-        Optional<Double> firstOperand = Optional.ofNullable(operands.pollLast());
-        if (firstOperand.isPresent() && secondOperand.isPresent()) {
-            this.operands.addLast(Objects.requireNonNull(operator)
-                                         .calculate(firstOperand.get(), secondOperand.get()));
-        }
+        ValueHolder secondOperand = Objects.requireNonNull(operands.pollLast());
+        ValueHolder firstOperand = Objects.requireNonNull(operands.pollLast());
+        this.operands.addLast(new DoubleValueHolder(operator.calculate(readDouble(firstOperand),
+                                                                       readDouble(secondOperand))));
     }
 
-    public void pushOperand(double number) {
+    public void pushOperand(ValueHolder number) {
         operands.addLast(number);
     }
 

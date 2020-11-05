@@ -6,8 +6,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Part of {@link FiniteStateMachine} that stores information about itself
- * and possible transitions from it to another state.
+ * Part of {@link FiniteStateMachine} that stores information about can be finish it,
+ * possible transitions from it to another state and acceptor.
  *
  * @param <T>
  *         is a data structure in which fsm writes the result of its work
@@ -32,7 +32,7 @@ public class State<T> {
      * @param inputChain
      *         is an iterable string with input data
      * @param outputChain
-     *         is an result of any {@link FiniteStateMachine}
+     *         is an result of some {@link FiniteStateMachine}
      * @return is decision whether the transition to the next state is accepted
      */
     public boolean accept(CharacterIterator inputChain, T outputChain) {
@@ -43,11 +43,16 @@ public class State<T> {
         this.transitions.add(state);
     }
 
-    public Collection<State<T>> transitions() {
+    public StateAcceptor<T> acceptor() {
+        return acceptor;
+    }
+
+    Collection<State<T>> transitions() {
         return Collections.unmodifiableCollection(this.transitions);
     }
 
-    public boolean canBeFinish() {
+    boolean canBeFinish() {
         return canBeFinish;
     }
+
 }

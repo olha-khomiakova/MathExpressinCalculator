@@ -1,12 +1,11 @@
 package io.javaclasses.mathcalculator.fsm.impl;
 
-import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
 import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
 import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.State;
 import io.javaclasses.mathcalculator.runtime.Command;
+import io.javaclasses.mathcalculator.runtime.DataStructure;
 import io.javaclasses.mathcalculator.runtime.PushVariableCommand;
-import io.javaclasses.mathcalculator.runtime.NameAndValuePair;
 
 import java.text.CharacterIterator;
 import java.util.Collections;
@@ -20,16 +19,16 @@ import java.util.Optional;
  * 1) "a=5;"
  * 2) "print(a);"
  */
-public class InitializationFiniteStateMachine extends FiniteStateMachine<NameAndValuePair> implements CompilerElement {
+public class InitializationFiniteStateMachine extends FiniteStateMachine<DataStructure> {
 
-    public InitializationFiniteStateMachine(FSMFactory factory) {
-        State<NameAndValuePair> variable = new State<>(false,
-                                                       new NameStateAcceptor());
-        State<NameAndValuePair> equalSign = new State<>(false,
-                                                        new RequiredCharacterStateAcceptorNameAndValuePair(
+     InitializationFiniteStateMachine(FSMFactory factory) {
+        State<DataStructure> variable = new State<>(false,
+                                                       new FunctionNameStateAcceptor());
+        State<DataStructure> equalSign = new State<>(false,
+                                                        new RequiredCharacterStateAcceptorFunction(
                                                                         '='));
-        State<NameAndValuePair> expression = new State<>(true,
-                                                         new ExpressionStateAcceptorNameAndValuePair(factory));
+        State<DataStructure> expression = new State<>(true,
+                                                         new ExpressionStateAcceptorDataStructure(factory));
 
         variable.addTransmission(equalSign);
         equalSign.addTransmission(expression);
@@ -37,12 +36,11 @@ public class InitializationFiniteStateMachine extends FiniteStateMachine<NameAnd
         registerPossibleStartState(Collections.singletonList(variable));
     }
 
-    @Override
-    public Optional<Command> compile(CharacterIterator input) {
-        NameAndValuePair pair = new NameAndValuePair();
-        Status status = run(input, pair);
+    public Optional<Command> initialization(CharacterIterator input) {
+        DataStructure dataStructure = new DataStructure();
+        Status status = run(input, dataStructure);
         if (status == Status.FINISHED) {
-            return Optional.of(new PushVariableCommand(pair));
+            return Optional.of(new PushVariableCommand(dataStructure.name(),dataStructure.parameters()));
         }
         return Optional.empty();
     }

@@ -6,35 +6,51 @@ import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
 public class FSMFactoryImpl implements FSMFactory {
     @Override
     public CompilerElement create(TypeFSM typeFSM) {
-        CompilerElement fsm;
         switch (typeFSM) {
             case NUMBER:
-                fsm = new NumberFiniteStateMachine();
-                return fsm;
+                return input -> {
+                    NumberFiniteStateMachine fsm = new NumberFiniteStateMachine();
+                    return fsm.number(input);
+                };
             case EXPRESSION:
-                fsm = new ExpressionFiniteStateMachine(this);
-                return fsm;
+                return input -> {
+                    ExpressionFiniteStateMachine fsm = new ExpressionFiniteStateMachine(this);
+                    return fsm.expression(input);
+                };
             case EXPRESSION_WITH_BRACKETS:
-                fsm = new ExpressionWithBracketsFiniteStateMachine(this);
-                return fsm;
+                return input -> {
+                    ExpressionWithBracketsFiniteStateMachine fsm =
+                            new ExpressionWithBracketsFiniteStateMachine(this);
+                    return fsm.expressionWithBrackets(input);
+                };
             case FUNCTION:
-                fsm = new FunctionFiniteStateMachine(this);
-                return fsm;
+                return input -> {
+                    FunctionFiniteStateMachine fsm = new FunctionFiniteStateMachine(this);
+                    return fsm.function(input);
+                };
             case CALCULATED:
-                fsm = new CalculatedFiniteStateMachine(this);
-                return fsm;
+                return input -> {
+                    CalculatedFiniteStateMachine fsm = new CalculatedFiniteStateMachine(this);
+                    return fsm.calculated(input);
+                };
             case STATEMENT:
-                fsm = new StatementFiniteStateMachine(this);
-                return fsm;
+                return input -> {
+                    StatementFiniteStateMachine fsm = new StatementFiniteStateMachine(this);
+                    return fsm.statement(input);
+                };
             case INITIALIZATION:
-                fsm = new InitializationFiniteStateMachine(this);
-                return fsm;
-            case PROCEDURE:
-                fsm = new ProcedureFiniteStateMachine(this);
-                return fsm;
+                return input -> {
+                    InitializationFiniteStateMachine fsm = new InitializationFiniteStateMachine(
+                            this);
+                    return fsm.initialization(input);
+                };
+//            case PROCEDURE:
+//                return input -> {
+//                    ProcedureFiniteStateMachine fsm = new ProcedureFiniteStateMachine(this);
+//                    return fsm.procedure(input);
+//                };
             default:
-                throw new RuntimeException(typeFSM+" type is not served by this compiler");
+                throw new RuntimeException(typeFSM + " type is not served by this compiler");
         }
     }
 }
-

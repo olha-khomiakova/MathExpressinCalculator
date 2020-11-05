@@ -4,6 +4,7 @@ import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
 import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.State;
 import io.javaclasses.mathcalculator.runtime.Command;
+import io.javaclasses.mathcalculator.runtime.DoubleValueHolder;
 import io.javaclasses.mathcalculator.runtime.PushOperandCommand;
 
 import java.io.StringWriter;
@@ -16,7 +17,7 @@ import static java.util.Arrays.asList;
  * Implementation of {@link FiniteStateMachine} for parsing number from string.
  * Numbers are integer or decimal, positive or negative.
  */
-public class NumberFiniteStateMachine extends FiniteStateMachine<StringWriter> implements CompilerElement {
+public class NumberFiniteStateMachine extends FiniteStateMachine<StringWriter> {
 
     public NumberFiniteStateMachine() {
         State<StringWriter> negativeSign = new State<>(false,
@@ -38,12 +39,12 @@ public class NumberFiniteStateMachine extends FiniteStateMachine<StringWriter> i
     }
 
 
-    @Override
-    public Optional<Command> compile(CharacterIterator input) {
+    public Optional<Command> number(CharacterIterator input) {
         StringWriter output = new StringWriter();
         Status status = run(input, output);
         if (status == Status.FINISHED) {
-            return Optional.of(new PushOperandCommand(Double.parseDouble(output.toString())));
+            return Optional.of(new PushOperandCommand(
+                    new DoubleValueHolder(Double.parseDouble(output.toString()))));
         }
 
         return Optional.empty();

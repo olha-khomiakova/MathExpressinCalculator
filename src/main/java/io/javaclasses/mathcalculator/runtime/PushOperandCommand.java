@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 public class PushOperandCommand implements Command {
 
     private final Logger logger = LoggerFactory.getLogger(PushOperandCommand.class);
-    private final Double operand;
+    private final ValueHolder operand;
 
-    public PushOperandCommand(Double operand) {
+    public PushOperandCommand(ValueHolder operand) {
         this.operand = operand;
     }
 

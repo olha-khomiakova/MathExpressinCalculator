@@ -1,5 +1,9 @@
 package io.javaclasses.mathcalculator.fsm.api;
 
+/**
+ * This is part of abstract factory pattern that is a common interface factory for
+ * {@link CompilerElement}.
+ */
 public interface FSMFactory {
 
     enum TypeFSM {
@@ -10,8 +14,17 @@ public interface FSMFactory {
         CALCULATED,
         INITIALIZATION,
         STATEMENT,
-        PROCEDURE
+        //PROCEDURE
     }
 
+    /**
+     * This is API that creates certain type of {@link CompilerElement} depending on
+     * what type of {@link io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine}
+     * compiler element will run.
+     *
+     * @param typeFSM
+     *         is type of {@link io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine}
+     * @return is {@link CompilerElement} certain type
+     */
     CompilerElement create(TypeFSM typeFSM);
 }

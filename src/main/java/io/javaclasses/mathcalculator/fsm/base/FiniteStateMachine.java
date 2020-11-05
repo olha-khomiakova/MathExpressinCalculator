@@ -28,10 +28,10 @@ public class FiniteStateMachine<T> {
     private final Logger logger = getLogger(FiniteStateMachine.class);
 
     /**
-     * This is API that changes from one state to another.
+     * This is API that changes finite state machine states from one to another.
      *
      * @param inputChain
-     *         is an iterable string with expression
+     *         is an iterable string with input data
      * @param outputChain
      *         result of work FSM
      * @return status that indicates at what stage the FSM finished work
@@ -41,6 +41,7 @@ public class FiniteStateMachine<T> {
         if (logger.isInfoEnabled()) {
             logger.info(this.getClass() + " started.");
         }
+        skipWhiteSpace(inputChain,true);
         Optional<State<T>> currentState = Optional.empty();
         while (true) {
             Collection<State<T>> transitions = currentState.isPresent() ?
@@ -59,6 +60,7 @@ public class FiniteStateMachine<T> {
                                    .orElse(Status.NOT_STARTED);
             }
             currentState = nextState;
+            skipWhiteSpace(inputChain,currentState.get().acceptor().isLexeme());
         }
 
     }
@@ -75,6 +77,12 @@ public class FiniteStateMachine<T> {
             }
         }
         return Optional.empty();
+    }
+
+    private void skipWhiteSpace(CharacterIterator inputChain, boolean isLexema) {
+        while (Character.isWhitespace(inputChain.current()) && isLexema) {
+            inputChain.next();
+        }
     }
 
 }

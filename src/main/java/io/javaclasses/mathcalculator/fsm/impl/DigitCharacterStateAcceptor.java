@@ -18,7 +18,7 @@ public class DigitCharacterStateAcceptor implements StateAcceptor<StringWriter> 
      * @param inputChain
      *         is an iterable string with input data
      * @param outputChain
-     *         is an StringBuilder to which will be appended digit.
+     *         is an StringWriter to which will be appended digit.
      * @return returns the truth if it was possible to add current character to the outputChain,
      *         otherwise it returns false
      */
@@ -31,6 +31,11 @@ public class DigitCharacterStateAcceptor implements StateAcceptor<StringWriter> 
             inputChain.next();
             return true;
         }
+        return false;
+    }
+
+    @Override
+    public boolean isLexeme() {
         return false;
     }
 }

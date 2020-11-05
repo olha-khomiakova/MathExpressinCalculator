@@ -44,4 +44,9 @@ public class NumberStateAcceptor implements StateAcceptor<List<Command>> {
         }
         return false;
     }
+
+    @Override
+    public boolean isLexeme() {
+        return true;
+    }
 }

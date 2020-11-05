@@ -21,7 +21,7 @@ import java.util.Optional;
  * 1) (5+2);
  * 2) (min(3.5,2)*0.1).
  */
-public class ExpressionWithBracketsFiniteStateMachine extends FiniteStateMachine<List<Command>> implements CompilerElement {
+public class ExpressionWithBracketsFiniteStateMachine extends FiniteStateMachine<List<Command>> {
 
     public ExpressionWithBracketsFiniteStateMachine(FSMFactory factory) {
         State<List<Command>> openingBrackets = new State<>(false,
@@ -31,7 +31,8 @@ public class ExpressionWithBracketsFiniteStateMachine extends FiniteStateMachine
                                                               new RequiredCharacterStateAcceptorListCommands(
                                                                       ')'));
         State<List<Command>> expression = new State<>(false,
-                                                      new ExpressionStateAcceptorListCommands(factory));
+                                                      new FSMStateAcceptor(factory,
+                                                                           FSMFactory.TypeFSM.EXPRESSION));
 
         expression.addTransmission(closingParenthesis);
         openingBrackets.addTransmission(expression);
@@ -39,8 +40,7 @@ public class ExpressionWithBracketsFiniteStateMachine extends FiniteStateMachine
         registerPossibleStartState(Collections.singletonList(openingBrackets));
     }
 
-    @Override
-    public Optional<Command> compile(CharacterIterator input) {
+    public Optional<Command> expressionWithBrackets(CharacterIterator input) {
         List<Command> commands = new ArrayList<>();
         Status status = run(input, commands);
         if (status == Status.FINISHED) {

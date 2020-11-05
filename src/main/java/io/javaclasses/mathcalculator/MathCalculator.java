@@ -1,14 +1,16 @@
 package io.javaclasses.mathcalculator;
 
-import io.javaclasses.mathcalculator.fsm.impl.FSMFactoryImpl;
 import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
 import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
+import io.javaclasses.mathcalculator.fsm.impl.FSMFactoryImpl;
 import io.javaclasses.mathcalculator.runtime.Command;
 import io.javaclasses.mathcalculator.runtime.RuntimeEnvironment;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.Optional;
+
+import static io.javaclasses.mathcalculator.runtime.DoubleValueReader.readDouble;
 
 /**
  * This service calculates result of any mathematical expression.
@@ -46,8 +48,8 @@ class MathCalculator {
         command.get().execute(environment);
         if(environment.stack()
                       .result().isPresent()){
-            return environment.stack()
-                              .result().get();
+            return readDouble(environment.stack()
+                              .result().get()) ;
         }
         throw new IncorrectMathExpressionException("Impossible to calculate the expression " +
                                                            stringNumber.getIndex() + '.',

@@ -1,5 +1,8 @@
 package io.javaclasses.mathcalculator.math.binaryoperator;
 
+import io.javaclasses.mathcalculator.runtime.DoubleValueHolder;
+import io.javaclasses.mathcalculator.runtime.ValueHolder;
+
 /**
  * Implementation of {@link BinaryOperator} that calculates the addition of two operands .
  */

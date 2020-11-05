@@ -1,35 +1,26 @@
 package io.javaclasses.mathcalculator.runtime;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
+
+import static io.javaclasses.mathcalculator.runtime.StringValueReader.readString;
 
 class Memory {
 
-    private final LinkedHashMap<String, Double> memory = new LinkedHashMap<>();
+    private final LinkedHashMap<String, ValueHolder> memory = new LinkedHashMap<>();
 
-    void put(String variableName, Double variableValue) {
-        memory.put(variableName, variableValue);
+    void put(ValueHolder variableName, ValueHolder variableValue) {
+        memory.put(readString(variableName), variableValue);
     }
 
-    boolean containsKey(String variableName) {
-        return memory.containsKey(variableName);
+    boolean containsKey(ValueHolder variableName) {
+        return memory.containsKey(readString(variableName));
     }
 
-    double get(String variableName) {
-        return memory.get(variableName);
+    ValueHolder get(ValueHolder variableName) {
+        return memory.get(readString(variableName));
     }
 
-    void remove(String variableName) {
-        memory.remove(variableName);
-    }
-    void pollLast() {
-        int counter = 0;
-        for (Map.Entry<String, Double> entry : memory.entrySet()) {
-            if (counter == memory.size() - 1) {
-                memory.remove(entry.getKey());
-            }
-            counter++;
-        }
+    void remove(ValueHolder variableName) {
+        memory.remove(readString(variableName));
     }
 }

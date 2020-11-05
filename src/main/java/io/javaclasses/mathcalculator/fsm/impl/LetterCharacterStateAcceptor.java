@@ -1,7 +1,7 @@
 package io.javaclasses.mathcalculator.fsm.impl;
 
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
-import io.javaclasses.mathcalculator.runtime.FunctionDataStructure;
+import io.javaclasses.mathcalculator.runtime.DataStructure;
 
 import java.io.StringWriter;
 import java.text.CharacterIterator;
@@ -19,7 +19,7 @@ public class LetterCharacterStateAcceptor implements StateAcceptor<StringWriter>
      * @param inputChain
      *         is an iterable string with input data
      * @param outputChain
-     *         is an {@link FunctionDataStructure} to which will be added letter.
+     *         is an {@link DataStructure} to which will be added letter.
      * @return returns the truth if it was possible to add current character to the outputChain,
      *         otherwise it returns false
      */
@@ -32,6 +32,11 @@ public class LetterCharacterStateAcceptor implements StateAcceptor<StringWriter>
             inputChain.next();
             return true;
         }
+        return false;
+    }
+
+    @Override
+    public boolean isLexeme() {
         return false;
     }
 }

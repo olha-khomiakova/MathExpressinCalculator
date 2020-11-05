@@ -2,7 +2,7 @@ package io.javaclasses.mathcalculator.fsm.impl;
 
 import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
-import io.javaclasses.mathcalculator.runtime.AvailabilityVariableInMemoryCommand;
+import io.javaclasses.mathcalculator.runtime.ReadVariableCommand;
 import io.javaclasses.mathcalculator.runtime.Command;
 
 import java.io.StringWriter;
@@ -34,9 +34,14 @@ public class VariableStateAcceptor implements StateAcceptor<List<Command>> {
                 new NameBuilderFiniteStateMachine();
         StringWriter stringWriter = new StringWriter();
         if (fsm.run(inputChain, stringWriter) == FiniteStateMachine.Status.FINISHED) {
-            outputChain.add(new AvailabilityVariableInMemoryCommand(stringWriter));
+            outputChain.add(new ReadVariableCommand(stringWriter));
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean isLexeme() {
+        return true;
     }
 }

@@ -9,7 +9,7 @@ public class RuntimeEnvironment {
 
     private final Deque<ShuntingYard> stack = new ArrayDeque<>();
     private final Memory memory = new Memory();
-    private final PrintStream output = new PrintStream(System.out);
+    private final ByteArrayOutputStream output = new ByteArrayOutputStream();
 
     public RuntimeEnvironment() {
         startStack();
@@ -30,7 +30,7 @@ public class RuntimeEnvironment {
     Memory memory() {
         return this.memory;
     }
-    public PrintStream output()
+    public ByteArrayOutputStream output()
     {
         return this.output;
     }

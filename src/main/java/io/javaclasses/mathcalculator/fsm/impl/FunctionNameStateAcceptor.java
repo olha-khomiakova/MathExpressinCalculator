@@ -2,15 +2,15 @@ package io.javaclasses.mathcalculator.fsm.impl;
 
 import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
-import io.javaclasses.mathcalculator.runtime.FunctionDataStructure;
+import io.javaclasses.mathcalculator.runtime.DataStructure;
 
 import java.io.StringWriter;
 import java.text.CharacterIterator;
 
-public class FunctionNameStateAcceptor implements StateAcceptor<FunctionDataStructure> {
+public class FunctionNameStateAcceptor implements StateAcceptor<DataStructure> {
 
     @Override
-    public boolean accept(CharacterIterator inputChain, FunctionDataStructure outputChain) {
+    public boolean accept(CharacterIterator inputChain, DataStructure outputChain) {
 
         FiniteStateMachine<StringWriter> fsm =
                 new NameBuilderFiniteStateMachine();
@@ -20,5 +20,10 @@ public class FunctionNameStateAcceptor implements StateAcceptor<FunctionDataStru
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean isLexeme() {
+        return true;
     }
 }

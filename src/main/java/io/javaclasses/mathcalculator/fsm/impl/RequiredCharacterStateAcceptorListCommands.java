@@ -38,4 +38,9 @@ public class RequiredCharacterStateAcceptorListCommands implements StateAcceptor
         }
         return false;
     }
+
+    @Override
+    public boolean isLexeme() {
+        return false;
+    }
 }

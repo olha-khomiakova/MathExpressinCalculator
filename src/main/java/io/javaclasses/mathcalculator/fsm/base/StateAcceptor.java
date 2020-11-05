@@ -8,7 +8,6 @@ import java.text.CharacterIterator;
  * @param <T>
  *         is a data structure in which fsm writes the result of its work
  */
-@SuppressWarnings("ClassWithTooManyDependents")
 public interface StateAcceptor<T> {
 
     /**
@@ -17,8 +16,9 @@ public interface StateAcceptor<T> {
      * @param inputChain
      *         is an iterable string with input data
      * @param outputChain
-     *         is an result of any {@link FiniteStateMachine}
+     *         is an result of some {@link FiniteStateMachine}
      * @return is decision whether the transition to the next state is accepted
      */
     boolean accept(CharacterIterator inputChain, T outputChain);
+    public boolean isLexeme();
 }

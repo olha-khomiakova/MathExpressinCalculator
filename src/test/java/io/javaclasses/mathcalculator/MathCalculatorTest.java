@@ -1,6 +1,6 @@
 package io.javaclasses.mathcalculator;
 
-import io.javaclasses.mathcalculator.math.function.IncorrectMathFunctionException;
+import io.javaclasses.mathcalculator.runtime.IncorrectFunctionException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -78,11 +78,11 @@ class MathCalculatorTest {
 
     @ParameterizedTest
     @CsvSource(value = {"min(2,3,5):min function can have 2 to 2 parameters.",
-            "mox(2,3,5):entered function is not processed"}, delimiter = ':')
+            "mox(2,3,5):Cannot resolve \"mox\""}, delimiter = ':')
     void testIncorrectEvaluationOfExpressionWithFunction(String input, CharSequence expected) {
         AtomicReference<Double> result = new AtomicReference<>((double) 0);
-        IncorrectMathFunctionException ex =
-                assertThrows(IncorrectMathFunctionException.class, () ->
+        IncorrectFunctionException ex =
+                assertThrows(IncorrectFunctionException.class, () ->
                         result.set(mathCalculator.evaluate(input)));
         assertThat(ex).hasMessageThat()
                       .contains(expected);

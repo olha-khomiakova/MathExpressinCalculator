@@ -1,6 +1,5 @@
 package io.javaclasses.mathcalculator.fsm.impl;
 
-import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
 import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
 import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.State;
@@ -22,14 +21,16 @@ import static java.util.Arrays.asList;
  * 1) "a=5;"
  * 2) "print(a);"
  */
-public class StatementFiniteStateMachine extends FiniteStateMachine<List<Command>> implements CompilerElement {
+public class StatementFiniteStateMachine extends FiniteStateMachine<List<Command>> {
 
     StatementFiniteStateMachine(FSMFactory factory) {
-        State<List<Command>> initialization = new State<>(false, new InitializationStateAcceptor(factory));
+        State<List<Command>> initialization = new State<>(false, new FSMStateAcceptor(factory,
+                                                                                      FSMFactory.TypeFSM.INITIALIZATION));
         State<List<Command>> semicolon = new State<>(true,
                                                      new RequiredCharacterStateAcceptorListCommands(
                                                              ';'));
-        State<List<Command>> procedure = new State<>(true, new ProcedureStateAcceptor(factory));
+        State<List<Command>> procedure = new State<>(true, new FSMStateAcceptor(factory,
+                                                                                FSMFactory.TypeFSM.FUNCTION));
 
 
         initialization.addTransmission(semicolon);
@@ -40,8 +41,7 @@ public class StatementFiniteStateMachine extends FiniteStateMachine<List<Command
         registerPossibleStartState(asList(initialization,procedure));
     }
 
-    @Override
-    public Optional<Command> compile(CharacterIterator input) {
+    public Optional<Command> statement(CharacterIterator input) {
         List<Command> commands = new ArrayList<>();
         Status status = run(input, commands);
         if (status == Status.FINISHED) {

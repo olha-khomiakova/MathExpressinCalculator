@@ -5,7 +5,6 @@ import io.javaclasses.mathcalculator.math.binaryoperator.BinaryOperator;
 import io.javaclasses.mathcalculator.math.binaryoperator.BinaryOperatorFactory;
 import io.javaclasses.mathcalculator.runtime.Command;
 import io.javaclasses.mathcalculator.runtime.PushBinaryOperatorCommand;
-import io.javaclasses.mathcalculator.runtime.ShuntingYard;
 
 import java.text.CharacterIterator;
 import java.util.List;
@@ -19,13 +18,13 @@ import java.util.Optional;
 public class BinaryOperatorStateAcceptor implements StateAcceptor<List<Command>> {
 
     /**
-     * This API creates binary operator, adds it to the {@link ShuntingYard}
+     * This API creates binary operator, adds it to the command list
      * and moves an iterator forward in an inputChain.
      *
      * @param inputChain
      *         is an iterable string with input data
      * @param outputChain
-     *         is an {@link ShuntingYard} to which will be added binary operator.
+     *         is an command list to which will be added command with binary operator.
      * @return returns the truth if it was possible to create a binary operator
      *         and add it to the outputChain, otherwise it returns false
      */
@@ -41,5 +40,10 @@ public class BinaryOperatorStateAcceptor implements StateAcceptor<List<Command>>
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean isLexeme() {
+        return true;
     }
 }

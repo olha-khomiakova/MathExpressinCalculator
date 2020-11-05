@@ -1,6 +1,5 @@
 package io.javaclasses.mathcalculator.fsm.impl;
 
-import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
 import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
 import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.State;
@@ -21,10 +20,11 @@ import java.util.Optional;
  * 1) "5.25+(10*2.1)-7.77"
  * 2) "0.1*max(5,10)/2"
  */
-public class ExpressionFiniteStateMachine extends FiniteStateMachine<List<Command>> implements CompilerElement {
+public class ExpressionFiniteStateMachine extends FiniteStateMachine<List<Command>> {
 
-    public ExpressionFiniteStateMachine(FSMFactory factory) {
-        State<List<Command>> calculated = new State<>(true, new CalculatedStateAcceptor(factory));
+    ExpressionFiniteStateMachine(FSMFactory factory) {
+        State<List<Command>> calculated = new State<>(true, new FSMStateAcceptor(factory,
+                                                                                 FSMFactory.TypeFSM.CALCULATED));
         State<List<Command>> binaryOperation = new State<>(false,
                                                            new BinaryOperatorStateAcceptor());
 
@@ -34,8 +34,17 @@ public class ExpressionFiniteStateMachine extends FiniteStateMachine<List<Comman
         registerPossibleStartState(Collections.singletonList(calculated));
     }
 
-    @Override
-    public Optional<Command> compile(CharacterIterator input) {
+    /**
+     * This api starts the machine and gets the parsing interrupt status.
+     * If the status is FINISHED, it returns the {@link Optional<Command>}
+     * in which the parsed commands are stored, else return Optional.empty();
+     *
+     * @param input
+     *         is an iterable string with input data
+     * @return returns the {@link Optional<Command>}, if the status of run is FINISHED,
+     *         else return Optional.empty();
+     */
+    public Optional<Command> expression(CharacterIterator input) {
 
         List<Command> commands = new ArrayList<>();
         Status status = run(input, commands);

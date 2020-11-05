@@ -5,25 +5,25 @@ import org.slf4j.LoggerFactory;
 
 import java.io.StringWriter;
 
-public class AvailabilityVariableInMemoryCommand implements Command {
+import static io.javaclasses.mathcalculator.runtime.StringValueReader.readString;
+
+public class ReadVariableCommand implements Command {
 
     private final Logger logger = LoggerFactory.getLogger(PushBinaryOperatorCommand.class);
-    private final StringWriter name;
+    private final StringValueHolder name;
 
-    public AvailabilityVariableInMemoryCommand(StringWriter name) {
-        this.name = name;
+    public ReadVariableCommand(StringWriter name) {
+        this.name = new StringValueHolder(name.toString());
     }
 
     @Override
     public void execute(RuntimeEnvironment environment) {
         if (environment.memory()
-                       .containsKey(name.toString())) {
-            Double value = environment.memory().get(name.toString());
-            environment.memory().remove(name.toString());
-            environment.memory().put(name.toString(),value);
+                       .containsKey(name)) {
+            ValueHolder value = environment.memory().get(name);
             environment.stack()
                        .pushOperand(environment.memory()
-                                               .get(name.toString()));
+                                               .get(name));
             if (logger.isInfoEnabled()) {
                 logger.info(this.getClass() + " :" + name +
                                     " exists");

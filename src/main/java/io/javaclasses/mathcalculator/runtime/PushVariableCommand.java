@@ -3,37 +3,40 @@ package io.javaclasses.mathcalculator.runtime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PushVariableCommand implements Command {
 
     private final Logger logger = LoggerFactory.getLogger(PushBinaryOperatorCommand.class);
-    private final NameAndValuePair pair;
+    private final StringValueHolder nameVariable;
+    private final List<Command> valueVariable = new ArrayList<>();
 
-    public PushVariableCommand(NameAndValuePair pair) {
-        this.pair = pair;
+    public PushVariableCommand(String variable, List<Command> value) {
+        nameVariable = new StringValueHolder(variable);
+        valueVariable.addAll( value);
     }
 
     @Override
     public void execute(RuntimeEnvironment environment) {
         environment.startStack();
-        for (Command command : this.pair.value()) {
+        for (Command command : valueVariable) {
             command.execute(environment);
         }
-        double result = 0;
+        ValueHolder result = null;
         if (environment.stack().result().isPresent()) {
             result = environment.stack().result().get();
         }
         environment.closeStack();
-        if(environment.memory().containsKey(pair.name().toString())){
-           environment.memory().remove(pair.name()
-                        .toString());
+        if(environment.memory().containsKey(nameVariable)){
+           environment.memory().remove(nameVariable);
         }
         else{
             environment.memory()
-                       .put(pair.name()
-                                .toString(), result);
+                       .put(nameVariable, result);
         }
         if (logger.isInfoEnabled()) {
-            logger.info(this.getClass() + " :" + pair.name() +
+            logger.info(this.getClass() + " :" + nameVariable +
                                 '=' + result);
         }
 

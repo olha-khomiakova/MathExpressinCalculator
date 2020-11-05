@@ -1,5 +1,7 @@
 package io.javaclasses.mathcalculator.math.binaryoperator;
 
+import io.javaclasses.mathcalculator.runtime.ValueHolder;
+
 /**
  * Interface of variable binary operations.
  */
