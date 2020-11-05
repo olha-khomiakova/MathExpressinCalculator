@@ -1,4 +1,7 @@
-package io.javaclasses.mathcalculator.math.binaryoperator;
+package io.javaclasses.mathcalculator.math;
+
+import io.javaclasses.mathcalculator.runtime.DoubleValueHolder;
+import io.javaclasses.mathcalculator.runtime.ValueHolder;
 
 /**
  * Implementation of {@link BinaryOperator} that calculates the subtraction of two operands .
@@ -21,8 +24,8 @@ public class SubtractionBinaryOperator implements BinaryOperator {
      * @return subtraction result
      */
     @Override
-    public double calculate(double firstOperand, double secondOperand) {
-        return firstOperand - secondOperand;
+    public ValueHolder calculate(double firstOperand, double secondOperand) {
+        return new DoubleValueHolder(firstOperand - secondOperand);
     }
 
     @Override

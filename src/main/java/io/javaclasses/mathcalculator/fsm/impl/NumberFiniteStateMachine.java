@@ -6,6 +6,8 @@ import io.javaclasses.mathcalculator.fsm.base.State;
 import io.javaclasses.mathcalculator.runtime.Command;
 import io.javaclasses.mathcalculator.runtime.DoubleValueHolder;
 import io.javaclasses.mathcalculator.runtime.PushOperandCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.StringWriter;
 import java.text.CharacterIterator;
@@ -40,9 +42,15 @@ public class NumberFiniteStateMachine extends FiniteStateMachine<StringWriter> {
 
 
     public Optional<Command> number(CharacterIterator input) {
+
+        final Logger logger = LoggerFactory.getLogger(NumberFiniteStateMachine.class);
+
         StringWriter output = new StringWriter();
         Status status = run(input, output);
         if (status == Status.FINISHED) {
+            if (logger.isInfoEnabled()) {
+                logger.info(this.getClass().getSimpleName()+ " finished:  " + output);
+            }
             return Optional.of(new PushOperandCommand(
                     new DoubleValueHolder(Double.parseDouble(output.toString()))));
         }

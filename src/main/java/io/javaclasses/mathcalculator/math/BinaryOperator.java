@@ -1,4 +1,4 @@
-package io.javaclasses.mathcalculator.math.binaryoperator;
+package io.javaclasses.mathcalculator.math;
 
 import io.javaclasses.mathcalculator.runtime.ValueHolder;
 
@@ -8,11 +8,12 @@ import io.javaclasses.mathcalculator.runtime.ValueHolder;
 public interface BinaryOperator {
 
     enum priority {
+        MORE_THEN_LOW, // boolean operators
         LOW, // - +
         MEDIUM //* /
     }
 
-    double calculate(double firstOperand, double secondOperand);
+    ValueHolder calculate(double firstOperand, double secondOperand);
 
     priority priority();
 }

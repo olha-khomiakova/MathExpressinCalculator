@@ -10,6 +10,7 @@ public class RuntimeEnvironment {
     private final Deque<ShuntingYard> stack = new ArrayDeque<>();
     private final Memory memory = new Memory();
     private final ByteArrayOutputStream output = new ByteArrayOutputStream();
+    //private final Deque<ValueHolder> systemStack = new ArrayDeque<>();
 
     public RuntimeEnvironment() {
         startStack();

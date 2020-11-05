@@ -27,16 +27,15 @@ public class PushVariableCommand implements Command {
         if (environment.stack().result().isPresent()) {
             result = environment.stack().result().get();
         }
-        environment.closeStack();
         if(environment.memory().containsKey(nameVariable)){
-           environment.memory().remove(nameVariable);
+           environment.memory().replace(nameVariable.toString(),nameVariable);
         }
         else{
             environment.memory()
                        .put(nameVariable, result);
         }
         if (logger.isInfoEnabled()) {
-            logger.info(this.getClass() + " :" + nameVariable +
+            logger.info(this.getClass().getSimpleName() + " :" + nameVariable +
                                 '=' + result);
         }
 

@@ -18,13 +18,16 @@ import java.util.Optional;
 public class FunctionFiniteStateMachine extends FiniteStateMachine<DataStructure> {
 
     public FunctionFiniteStateMachine(FSMFactory factory) {
-        State<DataStructure> name = new State<>(false, new FunctionNameStateAcceptor());
+        State<DataStructure> name = new State<>(false, new NameStateAcceptor());
         State<DataStructure> openingBrackets = new State<>(false,
                                                            new RequiredCharacterStateAcceptorFunction(
                                                                            '('));
         State<DataStructure> expression = new State<>(false,
                                                       new ExpressionStateAcceptorDataStructure(
-                                                                      factory));
+                                                              factory, FSMFactory.TypeFSM.EXPRESSION));
+        State<DataStructure> booleanExpression = new State<>(false,
+                                                      new ExpressionStateAcceptorDataStructure(
+                                                              factory, FSMFactory.TypeFSM.BOOLEAN_EXPRESSION));
         State<DataStructure> closingBrackets = new State<>(true,
                                                            new RequiredCharacterStateAcceptorFunction(
                                                                            ')'));
@@ -34,9 +37,13 @@ public class FunctionFiniteStateMachine extends FiniteStateMachine<DataStructure
 
         name.addTransmission(openingBrackets);
         openingBrackets.addTransmission(expression);
+        openingBrackets.addTransmission(booleanExpression);
         expression.addTransmission(comma);
+        booleanExpression.addTransmission(comma);
         comma.addTransmission(expression);
+        comma.addTransmission(booleanExpression);
         expression.addTransmission(closingBrackets);
+        booleanExpression.addTransmission(closingBrackets);
 
         registerPossibleStartState(Collections.singletonList(name));
     }

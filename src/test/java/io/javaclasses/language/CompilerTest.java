@@ -36,7 +36,17 @@ class CompilerTest {
         assertThat(ex).hasMessageThat()
                       .contains("position " + ex.errorPosition());
     }
-
+    @ParameterizedTest
+    @CsvSource(value = {" a = 5>6; print(a);:[false]"
+            ,"max=3.9543; result = max < min(2+2,3+3)*2; print(result);:[true]"}, delimiter = ':')
+    void testCorrectBooleanExpression(String input, String expected) {
+        RuntimeEnvironment environment = new RuntimeEnvironment();
+        compiler.compile(input, environment);
+        String output = new String(environment.output().toByteArray(), StandardCharsets.UTF_8);
+        assertWithMessage("Incorrect boolean expression.")
+                .that(output)
+                .isEqualTo(expected);
+    }
 //    @ParameterizedTest
 //    @CsvSource({"a=5;delete(a);b=a;", "a=6;b=7;r=8;delete(b);y=b;"})
 //    void testIncorrectDelete(String input) {

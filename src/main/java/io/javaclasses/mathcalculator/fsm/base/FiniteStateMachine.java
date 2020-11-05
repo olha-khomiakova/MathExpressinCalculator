@@ -39,7 +39,7 @@ public class FiniteStateMachine<T> {
 
     public Status run(CharacterIterator inputChain, T outputChain) {
         if (logger.isInfoEnabled()) {
-            logger.info(this.getClass() + " started.");
+            logger.info(this.getClass().getSimpleName() + " started.");
         }
         skipWhiteSpace(inputChain,true);
         Optional<State<T>> currentState = Optional.empty();
@@ -50,7 +50,7 @@ public class FiniteStateMachine<T> {
             Optional<State<T>> nextState = stepForward(inputChain, outputChain, transitions);
             if (!nextState.isPresent()) {
                 if (logger.isInfoEnabled()) {
-                    logger.info(this.getClass() + " ended with status "
+                    logger.info(this.getClass().getSimpleName() + " ended with status "
                                         + currentState.filter(State::canBeFinish)
                                                       .map(state -> Status.FINISHED)
                                                       .orElse(Status.NOT_STARTED));

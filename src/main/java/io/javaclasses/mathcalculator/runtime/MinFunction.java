@@ -1,7 +1,10 @@
 package io.javaclasses.mathcalculator.runtime;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static io.javaclasses.mathcalculator.runtime.DoubleValueReader.readDouble;
 
 /**
  * This is implementation mathematical function that finds the minimum parameters of the two.
@@ -30,7 +33,11 @@ public class MinFunction extends Function {
 
     @Override
     public void execute(RuntimeEnvironment environment) {
-        environment.stack()
-                   .pushOperand(new DoubleValueHolder(apply(parameters(environment))));
+        List<Double> arguments= new ArrayList<>();
+        for(ValueHolder holder: parameters(environment))
+        {
+            arguments.add(readDouble(holder));
+        }
+        environment.stack().pushOperand(new DoubleValueHolder(apply(arguments)));
     }
 }

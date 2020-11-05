@@ -18,6 +18,13 @@ public class StringValueReader implements ValueHolderVisitor{
     public void visit(StringValueHolder holder) {
         this.value=holder.value();
     }
+
+    @Override
+    public void visit(BooleanValueHolder holder) {
+        throw new IllegalStateException("String value expected. ");
+
+    }
+
     public String value(){
         if(value==null)
         {

@@ -25,7 +25,7 @@ public class ReadVariableCommand implements Command {
                        .pushOperand(environment.memory()
                                                .get(name));
             if (logger.isInfoEnabled()) {
-                logger.info(this.getClass() + " :" + name +
+                logger.info(this.getClass().getSimpleName() + " :" + name +
                                     " exists");
             }
         } else {

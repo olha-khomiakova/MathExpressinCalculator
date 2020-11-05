@@ -1,6 +1,6 @@
 package io.javaclasses.mathcalculator.runtime;
 
-import io.javaclasses.mathcalculator.math.binaryoperator.BinaryOperator;
+import io.javaclasses.mathcalculator.math.BinaryOperator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +18,7 @@ public class PushBinaryOperatorCommand implements Command {
         environment.stack()
                    .pushBinaryOperator(binaryOperator);
         if (logger.isInfoEnabled()) {
-            logger.info(this.getClass() + " :" + binaryOperator);
+            logger.info(this.getClass().getSimpleName() + " :" + binaryOperator.getClass().getSimpleName());
 
         }
     }

@@ -8,6 +8,7 @@ import io.javaclasses.mathcalculator.runtime.PushExpressionCommand;
 
 import java.text.CharacterIterator;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,18 +22,21 @@ import static java.util.Arrays.asList;
  * 1) "a=5;"
  * 2) "print(a);"
  */
-public class StatementFiniteStateMachine extends FiniteStateMachine<List<Command>> {
+public class ProgramFiniteStateMachine extends FiniteStateMachine<List<Command>> {
 
-    StatementFiniteStateMachine(FSMFactory factory) {
-        State<List<Command>> initialization = new State<>(true, new FSMStateAcceptor(factory,
-                                                                                      FSMFactory.TypeFSM.INITIALIZATION));
-        State<List<Command>> procedure = new State<>(true, new FSMStateAcceptor(factory,
-                                                                                FSMFactory.TypeFSM.FUNCTION));
+    ProgramFiniteStateMachine(FSMFactory factory) {
+        State<List<Command>> statement = new State<>(false, new FSMStateAcceptor(factory,
+                                                                                 FSMFactory.TypeFSM.STATEMENT));
+        State<List<Command>> semicolon = new State<>(true,
+                                                     new RequiredCharacterStateAcceptorListCommands(
+                                                             ';'));
 
-        registerPossibleStartState(asList(initialization,procedure));
+        statement.addTransmission(semicolon);
+        semicolon.addTransmission(statement);
+        registerPossibleStartState(Collections.singletonList(statement));
     }
 
-    public Optional<Command> statement(CharacterIterator input) {
+    public Optional<Command> program(CharacterIterator input) {
         List<Command> commands = new ArrayList<>();
         Status status = run(input, commands);
         if (status == Status.FINISHED) {

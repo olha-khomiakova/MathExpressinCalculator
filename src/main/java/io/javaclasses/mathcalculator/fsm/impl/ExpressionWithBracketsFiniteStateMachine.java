@@ -27,15 +27,20 @@ public class ExpressionWithBracketsFiniteStateMachine extends FiniteStateMachine
         State<List<Command>> openingBrackets = new State<>(false,
                                                            new RequiredCharacterStateAcceptorListCommands(
                                                                    '('));
-        State<List<Command>> closingParenthesis = new State<>(true,
+        State<List<Command>> closingBrackets = new State<>(true,
                                                               new RequiredCharacterStateAcceptorListCommands(
                                                                       ')'));
         State<List<Command>> expression = new State<>(false,
                                                       new FSMStateAcceptor(factory,
                                                                            FSMFactory.TypeFSM.EXPRESSION));
+        State<List<Command>> booleanExpression = new State<>(false,
+                                                      new FSMStateAcceptor(factory,
+                                                                           FSMFactory.TypeFSM.BOOLEAN_EXPRESSION));
 
-        expression.addTransmission(closingParenthesis);
+        expression.addTransmission(closingBrackets);
         openingBrackets.addTransmission(expression);
+        booleanExpression.addTransmission(closingBrackets);
+        openingBrackets.addTransmission(booleanExpression);
 
         registerPossibleStartState(Collections.singletonList(openingBrackets));
     }

@@ -1,6 +1,6 @@
 package io.javaclasses.mathcalculator.runtime;
 
-import io.javaclasses.mathcalculator.math.binaryoperator.BinaryOperator;
+import io.javaclasses.mathcalculator.math.BinaryOperator;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -51,8 +51,8 @@ public class ShuntingYard {
         BinaryOperator operator = operators.pollLast();
         ValueHolder secondOperand = Objects.requireNonNull(operands.pollLast());
         ValueHolder firstOperand = Objects.requireNonNull(operands.pollLast());
-        this.operands.addLast(new DoubleValueHolder(operator.calculate(readDouble(firstOperand),
-                                                                       readDouble(secondOperand))));
+        this.operands.addLast(operator.calculate(readDouble(firstOperand),
+                                                                       readDouble(secondOperand)));
     }
 
     public void pushOperand(ValueHolder number) {

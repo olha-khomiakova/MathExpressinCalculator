@@ -17,7 +17,7 @@ public class PushOperandCommand implements Command {
         environment.stack()
                    .pushOperand(operand);
         if (logger.isInfoEnabled()) {
-            logger.info(this.getClass() + " :" + operand);
+            logger.info(this.getClass().getSimpleName() + " :" + operand);
 
         }
     }

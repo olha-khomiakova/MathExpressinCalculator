@@ -11,14 +11,16 @@ import java.text.CharacterIterator;
 import java.util.Optional;
 
 /**
- * Implementation of {@link StateAcceptor} that starts {@link ExpressionStateAcceptorListCommands},
+ * Implementation of {@link StateAcceptor} that starts {@link },
  * defines whether the transition from one state to expression state is possible
  * and if possible adds result as a function parameter to the outputChain.
  */
 public class ExpressionStateAcceptorDataStructure implements StateAcceptor<DataStructure> {
 private final FSMFactory factory;
-    ExpressionStateAcceptorDataStructure(FSMFactory factory) {
+private final FSMFactory.TypeFSM typeFSM;
+    ExpressionStateAcceptorDataStructure(FSMFactory factory, FSMFactory.TypeFSM type) {
         this.factory=factory;
+        typeFSM=type;
     }
 
     /**
@@ -34,7 +36,7 @@ private final FSMFactory factory;
      */
     @Override
     public boolean accept(CharacterIterator inputChain, DataStructure outputChain) {
-        CompilerElement compilerElement = factory.create(FSMFactory.TypeFSM.EXPRESSION);
+        CompilerElement compilerElement = factory.create(typeFSM);
         Optional<Command> command=compilerElement.compile(inputChain);
         if (command.isPresent()) {
             outputChain.addFunctionParameter(command.get());

@@ -4,6 +4,8 @@ import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
 import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
 import io.javaclasses.mathcalculator.runtime.Command;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.CharacterIterator;
 import java.util.List;
@@ -19,6 +21,7 @@ public class FSMStateAcceptor implements StateAcceptor<List<Command>> {
 
     private final FSMFactory factory;
     private final FSMFactory.TypeFSM typeFSM;
+    private final Logger logger = LoggerFactory.getLogger(FSMStateAcceptor.class);
 
     FSMStateAcceptor(FSMFactory factory, FSMFactory.TypeFSM typeFSM) {
         this.factory = factory;
@@ -43,6 +46,10 @@ public class FSMStateAcceptor implements StateAcceptor<List<Command>> {
         Optional<Command> command = compilerElement.compile(inputChain);
         if (command.isPresent()) {
             outputChain.add(command.get());
+
+            if (logger.isInfoEnabled()) {
+                logger.info(this.getClass().getSimpleName()+" add "+ command.get().getClass().getSimpleName());
+            }
             return true;
         }
         inputChain.setIndex(indexInputChain);

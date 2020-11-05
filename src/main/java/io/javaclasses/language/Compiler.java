@@ -34,7 +34,7 @@ class Compiler {
     public void compile(String stringProgram, RuntimeEnvironment environment) {
         CharacterIterator program = new StringCharacterIterator(stringProgram);
         FSMFactory factory = new FSMFactoryImpl();
-        CompilerElement compilerElement = factory.create(FSMFactory.TypeFSM.STATEMENT);
+        CompilerElement compilerElement = factory.create(FSMFactory.TypeFSM.PROGRAM);
         Optional<Command> command = compilerElement.compile(program);
         if (program.getIndex() != program.getEndIndex() || !command.isPresent()) {
             throw new IncorrectStatementException("Incorrectly entered statement in position " +

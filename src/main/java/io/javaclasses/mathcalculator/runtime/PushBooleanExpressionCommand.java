@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class PushExpressionCommand implements Command {
+public class PushBooleanExpressionCommand implements Command {
 
     private final Logger logger = LoggerFactory.getLogger(PushBinaryOperatorCommand.class);
     private final List<Command> commandList;
 
-    public PushExpressionCommand(List<Command> list) {
+    public PushBooleanExpressionCommand(List<Command> list) {
         this.commandList = new ArrayList<>(list);
     }
 
@@ -29,7 +29,7 @@ public class PushExpressionCommand implements Command {
             environment.stack()
                        .pushOperand(result.get());
             if (logger.isInfoEnabled()) {
-                logger.info(this.getClass().getSimpleName() + " :" + result);
+                logger.info(this.getClass().getSimpleName() + " :" + result.get());
             }
         }
 

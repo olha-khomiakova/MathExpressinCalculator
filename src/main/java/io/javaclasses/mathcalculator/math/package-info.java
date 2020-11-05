@@ -1,4 +1,4 @@
-package io.javaclasses.mathcalculator.math.binaryoperator;
+package io.javaclasses.mathcalculator.math;
 /*
   In this package implemented:
     - binary operators;

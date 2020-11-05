@@ -1,10 +1,12 @@
 package io.javaclasses.mathcalculator.fsm.impl;
 
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
-import io.javaclasses.mathcalculator.math.binaryoperator.BinaryOperator;
-import io.javaclasses.mathcalculator.math.binaryoperator.BinaryOperatorFactory;
+import io.javaclasses.mathcalculator.math.BinaryOperator;
+import io.javaclasses.mathcalculator.math.BinaryOperatorFactory;
 import io.javaclasses.mathcalculator.runtime.Command;
 import io.javaclasses.mathcalculator.runtime.PushBinaryOperatorCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.CharacterIterator;
 import java.util.List;
@@ -30,12 +32,17 @@ public class BinaryOperatorStateAcceptor implements StateAcceptor<List<Command>>
      */
     @Override
     public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
+        final Logger logger = LoggerFactory.getLogger(BinaryOperatorStateAcceptor.class);
+
         char currentCharacter = inputChain.current();
         Optional<BinaryOperator> binaryOperator =
-                new BinaryOperatorFactory().getRequiredBinaryOperator(currentCharacter);
+                new BinaryOperatorFactory().getBinaryOperator(currentCharacter);
         if (binaryOperator.isPresent()) {
             outputChain.add(new PushBinaryOperatorCommand(binaryOperator.get()));
-
+            if (logger.isInfoEnabled()) {
+                logger.info(this.getClass()
+                                .getSimpleName() + " add " + currentCharacter);
+            }
             inputChain.next();
             return true;
         }

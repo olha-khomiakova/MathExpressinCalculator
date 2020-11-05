@@ -4,6 +4,7 @@ import io.javaclasses.mathcalculator.runtime.Command;
 import io.javaclasses.mathcalculator.runtime.Function;
 import io.javaclasses.mathcalculator.runtime.RuntimeEnvironment;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,11 @@ public class MaxFunction extends Function {
 
     @Override
     public void execute(RuntimeEnvironment environment) {
-        environment.stack().pushOperand(new DoubleValueHolder(apply(parameters(environment))));
+        List<Double> arguments= new ArrayList<>();
+        for(ValueHolder holder: parameters(environment))
+        {
+            arguments.add(readDouble(holder));
+        }
+        environment.stack().pushOperand(new DoubleValueHolder(apply(arguments)));
     }
 }

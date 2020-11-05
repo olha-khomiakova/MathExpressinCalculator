@@ -1,16 +1,16 @@
-package io.javaclasses.mathcalculator.math.binaryoperator;
+package io.javaclasses.mathcalculator.math;
 
-import io.javaclasses.mathcalculator.runtime.DoubleValueHolder;
+import io.javaclasses.mathcalculator.runtime.BooleanValueHolder;
 import io.javaclasses.mathcalculator.runtime.ValueHolder;
 
 /**
  * Implementation of {@link BinaryOperator} that calculates the addition of two operands .
  */
-public class AdditionBinaryOperator implements BinaryOperator {
+public class GreaterBooleanOperator implements BinaryOperator {
 
     private final BinaryOperator.priority priority;
 
-    public AdditionBinaryOperator(BinaryOperator.priority priority) {
+    public GreaterBooleanOperator(BinaryOperator.priority priority) {
         this.priority = priority;
     }
 
@@ -24,12 +24,13 @@ public class AdditionBinaryOperator implements BinaryOperator {
      * @return addition result
      */
     @Override
-    public double calculate(double firstOperand, double secondOperand) {
-        return firstOperand + secondOperand;
+    public ValueHolder calculate(double firstOperand, double secondOperand) {
+        return new BooleanValueHolder(firstOperand > secondOperand);
     }
 
     @Override
-    public BinaryOperator.priority priority() {
-        return this.priority;
+    public priority priority() {
+        return priority;
     }
+
 }

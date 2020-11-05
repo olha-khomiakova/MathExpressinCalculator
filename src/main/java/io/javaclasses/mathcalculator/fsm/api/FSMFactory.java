@@ -14,7 +14,8 @@ public interface FSMFactory {
         CALCULATED,
         INITIALIZATION,
         STATEMENT,
-        //PROCEDURE
+        PROGRAM,
+        BOOLEAN_EXPRESSION
     }
 
     /**

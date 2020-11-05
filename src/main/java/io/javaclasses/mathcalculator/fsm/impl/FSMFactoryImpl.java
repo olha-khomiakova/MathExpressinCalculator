@@ -44,10 +44,15 @@ public class FSMFactoryImpl implements FSMFactory {
                             this);
                     return fsm.initialization(input);
                 };
-//            case PROCEDURE:
+            case PROGRAM:
+                return input -> {
+                    ProgramFiniteStateMachine fsm = new ProgramFiniteStateMachine(this);
+                    return fsm.program(input);
+                };
+//            case BOOLEAN_EXPRESSION:
 //                return input -> {
-//                    ProcedureFiniteStateMachine fsm = new ProcedureFiniteStateMachine(this);
-//                    return fsm.procedure(input);
+//                    BooleanExpressionFiniteStateMachine fsm = new BooleanExpressionFiniteStateMachine(this);
+//                    return fsm.booleanExpression(input);
 //                };
             default:
                 throw new RuntimeException(typeFSM + " type is not served by this compiler");

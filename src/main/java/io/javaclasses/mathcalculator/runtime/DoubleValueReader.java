@@ -15,14 +15,20 @@ public class DoubleValueReader implements ValueHolderVisitor{
 
     @Override
     public void visit(StringValueHolder holder) {
-        throw new IllegalStateException("Expected double.");
+        throw new IllegalStateException("Double value expected. ");
     }
 
-    public double value(){
-        if(value==null)
-        {
-            throw new IllegalStateException("Double value expected.");
-        }
-        return value;
+    @Override
+    public void visit(BooleanValueHolder holder) {
+        throw new IllegalStateException("Double value expected.");
+
     }
+//
+//    public double value(){
+//        if(value==null)
+//        {
+//            throw new IllegalStateException("Double value expected.");
+//        }
+//        return value;
+//    }
 }

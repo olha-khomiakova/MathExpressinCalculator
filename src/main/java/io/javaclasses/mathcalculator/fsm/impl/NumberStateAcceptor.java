@@ -5,6 +5,8 @@ import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
 import io.javaclasses.mathcalculator.runtime.Command;
 import io.javaclasses.mathcalculator.runtime.ShuntingYard;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.StringWriter;
 import java.text.CharacterIterator;
@@ -18,6 +20,7 @@ import java.util.Optional;
  */
 public class NumberStateAcceptor implements StateAcceptor<List<Command>> {
     private final FSMFactory factory;
+
     NumberStateAcceptor(FSMFactory factory) {
         this.factory=factory;
     }

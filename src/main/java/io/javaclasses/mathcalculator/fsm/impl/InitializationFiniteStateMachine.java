@@ -21,17 +21,23 @@ import java.util.Optional;
  */
 public class InitializationFiniteStateMachine extends FiniteStateMachine<DataStructure> {
 
-     InitializationFiniteStateMachine(FSMFactory factory) {
+    InitializationFiniteStateMachine(FSMFactory factory) {
         State<DataStructure> variable = new State<>(false,
-                                                       new FunctionNameStateAcceptor());
+                                                    new NameStateAcceptor());
         State<DataStructure> equalSign = new State<>(false,
-                                                        new RequiredCharacterStateAcceptorFunction(
-                                                                        '='));
+                                                     new RequiredCharacterStateAcceptorFunction(
+                                                             '='));
         State<DataStructure> expression = new State<>(true,
-                                                         new ExpressionStateAcceptorDataStructure(factory));
+                                                      new ExpressionStateAcceptorDataStructure(
+                                                              factory, FSMFactory.TypeFSM.EXPRESSION));
 
+        State<DataStructure> booleanExpression = new State<>(true,
+                                                             new ExpressionStateAcceptorDataStructure(
+                                                                     factory,
+                                                                     FSMFactory.TypeFSM.BOOLEAN_EXPRESSION));
         variable.addTransmission(equalSign);
         equalSign.addTransmission(expression);
+        equalSign.addTransmission(booleanExpression);
 
         registerPossibleStartState(Collections.singletonList(variable));
     }
@@ -40,7 +46,8 @@ public class InitializationFiniteStateMachine extends FiniteStateMachine<DataStr
         DataStructure dataStructure = new DataStructure();
         Status status = run(input, dataStructure);
         if (status == Status.FINISHED) {
-            return Optional.of(new PushVariableCommand(dataStructure.name(),dataStructure.parameters()));
+            return Optional.of(
+                    new PushVariableCommand(dataStructure.name(), dataStructure.parameters()));
         }
         return Optional.empty();
     }

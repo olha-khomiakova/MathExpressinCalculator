@@ -16,7 +16,7 @@ public class Print extends Function {
 
     @Override
     public void execute(RuntimeEnvironment environment) {
-        List<Double> parameters = parameters(environment);
+        List<ValueHolder> parameters = parameters(environment);
         try {
             environment.output()
                        .write(parameters.toString()
