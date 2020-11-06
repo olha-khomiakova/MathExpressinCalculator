@@ -1,4 +1,4 @@
-package io.javaclasses.language;
+package io.javaclasses.monkey;
 /*
     In this package implemented service that compile and interpret a program presented
     as a character iterator. Statements may contain initialization variables some mathematical

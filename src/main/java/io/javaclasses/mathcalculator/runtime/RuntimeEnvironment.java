@@ -1,6 +1,7 @@
 package io.javaclasses.mathcalculator.runtime;
 
 import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -14,7 +15,10 @@ public class RuntimeEnvironment {
     private final Memory memory = new Memory();
     private final ByteArrayOutputStream output = new ByteArrayOutputStream();
 
+    private final PrintStream outputFacade = new PrintStream(output);
+
     public RuntimeEnvironment() {
+
         startStack();
     }
 
@@ -29,7 +33,7 @@ public class RuntimeEnvironment {
      * This API closes stack when expression was evaluated.
      */
     void closeStack() {
-        stack.poll();
+        stack.pop();
     }
 
     public ShuntingYard stack() {
@@ -40,7 +44,12 @@ public class RuntimeEnvironment {
         return this.memory;
     }
 
-    public ByteArrayOutputStream output() {
-        return this.output;
+    public PrintStream output() {
+        return this.outputFacade;
+    }
+
+    public String outputAsText() {
+
+        return output.toString();
     }
 }

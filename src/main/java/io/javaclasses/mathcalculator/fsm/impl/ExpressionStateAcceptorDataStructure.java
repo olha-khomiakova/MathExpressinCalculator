@@ -13,7 +13,7 @@ import java.util.Optional;
  * defines whether the transition from one state to expression state is possible
  * and if possible adds result as a function parameter to the outputChain.
  */
-public class ExpressionStateAcceptorDataStructure implements StateAcceptor<DataStructure> {
+public class ExpressionStateAcceptorDataStructure implements StateAcceptor<NameAndParametersOutputChain> {
 
     private final FSMFactory factory;
 
@@ -28,12 +28,12 @@ public class ExpressionStateAcceptorDataStructure implements StateAcceptor<DataS
      * @param inputChain
      *         is an iterable string with input data
      * @param outputChain
-     *         is an {@link DataStructure} to which will be added result of ExpressionFSM.
+     *         is an {@link NameAndParametersOutputChain} to which will be added result of ExpressionFSM.
      * @return true if the FSM has worked successfully
      *         and added the result to the outputChain, otherwise it returns false
      */
     @Override
-    public boolean accept(CharacterIterator inputChain, DataStructure outputChain) {
+    public boolean accept(CharacterIterator inputChain, NameAndParametersOutputChain outputChain) {
         CompilerElement compilerElement = factory.create(FSMFactory.TypeFSM.EXPRESSION);
         Optional<Command> command = compilerElement.compile(inputChain);
         if (command.isPresent()) {

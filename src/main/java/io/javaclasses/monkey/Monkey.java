@@ -1,4 +1,4 @@
-package io.javaclasses.language;
+package io.javaclasses.monkey;
 
 import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
 import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
@@ -23,27 +23,36 @@ import java.util.Optional;
  * 2) "a=min(2,5)<4;"
  */
 
-class Compiler {
+class Monkey {
 
     /**
      * This is API that compiles a program, gets {@link Command} and execute it.
      *
-     * @param stringProgram
-     *         is character iterator that stores program code
-     * @param environment
-     *         is data structure that stores, output stream, system stack
+     * @param stringProgram is character iterator that stores program code
+     * @param environment   is data structure that stores, output stream, system stack
      */
-    public void compile(String stringProgram, RuntimeEnvironment environment) {
+    // todo: add throws section
+    public void interpret(String stringProgram, RuntimeEnvironment environment) {
+
         CharacterIterator program = new StringCharacterIterator(stringProgram);
         FSMFactory factory = new FSMFactoryImpl();
-        CompilerElement compilerElement = factory.create(FSMFactory.TypeFSM.PROGRAM);
-        Optional<Command> command = compilerElement.compile(program);
-        if (program.getIndex() != program.getEndIndex() || !command.isPresent()) {
+
+        CompilerElement compiler = factory.create(FSMFactory.TypeFSM.PROGRAM);
+
+        Optional<Command> command = compiler.compile(program);
+
+        if (command.isEmpty()) {
+
             throw new IncorrectStatementException("Incorrectly entered statement in position " +
-                                                          program.getIndex() + '.',
-                                                  program.getIndex());
+                    program.getIndex() + '.',
+                    program.getIndex());
         }
-        command.get()
-               .execute(environment);
+
+        command.get().execute(environment);
+
+        if (environment.stack() != null) {
+
+            throw new IllegalStateException("Shunting Yard stack is not closed.");
+        }
     }
 }

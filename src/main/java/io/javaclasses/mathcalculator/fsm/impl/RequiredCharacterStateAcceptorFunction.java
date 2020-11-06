@@ -9,7 +9,7 @@ import java.text.CharacterIterator;
  * next state is possible and returns decision whether the transition to the next state is accepted.
  * If possible move an iterator forward in an inputChain.
  */
-public class RequiredCharacterStateAcceptorFunction implements StateAcceptor<DataStructure> {
+public class RequiredCharacterStateAcceptorFunction implements StateAcceptor<NameAndParametersOutputChain> {
 
     private final char requiredCharacter;
 
@@ -23,12 +23,12 @@ public class RequiredCharacterStateAcceptorFunction implements StateAcceptor<Dat
      * @param inputChain
      *         is an iterable string with input data
      * @param outputChain
-     *         is an {@link DataStructure}
+     *         is an {@link NameAndParametersOutputChain}
      * @return true if an current character is the same as required,
      *         otherwise it returns false
      */
     @Override
-    public boolean accept(CharacterIterator inputChain, DataStructure outputChain) {
+    public boolean accept(CharacterIterator inputChain, NameAndParametersOutputChain outputChain) {
 
         char currentCharacter = inputChain.current();
         if (this.requiredCharacter == currentCharacter) {

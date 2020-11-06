@@ -20,9 +20,9 @@ import static java.util.Arrays.asList;
  * 1) "a=5;"
  * 2) "print(a);"
  */
-class StatementFiniteStateMachine extends FiniteStateMachine<List<Command>> {
+class Statement extends FiniteStateMachine<List<Command>> {
 
-    StatementFiniteStateMachine(FSMFactory factory) {
+    Statement(FSMFactory factory) {
         State<List<Command>> initialization = new State<>(true, new FSMStateAcceptor(factory,
                                                                                      FSMFactory.TypeFSM.INITIALIZATION));
         State<List<Command>> procedure = new State<>(true, new FSMStateAcceptor(factory,
@@ -41,7 +41,7 @@ class StatementFiniteStateMachine extends FiniteStateMachine<List<Command>> {
      * @return {@link Optional<Command>}, if the status of run is FINISHED,
      *         else return Optional.empty()
      */
-    Optional<Command> statement(CharacterIterator input) {
+    Optional<Command> compile(CharacterIterator input) {
         List<Command> commands = new ArrayList<>();
         Status status = run(input, commands);
         if (status == Status.FINISHED) {

@@ -3,7 +3,6 @@ package io.javaclasses.mathcalculator.runtime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * This is implementation of {@link Command} and general representing of function that stores
@@ -19,6 +18,7 @@ public abstract class Function implements Command {
 
     Function(int minimumNumber, int maximumNumber, String functionName,
              Collection<Command> parameters) {
+
         this.functionParameters.addAll(parameters);
         this.minimumNumberOfParameters = minimumNumber;
         this.maximumNumberOfParameters = maximumNumber;
@@ -28,19 +28,22 @@ public abstract class Function implements Command {
     /**
      * This is API that defines the parameters in numerical form.
      *
-     * @param environment
-     *         is data structure for storing {@link Memory}, {@link java.util.Deque<ShuntingYard>},
-     *         {@link java.io.ByteArrayOutputStream} and processing them
+     * @param environment is data structure for storing {@link Memory}, {@link java.util.Deque<ShuntingYard>},
+     *                    {@link java.io.ByteArrayOutputStream} and processing them
      * @return list of function or procedure parameters
      */
     List<ValueHolder> parameters(RuntimeEnvironment environment) {
+
         List<ValueHolder> parameters = new ArrayList<>();
+
         for (Command command : functionParameters) {
+
             environment.startStack();
             command.execute(environment);
-            Optional<ValueHolder> result = environment.stack()
-                                                      .result();
-            result.ifPresent(parameters::add);
+
+            ValueHolder result = environment.stack().result();
+
+            parameters.add(result);
             environment.closeStack();
         }
         return parameters;
@@ -50,10 +53,10 @@ public abstract class Function implements Command {
         if (numberOfParameters > maximumNumberOfParameters ||
                 numberOfParameters < minimumNumberOfParameters) {
             throw new IncorrectFunctionException("Wrong number of function parameters! " +
-                                                         functionName + " function can have " +
-                                                         minimumNumberOfParameters + " to " +
-                                                         maximumNumberOfParameters +
-                                                         " parameters.");
+                    functionName + " function can have " +
+                    minimumNumberOfParameters + " to " +
+                    maximumNumberOfParameters +
+                    " parameters.");
         }
     }
 

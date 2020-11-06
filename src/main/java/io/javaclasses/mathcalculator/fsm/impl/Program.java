@@ -19,17 +19,23 @@ import java.util.Optional;
  * 1) " a = 5>6; print(a);"
  * 2) "max=3.9543; result = max < min(2+2,3+3)*2; print(result);"
  */
-class ProgramFiniteStateMachine extends FiniteStateMachine<List<Command>> {
+class Program extends FiniteStateMachine<List<Command>> {
 
-    ProgramFiniteStateMachine(FSMFactory factory) {
+    Program(FSMFactory factory) {
+
         State<List<Command>> statement = new State<>(false, new FSMStateAcceptor(factory,
-                                                                                 FSMFactory.TypeFSM.STATEMENT));
-        State<List<Command>> semicolon = new State<>(true,
-                                                     new RequiredCharacterStateAcceptorListCommands(
-                                                             ';'));
+                FSMFactory.TypeFSM.STATEMENT));
+
+        State<List<Command>> semicolon = new State<>(false,
+                new RequiredCharacterStateAcceptorListCommands(';'));
+
+        State<List<Command>> endOfProgram = new State<>(true,
+                new RequiredCharacterStateAcceptorListCommands(CharacterIterator.DONE));
 
         statement.addTransmission(semicolon);
         semicolon.addTransmission(statement);
+        semicolon.addTransmission(endOfProgram);
+
         registerPossibleStartState(Collections.singletonList(statement));
     }
 
@@ -38,12 +44,11 @@ class ProgramFiniteStateMachine extends FiniteStateMachine<List<Command>> {
      * If the status is FINISHED, it returns the {@link Optional<Command>}
      * in which the parsed commands are stored, else return Optional.empty();
      *
-     * @param input
-     *         is an iterable string with input data
+     * @param input is an iterable string with input data
      * @return {@link Optional<Command>}, if the status of run is FINISHED,
-     *         else return Optional.empty()
+     * else return Optional.empty()
      */
-    Optional<Command> program(CharacterIterator input) {
+    Optional<Command> compile(CharacterIterator input) {
         List<Command> commands = new ArrayList<>();
         Status status = run(input, commands);
         if (status == Status.FINISHED) {

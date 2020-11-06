@@ -17,20 +17,20 @@ import java.util.Optional;
  * 2) max(x,y)
  * 3) print(x)
  */
-class FunctionFiniteStateMachine extends FiniteStateMachine<DataStructure> {
+class FunctionFiniteStateMachine extends FiniteStateMachine<NameAndParametersOutputChain> {
 
     FunctionFiniteStateMachine(FSMFactory factory) {
-        State<DataStructure> name = new State<>(false, new NameStateAcceptor());
-        State<DataStructure> openingBrackets = new State<>(false,
+        State<NameAndParametersOutputChain> name = new State<>(false, new NameStateAcceptor());
+        State<NameAndParametersOutputChain> openingBrackets = new State<>(false,
                                                            new RequiredCharacterStateAcceptorFunction(
                                                                    '('));
-        State<DataStructure> expression = new State<>(false,
+        State<NameAndParametersOutputChain> expression = new State<>(false,
                                                       new ExpressionStateAcceptorDataStructure(
                                                               factory));
-        State<DataStructure> closingBrackets = new State<>(true,
+        State<NameAndParametersOutputChain> closingBrackets = new State<>(true,
                                                            new RequiredCharacterStateAcceptorFunction(
                                                                    ')'));
-        State<DataStructure> comma = new State<>(false,
+        State<NameAndParametersOutputChain> comma = new State<>(false,
                                                  new RequiredCharacterStateAcceptorFunction(
                                                          ','));
 
@@ -54,11 +54,11 @@ class FunctionFiniteStateMachine extends FiniteStateMachine<DataStructure> {
      *         else return Optional.empty()
      */
     public Optional<Command> function(CharacterIterator input) {
-        DataStructure dataStructure = new DataStructure();
-        Status status = run(input, dataStructure);
+        NameAndParametersOutputChain nameAndParameters = new NameAndParametersOutputChain();
+        Status status = run(input, nameAndParameters);
         if (status == Status.FINISHED) {
-            return Optional.of(new FunctionFactory(dataStructure.name(),
-                                                   dataStructure.parameters()).create());
+            return Optional.of(new FunctionFactory(nameAndParameters.name(),
+                                                   nameAndParameters.parameters()).create());
         }
         return Optional.empty();
     }

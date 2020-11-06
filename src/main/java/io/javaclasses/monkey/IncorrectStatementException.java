@@ -1,4 +1,4 @@
-package io.javaclasses.language;
+package io.javaclasses.monkey;
 
 /**
  * This is exception that appears if statement are incorrect doe to syntax error.

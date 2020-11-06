@@ -3,7 +3,6 @@ package io.javaclasses.mathcalculator.runtime;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Objects;
-import java.util.Optional;
 
 import static io.javaclasses.mathcalculator.runtime.DoubleValueReader.readDouble;
 
@@ -25,18 +24,20 @@ public class ShuntingYard {
         }
     }
 
-    public Optional<ValueHolder> result() {
+    public ValueHolder result() {
+
         popAllOperators();
-        return Optional.ofNullable(operands.peek());
+        return operands.peek();
     }
 
     void pushBinaryOperator(BinaryOperator operator) {
+
         if (operators.peekLast() != null) {
             if (operator.priority()
-                        .ordinal() <=
+                    .ordinal() <=
                     Objects.requireNonNull(operators.peekLast())
-                           .priority()
-                           .ordinal()) {
+                            .priority()
+                            .ordinal()) {
                 calculatePreviousOperator();
                 pushBinaryOperator(operator);
                 return;
@@ -50,7 +51,7 @@ public class ShuntingYard {
         ValueHolder secondOperand = Objects.requireNonNull(operands.pollLast());
         ValueHolder firstOperand = Objects.requireNonNull(operands.pollLast());
         this.operands.addLast(operator.apply(readDouble(firstOperand),
-                                             readDouble(secondOperand)));
+                readDouble(secondOperand)));
     }
 
     public void pushOperand(ValueHolder number) {

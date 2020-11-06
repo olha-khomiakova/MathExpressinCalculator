@@ -28,10 +28,13 @@ class MaxFunction extends Function {
 
     @Override
     public void execute(RuntimeEnvironment environment) {
+
         Collection<Double> arguments = new ArrayList<>();
+
         for (ValueHolder holder : parameters(environment)) {
             arguments.add(readDouble(holder));
         }
+
         if (apply(arguments).isPresent()) {
             environment.stack()
                        .pushOperand(new DoubleValueHolder(apply(arguments).get()));

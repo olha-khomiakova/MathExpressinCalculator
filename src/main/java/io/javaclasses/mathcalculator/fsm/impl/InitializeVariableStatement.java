@@ -4,7 +4,7 @@ import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
 import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.State;
 import io.javaclasses.mathcalculator.runtime.Command;
-import io.javaclasses.mathcalculator.runtime.PushVariableCommand;
+import io.javaclasses.mathcalculator.runtime.InitializeVariableCommand;
 
 import java.text.CharacterIterator;
 import java.util.Collections;
@@ -18,15 +18,16 @@ import java.util.Optional;
  * 1) "a = 5"
  * 2) "res = 3<1"
  */
-class InitializationFiniteStateMachine extends FiniteStateMachine<DataStructure> {
+class InitializeVariableStatement extends FiniteStateMachine<NameAndParametersOutputChain> {
 
-    InitializationFiniteStateMachine(FSMFactory factory) {
-        State<DataStructure> variable = new State<>(false,
+    InitializeVariableStatement(FSMFactory factory) {
+
+        State<NameAndParametersOutputChain> variable = new State<>(false,
                                                     new NameStateAcceptor());
-        State<DataStructure> equalSign = new State<>(false,
+        State<NameAndParametersOutputChain> equalSign = new State<>(false,
                                                      new RequiredCharacterStateAcceptorFunction(
                                                              '='));
-        State<DataStructure> expression = new State<>(true,
+        State<NameAndParametersOutputChain> expression = new State<>(true,
                                                       new ExpressionStateAcceptorDataStructure(
                                                               factory));
 
@@ -46,12 +47,13 @@ class InitializationFiniteStateMachine extends FiniteStateMachine<DataStructure>
      * @return {@link Optional<Command>}, if the status of run is FINISHED,
      *         else return Optional.empty()
      */
-    public Optional<Command> initialization(CharacterIterator input) {
-        DataStructure dataStructure = new DataStructure();
-        Status status = run(input, dataStructure);
+    public Optional<Command> compile(CharacterIterator input) {
+
+        NameAndParametersOutputChain nameAndParameters = new NameAndParametersOutputChain();
+        Status status = run(input, nameAndParameters);
         if (status == Status.FINISHED) {
             return Optional.of(
-                    new PushVariableCommand(dataStructure.name(), dataStructure.parameters()));
+                    new InitializeVariableCommand(nameAndParameters.name(), nameAndParameters.parameters()));
         }
         return Optional.empty();
     }

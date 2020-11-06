@@ -11,7 +11,8 @@ import java.util.List;
  * This is a data structure that stores a name and values or parameters of functions, variable
  * or procedure.
  */
-class DataStructure {
+// todo: consider name FunctionOutputStructure
+class NameAndParametersOutputChain {
 
     private StringWriter name;
     private final List<Command> parameters = new ArrayList<>();
