@@ -3,59 +3,62 @@ package io.javaclasses.mathcalculator.fsm.impl;
 import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
 import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
 
+import java.util.EnumMap;
+
+/**
+ * This is part of abstract factory pattern that is a implementation of {@link FSMFactory}.
+ * It creates certain {@link CompilerElement}, which has
+ */
+
 public class FSMFactoryImpl implements FSMFactory {
+
+    private final EnumMap<TypeFSM, CompilerElement> fsmMap = new EnumMap<>(TypeFSM.class);
+
+    public FSMFactoryImpl() {
+        fsmMap.put(TypeFSM.NUMBER, input -> {
+            NumberFiniteStateMachine fsm = new NumberFiniteStateMachine();
+            return fsm.number(input);
+        });
+        fsmMap.put(TypeFSM.EXPRESSION, input -> {
+            ExpressionFiniteStateMachine fsm = new ExpressionFiniteStateMachine(this);
+            return fsm.expression(input);
+        });
+        fsmMap.put(TypeFSM.EXPRESSION_WITH_BRACKETS, input -> {
+            ExpressionWithBracketsFiniteStateMachine fsm =
+                    new ExpressionWithBracketsFiniteStateMachine(this);
+            return fsm.expressionWithBrackets(input);
+        });
+        fsmMap.put(TypeFSM.FUNCTION, input -> {
+            FunctionFiniteStateMachine fsm = new FunctionFiniteStateMachine(this);
+            return fsm.function(input);
+        });
+        fsmMap.put(TypeFSM.CALCULATED, input -> {
+            CalculatedFiniteStateMachine fsm = new CalculatedFiniteStateMachine(this);
+            return fsm.calculated(input);
+        });
+        fsmMap.put(TypeFSM.STATEMENT, input -> {
+            StatementFiniteStateMachine fsm = new StatementFiniteStateMachine(this);
+            return fsm.statement(input);
+        });
+        fsmMap.put(TypeFSM.INITIALIZATION, input -> {
+            InitializationFiniteStateMachine fsm = new InitializationFiniteStateMachine(
+                    this);
+            return fsm.initialization(input);
+        });
+        fsmMap.put(TypeFSM.PROGRAM, input -> {
+            ProgramFiniteStateMachine fsm = new ProgramFiniteStateMachine(this);
+            return fsm.program(input);
+        });
+
+    }
+
+    /**
+     * This method return certain {@link CompilerElement} type.
+     *
+     * @return required compiler element
+     */
     @Override
     public CompilerElement create(TypeFSM typeFSM) {
-        switch (typeFSM) {
-            case NUMBER:
-                return input -> {
-                    NumberFiniteStateMachine fsm = new NumberFiniteStateMachine();
-                    return fsm.number(input);
-                };
-            case EXPRESSION:
-                return input -> {
-                    ExpressionFiniteStateMachine fsm = new ExpressionFiniteStateMachine(this);
-                    return fsm.expression(input);
-                };
-            case EXPRESSION_WITH_BRACKETS:
-                return input -> {
-                    ExpressionWithBracketsFiniteStateMachine fsm =
-                            new ExpressionWithBracketsFiniteStateMachine(this);
-                    return fsm.expressionWithBrackets(input);
-                };
-            case FUNCTION:
-                return input -> {
-                    FunctionFiniteStateMachine fsm = new FunctionFiniteStateMachine(this);
-                    return fsm.function(input);
-                };
-            case CALCULATED:
-                return input -> {
-                    CalculatedFiniteStateMachine fsm = new CalculatedFiniteStateMachine(this);
-                    return fsm.calculated(input);
-                };
-            case STATEMENT:
-                return input -> {
-                    StatementFiniteStateMachine fsm = new StatementFiniteStateMachine(this);
-                    return fsm.statement(input);
-                };
-            case INITIALIZATION:
-                return input -> {
-                    InitializationFiniteStateMachine fsm = new InitializationFiniteStateMachine(
-                            this);
-                    return fsm.initialization(input);
-                };
-            case PROGRAM:
-                return input -> {
-                    ProgramFiniteStateMachine fsm = new ProgramFiniteStateMachine(this);
-                    return fsm.program(input);
-                };
-//            case BOOLEAN_EXPRESSION:
-//                return input -> {
-//                    BooleanExpressionFiniteStateMachine fsm = new BooleanExpressionFiniteStateMachine(this);
-//                    return fsm.booleanExpression(input);
-//                };
-            default:
-                throw new RuntimeException(typeFSM + " type is not served by this compiler");
-        }
+        return fsmMap.get(typeFSM);
     }
 }

@@ -3,8 +3,13 @@ package io.javaclasses.mathcalculator.runtime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
+/**
+ * This service is factory that contains various of mathematical functions
+ * and procedures.
+ * Mathematical functions may be : min(), max().
+ * Procedure may be : print().
+ */
 public class FunctionFactory {
 
     private final Map<String, Creator> functionMap = new HashMap<>();
@@ -12,13 +17,12 @@ public class FunctionFactory {
 
     public FunctionFactory(String name, List<Command> commands) {
         this.name = name;
-        functionMap.put("print", () -> new Print(1, 100, commands));
-//        functionMap.put("delete", () -> new Delete(1, 1,
-//                                                   commands));
-        functionMap.put("min", () -> new MinFunction(2, 2,
-                                                     commands));
-        functionMap.put("max", () -> new MaxFunction(2, 2,
-                                                     commands));
+        functionMap.put("print", () -> new Print(commands));
+
+        functionMap.put("min", () -> new MinFunction(
+                commands));
+        functionMap.put("max", () -> new MaxFunction(
+                commands));
     }
 
     /**
@@ -27,15 +31,19 @@ public class FunctionFactory {
      *
      * @return required function
      */
-    public Optional<Function> create() {
+    public Function create() {
         if (!functionMap.containsKey(name)) {
             throw new IncorrectFunctionException(
-                    "Cannot resolve \""+name+"\".");
+                    "Cannot resolve \"" + name + "\".");
         }
-        return Optional.of(functionMap.get(name).create());
+        Function function = functionMap.get(name)
+                                       .create();
+        function.accept(function.size());
+        return function;
     }
 
     private interface Creator {
+
         Function create();
     }
 }

@@ -1,6 +1,5 @@
 package io.javaclasses.language;
 
-import io.javaclasses.mathcalculator.runtime.CallingANonExistentVariableException;
 import io.javaclasses.mathcalculator.runtime.RuntimeEnvironment;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;

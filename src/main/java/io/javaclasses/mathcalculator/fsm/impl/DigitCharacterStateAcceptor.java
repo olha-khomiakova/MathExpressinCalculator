@@ -19,7 +19,7 @@ public class DigitCharacterStateAcceptor implements StateAcceptor<StringWriter> 
      *         is an iterable string with input data
      * @param outputChain
      *         is an StringWriter to which will be appended digit.
-     * @return returns the truth if it was possible to add current character to the outputChain,
+     * @return true if it was possible to add current character to the outputChain,
      *         otherwise it returns false
      */
     @Override

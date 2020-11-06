@@ -33,7 +33,7 @@ public class State<T> {
      *         is an iterable string with input data
      * @param outputChain
      *         is an result of some {@link FiniteStateMachine}
-     * @return is decision whether the transition to the next state is accepted
+     * @return true if the transition to the next state is accepted, otherwise it returns false
      */
     public boolean accept(CharacterIterator inputChain, T outputChain) {
         return acceptor.accept(inputChain, outputChain);
@@ -43,7 +43,7 @@ public class State<T> {
         this.transitions.add(state);
     }
 
-    public StateAcceptor<T> acceptor() {
+    StateAcceptor<T> acceptor() {
         return acceptor;
     }
 

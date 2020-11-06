@@ -13,14 +13,13 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Implementation of {@link FiniteStateMachine} for parsing
- * and evaluating mathematical expression from string.
+ * Implementation of {@link FiniteStateMachine} for parsing mathematical expression from string.
  * For example, mathematical expression may be like these:
  * <p>
  * 1) "5.25+(10*2.1)-7.77"
  * 2) "0.1*max(5,10)/2"
  */
-public class ExpressionFiniteStateMachine extends FiniteStateMachine<List<Command>> {
+ class ExpressionFiniteStateMachine extends FiniteStateMachine<List<Command>> {
 
     ExpressionFiniteStateMachine(FSMFactory factory) {
         State<List<Command>> calculated = new State<>(true, new FSMStateAcceptor(factory,
@@ -41,8 +40,8 @@ public class ExpressionFiniteStateMachine extends FiniteStateMachine<List<Comman
      *
      * @param input
      *         is an iterable string with input data
-     * @return returns the {@link Optional<Command>}, if the status of run is FINISHED,
-     *         else return Optional.empty();
+     * @return the {@link Optional<Command>}, if the status of run is FINISHED,
+     *         else return Optional.empty()
      */
     public Optional<Command> expression(CharacterIterator input) {
 

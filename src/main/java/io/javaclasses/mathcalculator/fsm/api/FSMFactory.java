@@ -15,7 +15,8 @@ public interface FSMFactory {
         INITIALIZATION,
         STATEMENT,
         PROGRAM,
-        BOOLEAN_EXPRESSION
+        BOOLEAN_EXPRESSION,
+        NAME
     }
 
     /**
@@ -24,7 +25,7 @@ public interface FSMFactory {
      * compiler element will run.
      *
      * @param typeFSM
-     *         is type of {@link io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine}
+     *         is type of finite state machine
      * @return is {@link CompilerElement} certain type
      */
     CompilerElement create(TypeFSM typeFSM);

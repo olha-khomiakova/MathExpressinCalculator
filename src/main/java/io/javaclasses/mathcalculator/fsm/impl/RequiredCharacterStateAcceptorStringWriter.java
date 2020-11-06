@@ -8,7 +8,7 @@ import java.text.CharacterIterator;
 /**
  * Implementation of {@link StateAcceptor} that defines whether the transition from one state to
  * next state is possible.
- * And if possible move an iterator forward in an inputChain.
+ * If it is possible move an iterator forward in an inputChain.
  */
 public class RequiredCharacterStateAcceptorStringWriter implements StateAcceptor<StringWriter> {
 
@@ -21,7 +21,7 @@ public class RequiredCharacterStateAcceptorStringWriter implements StateAcceptor
     /**
      * This API moves an iterator forward in an inputChain
      * and returns decision whether the transition to the next state is accepted.
-     * And if possible move an iterator forward in an inputChain.
+     * If it is possible move an iterator forward in an inputChain.
      *
      * @param inputChain
      *         is an iterable string with input data

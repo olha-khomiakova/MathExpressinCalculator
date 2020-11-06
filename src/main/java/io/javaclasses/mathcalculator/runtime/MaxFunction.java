@@ -1,47 +1,40 @@
 package io.javaclasses.mathcalculator.runtime;
 
-import io.javaclasses.mathcalculator.runtime.Command;
-import io.javaclasses.mathcalculator.runtime.Function;
-import io.javaclasses.mathcalculator.runtime.RuntimeEnvironment;
-
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
 
 import static io.javaclasses.mathcalculator.runtime.DoubleValueReader.readDouble;
 
 /**
- * This is implementation mathematical function that finds the minimum parameters of the two.
+ * This is implementation of {@link Function} that finds the maximum value.
  */
-public class MaxFunction extends Function {
+ class MaxFunction extends Function {
 
-    MaxFunction(int minimumNumber, int maximumNumber, List<Command> commands) {
-        super(minimumNumber, maximumNumber, "max", commands);
+    MaxFunction(Collection<Command> commands) {
+        super(2, 2, "max", commands);
     }
 
     /**
-     * This API finds the maximum parameters.
+     * This API finds the maximum value.
      *
-     * @return double maximum parameters
+     * @return double maximum value
      */
-    @Override
-    public double apply(List<Double> parameters) {
-        Optional<Double> result = parameters.stream()
-                                            .max(Double::compareTo);
-        if (result.isPresent()) {
-            return result.get();
-        }
-        return 0;
-    }
+     Optional<Double> apply(Collection<Double> parameters) {
+        return parameters.stream()
+                         .max(Double::compareTo);
 
+    }
 
     @Override
     public void execute(RuntimeEnvironment environment) {
-        List<Double> arguments= new ArrayList<>();
-        for(ValueHolder holder: parameters(environment))
-        {
+        Collection<Double> arguments = new ArrayList<>();
+        for (ValueHolder holder : parameters(environment)) {
             arguments.add(readDouble(holder));
         }
-        environment.stack().pushOperand(new DoubleValueHolder(apply(arguments)));
+        if (apply(arguments).isPresent()) {
+            environment.stack()
+                       .pushOperand(new DoubleValueHolder(apply(arguments).get()));
+        }
     }
 }

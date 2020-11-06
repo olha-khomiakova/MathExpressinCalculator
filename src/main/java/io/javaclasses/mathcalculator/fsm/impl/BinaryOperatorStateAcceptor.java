@@ -1,8 +1,8 @@
 package io.javaclasses.mathcalculator.fsm.impl;
 
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
-import io.javaclasses.mathcalculator.math.BinaryOperator;
-import io.javaclasses.mathcalculator.math.BinaryOperatorFactory;
+import io.javaclasses.mathcalculator.runtime.BinaryOperator;
+import io.javaclasses.mathcalculator.runtime.BinaryOperatorsFactory;
 import io.javaclasses.mathcalculator.runtime.Command;
 import io.javaclasses.mathcalculator.runtime.PushBinaryOperatorCommand;
 import org.slf4j.Logger;
@@ -26,8 +26,8 @@ public class BinaryOperatorStateAcceptor implements StateAcceptor<List<Command>>
      * @param inputChain
      *         is an iterable string with input data
      * @param outputChain
-     *         is an command list to which will be added command with binary operator.
-     * @return returns the truth if it was possible to create a binary operator
+     *         is an command list to which will be added command with operator.
+     * @return true if it was possible to create a binary operator
      *         and add it to the outputChain, otherwise it returns false
      */
     @Override
@@ -36,7 +36,7 @@ public class BinaryOperatorStateAcceptor implements StateAcceptor<List<Command>>
 
         char currentCharacter = inputChain.current();
         Optional<BinaryOperator> binaryOperator =
-                new BinaryOperatorFactory().getBinaryOperator(currentCharacter);
+                new BinaryOperatorsFactory().getBinaryOperator(currentCharacter);
         if (binaryOperator.isPresent()) {
             outputChain.add(new PushBinaryOperatorCommand(binaryOperator.get()));
             if (logger.isInfoEnabled()) {

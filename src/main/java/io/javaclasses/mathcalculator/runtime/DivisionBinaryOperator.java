@@ -1,7 +1,4 @@
-package io.javaclasses.mathcalculator.math;
-
-import io.javaclasses.mathcalculator.runtime.DoubleValueHolder;
-import io.javaclasses.mathcalculator.runtime.ValueHolder;
+package io.javaclasses.mathcalculator.runtime;
 
 /**
  * Implementation of {@link BinaryOperator} that calculates the division of two operands .
@@ -15,7 +12,7 @@ public class DivisionBinaryOperator implements BinaryOperator {
     }
 
     /**
-     * Calculates the division of two operands.
+     * This API calculates the division of two operands.
      *
      * @param firstOperand
      *         is double left operands
@@ -24,7 +21,7 @@ public class DivisionBinaryOperator implements BinaryOperator {
      * @return division result
      */
     @Override
-    public ValueHolder calculate(double firstOperand, double secondOperand) {
+    public ValueHolder apply(double firstOperand, double secondOperand) {
         return new DoubleValueHolder(firstOperand / secondOperand);
     }
 

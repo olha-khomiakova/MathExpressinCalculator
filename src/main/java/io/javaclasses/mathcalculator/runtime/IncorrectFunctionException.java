@@ -1,7 +1,7 @@
 package io.javaclasses.mathcalculator.runtime;
 
 /**
- * This is exception that appears if required function does not exist or the number of
+ * This is exception that appears if required function or procedure does not exist or the number of
  * function parameters are incorrect.
  */
 public class IncorrectFunctionException extends RuntimeException {

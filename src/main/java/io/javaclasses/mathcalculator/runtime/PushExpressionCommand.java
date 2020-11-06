@@ -6,7 +6,10 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * This is implementation of {@link Function} for push expression to the
+ * {@link java.util.Deque<ShuntingYard>}.
+ */
 public class PushExpressionCommand implements Command {
 
     private final Logger logger = LoggerFactory.getLogger(PushBinaryOperatorCommand.class);
@@ -15,7 +18,12 @@ public class PushExpressionCommand implements Command {
     public PushExpressionCommand(List<Command> list) {
         this.commandList = new ArrayList<>(list);
     }
-
+    /**
+     * This API push expression to the ShuntingYard.
+     *
+     * @param environment
+     *         is data structure for storing {@link Memory}, {@link java.util.Deque<ShuntingYard>},
+     */
     @Override
     public void execute(RuntimeEnvironment environment) {
         environment.startStack();
@@ -23,7 +31,7 @@ public class PushExpressionCommand implements Command {
             command.execute(environment);
         }
         Optional<ValueHolder> result = environment.stack()
-                                             .result();
+                                                  .result();
         environment.closeStack();
         if (result.isPresent()) {
             environment.stack()

@@ -40,8 +40,8 @@ class CalculatedFiniteStateMachine extends FiniteStateMachine<List<Command>> {
      *
      * @param input
      *         is an iterable string with input data
-     * @return returns the {@link Optional<Command>}, if the status of run is FINISHED,
-     *         else return Optional.empty();
+     * @return {@link Optional<Command>}, if the status of run is FINISHED,
+     *         else return Optional.empty()
      */
     Optional<Command> calculated(CharacterIterator input) {
         List<Command> commands = new ArrayList<>();

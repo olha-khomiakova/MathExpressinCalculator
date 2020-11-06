@@ -1,6 +1,5 @@
 package io.javaclasses.mathcalculator.fsm.impl;
 
-import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
 import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.State;
 import io.javaclasses.mathcalculator.runtime.Command;
@@ -19,9 +18,9 @@ import static java.util.Arrays.asList;
  * Implementation of {@link FiniteStateMachine} for parsing number from string.
  * Numbers are integer or decimal, positive or negative.
  */
-public class NumberFiniteStateMachine extends FiniteStateMachine<StringWriter> {
+class NumberFiniteStateMachine extends FiniteStateMachine<StringWriter> {
 
-    public NumberFiniteStateMachine() {
+    NumberFiniteStateMachine() {
         State<StringWriter> negativeSign = new State<>(false,
                                                        new RequiredCharacterStateAcceptorStringWriter(
                                                                '-'));
@@ -40,8 +39,17 @@ public class NumberFiniteStateMachine extends FiniteStateMachine<StringWriter> {
         registerPossibleStartState(asList(negativeSign, intDigit));
     }
 
-
-    public Optional<Command> number(CharacterIterator input) {
+    /**
+     * This api starts the machine and gets the parsing interrupt status.
+     * If the status is FINISHED, it returns the {@link Optional<Command>}
+     * in which the parsed commands are stored, else return Optional.empty();
+     *
+     * @param input
+     *         is an iterable string with input data
+     * @return {@link Optional<Command>}, if the status of run is FINISHED,
+     *         else return Optional.empty()
+     */
+    Optional<Command> number(CharacterIterator input) {
 
         final Logger logger = LoggerFactory.getLogger(NumberFiniteStateMachine.class);
 
@@ -49,7 +57,8 @@ public class NumberFiniteStateMachine extends FiniteStateMachine<StringWriter> {
         Status status = run(input, output);
         if (status == Status.FINISHED) {
             if (logger.isInfoEnabled()) {
-                logger.info(this.getClass().getSimpleName()+ " finished:  " + output);
+                logger.info(this.getClass()
+                                .getSimpleName() + " finished:  " + output);
             }
             return Optional.of(new PushOperandCommand(
                     new DoubleValueHolder(Double.parseDouble(output.toString()))));

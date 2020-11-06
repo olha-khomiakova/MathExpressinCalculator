@@ -79,8 +79,8 @@ public class FiniteStateMachine<T> {
         return Optional.empty();
     }
 
-    private void skipWhiteSpace(CharacterIterator inputChain, boolean isLexema) {
-        while (Character.isWhitespace(inputChain.current()) && isLexema) {
+    private static void skipWhiteSpace(CharacterIterator inputChain, boolean isLexeme) {
+        while (Character.isWhitespace(inputChain.current()) && isLexeme) {
             inputChain.next();
         }
     }

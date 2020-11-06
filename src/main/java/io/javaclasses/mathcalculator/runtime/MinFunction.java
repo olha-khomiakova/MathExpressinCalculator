@@ -1,43 +1,41 @@
 package io.javaclasses.mathcalculator.runtime;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
 
 import static io.javaclasses.mathcalculator.runtime.DoubleValueReader.readDouble;
 
 /**
- * This is implementation mathematical function that finds the minimum parameters of the two.
+ * This is implementation of {@link Function} that finds the minimum value.
  */
-public class MinFunction extends Function {
+ class MinFunction extends Function {
 
-    MinFunction(int minimumNumber, int maximumNumber, List<Command> commands) {
-        super(minimumNumber, maximumNumber, "min", commands);
+    MinFunction(Collection<Command> commands) {
+        super(2, 2, "min", commands);
 
     }
 
     /**
-     * This API finds the minimum parameters.
+     * This API finds the minimum value.
      *
-     * @return double minimum parameters
+     * @return double minimum value
      */
-    @Override
-    public double apply(List<Double> parameters) {
-        Optional<Double> result = parameters.stream()
-                                            .min(Double::compareTo);
-        if (result.isPresent()) {
-            return result.get();
-        }
-        return 0;
+     Optional<Double> apply(Collection<Double> parameters) {
+        return parameters.stream()
+                         .min(Double::compareTo);
+
     }
 
     @Override
     public void execute(RuntimeEnvironment environment) {
-        List<Double> arguments= new ArrayList<>();
-        for(ValueHolder holder: parameters(environment))
-        {
+        Collection<Double> arguments = new ArrayList<>();
+        for (ValueHolder holder : parameters(environment)) {
             arguments.add(readDouble(holder));
         }
-        environment.stack().pushOperand(new DoubleValueHolder(apply(arguments)));
+        if (apply(arguments).isPresent()) {
+            environment.stack()
+                       .pushOperand(new DoubleValueHolder(apply(arguments).get()));
+        }
     }
 }

@@ -1,7 +1,16 @@
 package io.javaclasses.mathcalculator.runtime;
-
+/**
+ * This is part of visitor pattern that implement double reading.
+ */
 public class DoubleValueReader implements ValueHolderVisitor{
     private Double value;
+    /**
+     * This API reads double value from {@link ValueHolder} and save it.
+     *
+     * @param holder
+     *         accepts value
+     * @return double value
+     */
     public static double readDouble(ValueHolder holder)
     {
         DoubleValueReader valueReader = new DoubleValueReader();

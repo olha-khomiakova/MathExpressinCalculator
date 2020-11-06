@@ -7,8 +7,8 @@ import java.io.StringWriter;
 import java.util.Collections;
 
 /**
- * Implementation of {@link FiniteStateMachine} for parsing function name from string.
- * Name may be "min", "max".
+ * Implementation of {@link FiniteStateMachine} for parsing name from string.
+ * Name may be "min", "max", "print".
  */
 class NameBuilderFiniteStateMachine extends FiniteStateMachine<StringWriter> {
 
@@ -19,5 +19,6 @@ class NameBuilderFiniteStateMachine extends FiniteStateMachine<StringWriter> {
 
         registerPossibleStartState(Collections.singletonList(letter));
     }
+
 
 }

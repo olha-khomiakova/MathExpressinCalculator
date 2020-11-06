@@ -17,8 +17,8 @@ public interface StateAcceptor<T> {
      *         is an iterable string with input data
      * @param outputChain
      *         is an result of some {@link FiniteStateMachine}
-     * @return is decision whether the transition to the next state is accepted
+     * @return true if the transition to the next state is accepted, otherwise it returns false
      */
     boolean accept(CharacterIterator inputChain, T outputChain);
-    public boolean isLexeme();
+    boolean isLexeme();
 }

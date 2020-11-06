@@ -1,9 +1,9 @@
 package io.javaclasses.mathcalculator.runtime;
 
 /**
- * This is exception that appears if expression are incorrect doe to syntax error.
+ * This is exception that appears if called variable does not exist.
  */
-public class CallingANonExistentVariableException extends RuntimeException {
+ class CallingANonExistentVariableException extends RuntimeException {
 
     private static final long serialVersionUID = -2664630958058185614L;
 

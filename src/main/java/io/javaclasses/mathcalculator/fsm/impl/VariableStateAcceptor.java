@@ -11,8 +11,7 @@ import java.util.List;
 
 /**
  * Implementation of {@link StateAcceptor} that defines whether the add variable to the memory is
- * possible.
- * And if possible adds variable to the memory and move an iterator forward in an inputChain.
+ * possible.And if it is possible adds variable to the memory and move an iterator forward in an inputChain.
  */
 
 public class VariableStateAcceptor implements StateAcceptor<List<Command>> {
@@ -25,7 +24,7 @@ public class VariableStateAcceptor implements StateAcceptor<List<Command>> {
      *         is an iterable string with input data
      * @param outputChain
      *         is an {@link List<Command>} to which will be added command.
-     * @return returns the truth if it was possible to add current character to the outputChain,
+     * @return true if it was possible to add current character to the outputChain,
      *         otherwise it returns false
      */
     @Override

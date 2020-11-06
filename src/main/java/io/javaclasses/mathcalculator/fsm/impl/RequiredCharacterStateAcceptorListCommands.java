@@ -2,14 +2,13 @@ package io.javaclasses.mathcalculator.fsm.impl;
 
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
 import io.javaclasses.mathcalculator.runtime.Command;
-import io.javaclasses.mathcalculator.runtime.ShuntingYard;
 
 import java.text.CharacterIterator;
 import java.util.List;
 
 /**
  * Implementation of {@link StateAcceptor} that defines whether the transition from one state
- * to brackets state is possible and if it possible moves an iterator forward in an inputChain.
+ * to the next state is possible and if it is possible moves an iterator forward in an inputChain.
  */
 public class RequiredCharacterStateAcceptorListCommands implements StateAcceptor<List<Command>> {
 
@@ -25,8 +24,8 @@ public class RequiredCharacterStateAcceptorListCommands implements StateAcceptor
      * @param inputChain
      *         is an iterable string with input data
      * @param outputChain
-     *         is an {@link ShuntingYard}
-     * @return returns the truth if an current character is the same as required,
+     *         is an {@link List<Command>}
+     * @return true if an current character is the same as required,
      *         otherwise it returns false
      */
     @Override

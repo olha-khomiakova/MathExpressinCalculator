@@ -4,9 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.StringWriter;
-
-import static io.javaclasses.mathcalculator.runtime.StringValueReader.readString;
-
+/**
+ * This is implementation of {@link Function} read variable value and write it to the
+ * {@link java.util.Deque< ShuntingYard >}.
+ */
 public class ReadVariableCommand implements Command {
 
     private final Logger logger = LoggerFactory.getLogger(PushBinaryOperatorCommand.class);
@@ -15,12 +16,16 @@ public class ReadVariableCommand implements Command {
     public ReadVariableCommand(StringWriter name) {
         this.name = new StringValueHolder(name.toString());
     }
-
+    /**
+     * This API read variable value and write it to the ShuntingYard.
+     *
+     * @param environment
+     *         is data structure for storing {@link Memory}, {@link java.util.Deque<ShuntingYard>},
+     */
     @Override
     public void execute(RuntimeEnvironment environment) {
         if (environment.memory()
                        .containsKey(name)) {
-            ValueHolder value = environment.memory().get(name);
             environment.stack()
                        .pushOperand(environment.memory()
                                                .get(name));

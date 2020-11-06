@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Implementation of {@link StateAcceptor} that defines whether the initialization is possible.
- * And if possible adds a variable and a value to the memory and move an iterator forward in an
+ * Implementation of {@link StateAcceptor} that defines whether the transition is possible.
+ * If it is possible adds a variable name and value to the outputChain and move an iterator forward in an
  * inputChain.
  */
 
@@ -29,13 +29,13 @@ public class FSMStateAcceptor implements StateAcceptor<List<Command>> {
     }
 
     /**
-     * This API adds a variable and a value to the memory and moves an iterator forward in an
+     * This API adds a variable and a value to the outputChain and moves an iterator forward in an
      * inputChain.
      *
      * @param inputChain
      *         is an iterable string with input data
      * @param outputChain
-     *         is an {@link List<Command>} to which will be added command.
+     *         is an {@link List<Command>} to which will be added command with the name and value variable.
      * @return returns the truth if it was possible to add the variable and the value to memory,
      *         otherwise it returns false
      */
