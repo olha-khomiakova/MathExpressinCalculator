@@ -19,7 +19,7 @@ import java.util.Optional;
  * 1) "5.25+(10*2.1)-7.77"
  * 2) "0.1*max(5,10)/2"
  */
- class ExpressionFiniteStateMachine extends FiniteStateMachine<List<Command>> {
+class ExpressionFiniteStateMachine extends FiniteStateMachine<List<Command>> {
 
     ExpressionFiniteStateMachine(FSMFactory factory) {
         State<List<Command>> calculated = new State<>(true, new FSMStateAcceptor(factory,

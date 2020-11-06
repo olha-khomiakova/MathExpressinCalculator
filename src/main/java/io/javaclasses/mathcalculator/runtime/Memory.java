@@ -25,6 +25,6 @@ class Memory {
     }
 
     void replace(String name, ValueHolder variableName) {
-        memory.replace(name,variableName);
+        memory.replace(name, variableName);
     }
 }

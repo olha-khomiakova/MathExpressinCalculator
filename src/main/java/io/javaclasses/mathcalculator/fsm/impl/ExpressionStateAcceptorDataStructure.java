@@ -14,9 +14,11 @@ import java.util.Optional;
  * and if possible adds result as a function parameter to the outputChain.
  */
 public class ExpressionStateAcceptorDataStructure implements StateAcceptor<DataStructure> {
-private final FSMFactory factory;
+
+    private final FSMFactory factory;
+
     ExpressionStateAcceptorDataStructure(FSMFactory factory) {
-        this.factory=factory;
+        this.factory = factory;
     }
 
     /**
@@ -33,7 +35,7 @@ private final FSMFactory factory;
     @Override
     public boolean accept(CharacterIterator inputChain, DataStructure outputChain) {
         CompilerElement compilerElement = factory.create(FSMFactory.TypeFSM.EXPRESSION);
-        Optional<Command> command=compilerElement.compile(inputChain);
+        Optional<Command> command = compilerElement.compile(inputChain);
         if (command.isPresent()) {
             outputChain.addFunctionParameter(command.get());
             return true;

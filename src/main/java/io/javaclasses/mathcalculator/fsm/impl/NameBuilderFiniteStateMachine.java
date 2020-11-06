@@ -20,5 +20,4 @@ class NameBuilderFiniteStateMachine extends FiniteStateMachine<StringWriter> {
         registerPossibleStartState(Collections.singletonList(letter));
     }
 
-
 }

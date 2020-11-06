@@ -9,7 +9,7 @@ import static io.javaclasses.mathcalculator.runtime.DoubleValueReader.readDouble
 /**
  * This is implementation of {@link Function} that finds the minimum value.
  */
- class MinFunction extends Function {
+class MinFunction extends Function {
 
     MinFunction(Collection<Command> commands) {
         super(2, 2, "min", commands);
@@ -21,7 +21,7 @@ import static io.javaclasses.mathcalculator.runtime.DoubleValueReader.readDouble
      *
      * @return double minimum value
      */
-     Optional<Double> apply(Collection<Double> parameters) {
+    Optional<Double> apply(Collection<Double> parameters) {
         return parameters.stream()
                          .min(Double::compareTo);
 

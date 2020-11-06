@@ -9,7 +9,7 @@ import static io.javaclasses.mathcalculator.runtime.DoubleValueReader.readDouble
 /**
  * This is implementation of {@link Function} that finds the maximum value.
  */
- class MaxFunction extends Function {
+class MaxFunction extends Function {
 
     MaxFunction(Collection<Command> commands) {
         super(2, 2, "max", commands);
@@ -20,7 +20,7 @@ import static io.javaclasses.mathcalculator.runtime.DoubleValueReader.readDouble
      *
      * @return double maximum value
      */
-     Optional<Double> apply(Collection<Double> parameters) {
+    Optional<Double> apply(Collection<Double> parameters) {
         return parameters.stream()
                          .max(Double::compareTo);
 

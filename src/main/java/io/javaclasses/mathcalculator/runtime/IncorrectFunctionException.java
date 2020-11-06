@@ -11,4 +11,5 @@ public class IncorrectFunctionException extends RuntimeException {
     IncorrectFunctionException(String message) {
         super(message);
     }
+
 }

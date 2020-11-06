@@ -5,7 +5,7 @@ package io.javaclasses.mathcalculator.runtime;
  * It declares a set of methods, differing in the type of the input parameter,
  * that are needed to start an operation for all types of specific elements.
  */
- interface ValueHolderVisitor {
+interface ValueHolderVisitor {
 
     /**
      * It is set of methods, differing in the type of the input parameter,

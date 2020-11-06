@@ -16,10 +16,11 @@ import java.util.Optional;
  * and if it is possible adds result to the outputChain.
  */
 public class NumberStateAcceptor implements StateAcceptor<List<Command>> {
+
     private final FSMFactory factory;
 
     NumberStateAcceptor(FSMFactory factory) {
-        this.factory=factory;
+        this.factory = factory;
     }
 
     /**

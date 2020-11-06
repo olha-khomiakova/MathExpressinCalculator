@@ -13,9 +13,9 @@ import java.util.Optional;
 /**
  * This service compiles and interprets program presented as a character iterator.
  * The program may contain:
- *      - initialization of variables with numbers, other variables, mathematical
+ * - initialization of variables with numbers, other variables, mathematical
  * and boolean expressions;
- *      - procedures for outputting and freeing memory of some variables.
+ * - procedure for outputting some variables.
  * Each statement ends with a semicolon.
  * <p>
  * For example, program may be like these:

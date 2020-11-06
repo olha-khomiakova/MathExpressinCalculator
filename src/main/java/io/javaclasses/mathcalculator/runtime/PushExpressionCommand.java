@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 /**
  * This is implementation of {@link Function} for push expression to the
  * {@link java.util.Deque<ShuntingYard>}.
@@ -18,6 +19,7 @@ public class PushExpressionCommand implements Command {
     public PushExpressionCommand(List<Command> list) {
         this.commandList = new ArrayList<>(list);
     }
+
     /**
      * This API push expression to the ShuntingYard.
      *
@@ -37,7 +39,8 @@ public class PushExpressionCommand implements Command {
             environment.stack()
                        .pushOperand(result.get());
             if (logger.isInfoEnabled()) {
-                logger.info(this.getClass().getSimpleName() + " :" + result);
+                logger.info(this.getClass()
+                                .getSimpleName() + " :" + result);
             }
         }
 

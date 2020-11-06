@@ -7,7 +7,7 @@ public class AdditionBinaryOperator implements BinaryOperator {
 
     private final BinaryOperator.priority priority;
 
-     AdditionBinaryOperator() {
+    AdditionBinaryOperator() {
         this.priority = BinaryOperator.priority.LOW;
     }
 
@@ -26,7 +26,7 @@ public class AdditionBinaryOperator implements BinaryOperator {
     }
 
     @Override
-     public BinaryOperator.priority priority() {
+    public BinaryOperator.priority priority() {
         return this.priority;
     }
 }

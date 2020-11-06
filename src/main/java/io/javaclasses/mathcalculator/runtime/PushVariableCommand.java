@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 /**
  * This is implementation of {@link Function} for push variable to the
  * {@link java.util.Deque<ShuntingYard>}.
@@ -17,8 +18,9 @@ public class PushVariableCommand implements Command {
 
     public PushVariableCommand(String variable, Collection<Command> value) {
         nameVariable = new StringValueHolder(variable);
-        valueVariable.addAll( value);
+        valueVariable.addAll(value);
     }
+
     /**
      * This API push binary variable to the ShuntingYard.
      *
@@ -32,18 +34,24 @@ public class PushVariableCommand implements Command {
             command.execute(environment);
         }
         ValueHolder result = null;
-        if (environment.stack().result().isPresent()) {
-            result = environment.stack().result().get();
+        if (environment.stack()
+                       .result()
+                       .isPresent()) {
+            result = environment.stack()
+                                .result()
+                                .get();
         }
-        if(environment.memory().containsKey(nameVariable)){
-           environment.memory().replace(nameVariable.toString(),nameVariable);
-        }
-        else{
+        if (environment.memory()
+                       .containsKey(nameVariable)) {
+            environment.memory()
+                       .replace(nameVariable.toString(), result);
+        } else {
             environment.memory()
                        .put(nameVariable, result);
         }
         if (logger.isInfoEnabled()) {
-            logger.info(this.getClass().getSimpleName() + " :" + nameVariable +
+            logger.info(this.getClass()
+                            .getSimpleName() + " :" + nameVariable +
                                 '=' + result);
         }
 

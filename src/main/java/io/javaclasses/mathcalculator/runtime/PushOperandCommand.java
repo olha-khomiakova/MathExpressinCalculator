@@ -2,6 +2,7 @@ package io.javaclasses.mathcalculator.runtime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
  * This is implementation of {@link Function} for push operand to the
  * {@link java.util.Deque<ShuntingYard>}.
@@ -14,6 +15,7 @@ public class PushOperandCommand implements Command {
     public PushOperandCommand(ValueHolder operand) {
         this.operand = operand;
     }
+
     /**
      * This API push binary operand to the ShuntingYard.
      *
@@ -25,7 +27,8 @@ public class PushOperandCommand implements Command {
         environment.stack()
                    .pushOperand(operand);
         if (logger.isInfoEnabled()) {
-            logger.info(this.getClass().getSimpleName() + " :" + operand);
+            logger.info(this.getClass()
+                            .getSimpleName() + " :" + operand);
 
         }
     }

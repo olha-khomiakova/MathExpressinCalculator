@@ -34,18 +34,25 @@ public class BinaryOperatorStateAcceptor implements StateAcceptor<List<Command>>
     public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
         final Logger logger = LoggerFactory.getLogger(BinaryOperatorStateAcceptor.class);
 
+        int index = inputChain.getIndex();
+        String binaryOperatorCharacters = String.valueOf(inputChain.current());
+        inputChain.next();
         char currentCharacter = inputChain.current();
+        if (currentCharacter == '=') {
+            binaryOperatorCharacters += currentCharacter;
+            inputChain.next();
+        }
         Optional<BinaryOperator> binaryOperator =
-                new BinaryOperatorsFactory().getBinaryOperator(currentCharacter);
+                new BinaryOperatorsFactory().getBinaryOperator(binaryOperatorCharacters);
         if (binaryOperator.isPresent()) {
             outputChain.add(new PushBinaryOperatorCommand(binaryOperator.get()));
             if (logger.isInfoEnabled()) {
                 logger.info(this.getClass()
-                                .getSimpleName() + " add " + currentCharacter);
+                                .getSimpleName() + " add " + binaryOperatorCharacters);
             }
-            inputChain.next();
             return true;
         }
+        inputChain.setIndex(index);
         return false;
     }
 

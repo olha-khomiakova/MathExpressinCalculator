@@ -11,16 +11,16 @@ import java.util.List;
  * This is a data structure that stores a name and values or parameters of functions, variable
  * or procedure.
  */
- class DataStructure {
+class DataStructure {
 
     private StringWriter name;
     private final List<Command> parameters = new ArrayList<>();
 
-     void addFunctionName(StringWriter character) {
+    void addFunctionName(StringWriter character) {
         this.name = character;
     }
 
-     void addFunctionParameter(Command parameter) {
+    void addFunctionParameter(Command parameter) {
         this.parameters.add(parameter);
     }
 

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.StringWriter;
+
 /**
  * This is implementation of {@link Function} read variable value and write it to the
  * {@link java.util.Deque< ShuntingYard >}.
@@ -16,6 +17,7 @@ public class ReadVariableCommand implements Command {
     public ReadVariableCommand(StringWriter name) {
         this.name = new StringValueHolder(name.toString());
     }
+
     /**
      * This API read variable value and write it to the ShuntingYard.
      *
@@ -30,7 +32,8 @@ public class ReadVariableCommand implements Command {
                        .pushOperand(environment.memory()
                                                .get(name));
             if (logger.isInfoEnabled()) {
-                logger.info(this.getClass().getSimpleName() + " :" + name +
+                logger.info(this.getClass()
+                                .getSimpleName() + " :" + name +
                                     " exists");
             }
         } else {

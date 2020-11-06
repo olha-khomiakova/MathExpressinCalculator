@@ -13,7 +13,8 @@ import java.util.Optional;
 
 /**
  * Implementation of {@link StateAcceptor} that defines whether the transition is possible.
- * If it is possible adds a variable name and value to the outputChain and move an iterator forward in an
+ * If it is possible adds a variable name and value to the outputChain and move an iterator forward
+ * in an
  * inputChain.
  */
 
@@ -25,7 +26,7 @@ public class FSMStateAcceptor implements StateAcceptor<List<Command>> {
 
     FSMStateAcceptor(FSMFactory factory, FSMFactory.TypeFSM typeFSM) {
         this.factory = factory;
-        this.typeFSM=typeFSM;
+        this.typeFSM = typeFSM;
     }
 
     /**
@@ -35,7 +36,8 @@ public class FSMStateAcceptor implements StateAcceptor<List<Command>> {
      * @param inputChain
      *         is an iterable string with input data
      * @param outputChain
-     *         is an {@link List<Command>} to which will be added command with the name and value variable.
+     *         is an {@link List<Command>} to which will be added command with the name and value
+     *         variable.
      * @return returns the truth if it was possible to add the variable and the value to memory,
      *         otherwise it returns false
      */
@@ -48,7 +50,10 @@ public class FSMStateAcceptor implements StateAcceptor<List<Command>> {
             outputChain.add(command.get());
 
             if (logger.isInfoEnabled()) {
-                logger.info(this.getClass().getSimpleName()+" add "+ command.get().getClass().getSimpleName());
+                logger.info(this.getClass()
+                                .getSimpleName() + " add " + command.get()
+                                                                    .getClass()
+                                                                    .getSimpleName());
             }
             return true;
         }

@@ -11,13 +11,14 @@ import java.util.Collections;
 import java.util.Optional;
 
 /**
- * Implementation of {@link FiniteStateMachine} to parse the variable initialization pattern from string.
+ * Implementation of {@link FiniteStateMachine} to parse the variable initialization pattern from
+ * string.
  * Pattern looks like "variable name" + " = " + " expression ".
  * <p>
  * 1) "a = 5"
  * 2) "res = 3<1"
  */
- class InitializationFiniteStateMachine extends FiniteStateMachine<DataStructure> {
+class InitializationFiniteStateMachine extends FiniteStateMachine<DataStructure> {
 
     InitializationFiniteStateMachine(FSMFactory factory) {
         State<DataStructure> variable = new State<>(false,
@@ -29,12 +30,12 @@ import java.util.Optional;
                                                       new ExpressionStateAcceptorDataStructure(
                                                               factory));
 
-
         variable.addTransmission(equalSign);
         equalSign.addTransmission(expression);
 
         registerPossibleStartState(Collections.singletonList(variable));
     }
+
     /**
      * This api starts the machine and gets the parsing interrupt status.
      * If the status is FINISHED, it returns the {@link Optional<Command>}

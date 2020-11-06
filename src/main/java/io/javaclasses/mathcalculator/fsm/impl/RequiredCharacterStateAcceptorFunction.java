@@ -13,7 +13,7 @@ public class RequiredCharacterStateAcceptorFunction implements StateAcceptor<Dat
 
     private final char requiredCharacter;
 
-     RequiredCharacterStateAcceptorFunction(char requiredCharacter) {
+    RequiredCharacterStateAcceptorFunction(char requiredCharacter) {
         this.requiredCharacter = requiredCharacter;
     }
 

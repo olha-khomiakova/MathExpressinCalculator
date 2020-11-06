@@ -1,6 +1,5 @@
 package io.javaclasses.mathcalculator.runtime;
 
-
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Objects;
@@ -31,7 +30,7 @@ public class ShuntingYard {
         return Optional.ofNullable(operands.peek());
     }
 
-     void pushBinaryOperator(BinaryOperator operator) {
+    void pushBinaryOperator(BinaryOperator operator) {
         if (operators.peekLast() != null) {
             if (operator.priority()
                         .ordinal() <=

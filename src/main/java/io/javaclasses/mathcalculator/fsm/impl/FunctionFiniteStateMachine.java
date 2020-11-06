@@ -17,7 +17,7 @@ import java.util.Optional;
  * 2) max(x,y)
  * 3) print(x)
  */
- class FunctionFiniteStateMachine extends FiniteStateMachine<DataStructure> {
+class FunctionFiniteStateMachine extends FiniteStateMachine<DataStructure> {
 
     FunctionFiniteStateMachine(FSMFactory factory) {
         State<DataStructure> name = new State<>(false, new NameStateAcceptor());

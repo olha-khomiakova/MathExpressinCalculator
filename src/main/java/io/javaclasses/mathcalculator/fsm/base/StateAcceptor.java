@@ -20,5 +20,6 @@ public interface StateAcceptor<T> {
      * @return true if the transition to the next state is accepted, otherwise it returns false
      */
     boolean accept(CharacterIterator inputChain, T outputChain);
+
     boolean isLexeme();
 }

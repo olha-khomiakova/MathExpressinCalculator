@@ -29,7 +29,7 @@ public class RuntimeEnvironment {
      * This API closes stack when expression was evaluated.
      */
     void closeStack() {
-         stack.poll();
+        stack.poll();
     }
 
     public ShuntingYard stack() {
@@ -39,8 +39,8 @@ public class RuntimeEnvironment {
     Memory memory() {
         return this.memory;
     }
-    public ByteArrayOutputStream output()
-    {
+
+    public ByteArrayOutputStream output() {
         return this.output;
     }
 }

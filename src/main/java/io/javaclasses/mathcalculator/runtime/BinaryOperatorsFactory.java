@@ -9,31 +9,42 @@ import java.util.Optional;
  */
 public class BinaryOperatorsFactory {
 
-    private final Map<Character, Creator> binaryOperatorMap = new HashMap<>();
+    private final Map<String, Creator> binaryOperatorMap = new HashMap<>();
 
     public BinaryOperatorsFactory() {
-        binaryOperatorMap.put('+', AdditionBinaryOperator::new);
-        binaryOperatorMap.put('-', () -> new SubtractionBinaryOperator(BinaryOperator.priority.LOW));
-        binaryOperatorMap.put('*', () -> new MultiplicationBinaryOperator(BinaryOperator.priority.MEDIUM));
-        binaryOperatorMap.put('/', () -> new DivisionBinaryOperator(BinaryOperator.priority.MEDIUM));
-        binaryOperatorMap.put('<', LessBooleanOperator::new);
-        binaryOperatorMap.put('>', GreaterBooleanOperator::new);
+        binaryOperatorMap.put("+", AdditionBinaryOperator::new);
+        binaryOperatorMap.put("-",
+                              () -> new SubtractionBinaryOperator(BinaryOperator.priority.LOW));
+        binaryOperatorMap.put("*", () -> new MultiplicationBinaryOperator(
+                BinaryOperator.priority.MEDIUM));
+        binaryOperatorMap.put("/",
+                              () -> new DivisionBinaryOperator(BinaryOperator.priority.MEDIUM));
+        binaryOperatorMap.put("<", LessBooleanOperator::new);
+        binaryOperatorMap.put(">", GreaterBooleanOperator::new);
+        binaryOperatorMap.put("<=", LessEqualsBooleanOperator::new);
+        binaryOperatorMap.put(">=", GreaterEqualsBooleanOperator::new);
+        binaryOperatorMap.put("!=", NotEqualsBooleanOperator::new);
+        binaryOperatorMap.put("==", EqualsBooleanOperator::new);
+
     }
+
     /**
-     * This method checks if the binary operator we need exists and returns an object of the needed type or
+     * This method checks if the binary operator we need exists and returns an object of the needed
+     * type or
      * Optional.empty().
      *
      * @return required binary operator
      */
-    public Optional<BinaryOperator> getBinaryOperator(char requiredOperator) {
-        if(binaryOperatorMap.containsKey(requiredOperator))
-        {
-            return Optional.ofNullable( binaryOperatorMap.get(requiredOperator).create());
+    public Optional<BinaryOperator> getBinaryOperator(String requiredOperator) {
+        if (binaryOperatorMap.containsKey(requiredOperator)) {
+            return Optional.ofNullable(binaryOperatorMap.get(requiredOperator)
+                                                        .create());
         }
         return Optional.empty();
     }
 
     private interface Creator {
+
         BinaryOperator create();
     }
 }

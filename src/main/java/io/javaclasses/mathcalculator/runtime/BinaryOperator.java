@@ -1,6 +1,5 @@
 package io.javaclasses.mathcalculator.runtime;
 
-
 /**
  * Interface of binary operations.
  */

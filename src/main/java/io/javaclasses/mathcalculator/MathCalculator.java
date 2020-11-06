@@ -39,17 +39,20 @@ class MathCalculator {
         CompilerElement compilerElement = factory.create(
                 FSMFactory.TypeFSM.EXPRESSION);
         Optional<Command> command = compilerElement.compile(stringNumber);
-        if (stringNumber.getIndex() != stringNumber.getEndIndex()||!command.isPresent()) {
+        if (stringNumber.getIndex() != stringNumber.getEndIndex() || !command.isPresent()) {
             throw new IncorrectMathExpressionException("Incorrectly entered mathematical " +
                                                                "expression in position " +
                                                                stringNumber.getIndex() + '.',
                                                        stringNumber.getIndex());
         }
-        command.get().execute(environment);
-        if(environment.stack()
-                      .result().isPresent()){
+        command.get()
+               .execute(environment);
+        if (environment.stack()
+                       .result()
+                       .isPresent()) {
             return readDouble(environment.stack()
-                              .result().get()) ;
+                                         .result()
+                                         .get());
         }
         throw new IncorrectMathExpressionException("Impossible to calculate the expression " +
                                                            stringNumber.getIndex() + '.',

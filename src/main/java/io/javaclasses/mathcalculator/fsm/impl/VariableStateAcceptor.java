@@ -2,8 +2,8 @@ package io.javaclasses.mathcalculator.fsm.impl;
 
 import io.javaclasses.mathcalculator.fsm.base.FiniteStateMachine;
 import io.javaclasses.mathcalculator.fsm.base.StateAcceptor;
-import io.javaclasses.mathcalculator.runtime.ReadVariableCommand;
 import io.javaclasses.mathcalculator.runtime.Command;
+import io.javaclasses.mathcalculator.runtime.ReadVariableCommand;
 
 import java.io.StringWriter;
 import java.text.CharacterIterator;
@@ -11,11 +11,11 @@ import java.util.List;
 
 /**
  * Implementation of {@link StateAcceptor} that defines whether the add variable to the memory is
- * possible.And if it is possible adds variable to the memory and move an iterator forward in an inputChain.
+ * possible.And if it is possible adds variable to the memory and move an iterator forward in an
+ * inputChain.
  */
 
 public class VariableStateAcceptor implements StateAcceptor<List<Command>> {
-
 
     /**
      * This API adds variable to the memory and move an iterator forward in an inputChain.

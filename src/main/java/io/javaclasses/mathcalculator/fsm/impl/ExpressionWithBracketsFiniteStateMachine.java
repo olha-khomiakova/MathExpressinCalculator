@@ -42,6 +42,7 @@ class ExpressionWithBracketsFiniteStateMachine extends FiniteStateMachine<List<C
 
         registerPossibleStartState(Collections.singletonList(openingBrackets));
     }
+
     /**
      * This api starts the machine and gets the parsing interrupt status.
      * If the status is FINISHED, it returns the {@link Optional<Command>}

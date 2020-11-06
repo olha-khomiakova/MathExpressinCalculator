@@ -10,7 +10,8 @@ import java.util.Map;
  * Mathematical functions may be : min(), max().
  * Procedure may be : print().
  */
-public class FunctionFactory {
+public class
+FunctionFactory {
 
     private final Map<String, Creator> functionMap = new HashMap<>();
     private final String name;
