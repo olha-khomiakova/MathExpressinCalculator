@@ -1,10 +1,11 @@
 package io.javaclasses.monkey;
 
-import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
-import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
-import io.javaclasses.mathcalculator.fsm.impl.FSMFactoryImpl;
-import io.javaclasses.mathcalculator.runtime.Command;
-import io.javaclasses.mathcalculator.runtime.RuntimeEnvironment;
+import io.javaclasses.fsm.api.CompilerElement;
+import io.javaclasses.fsm.api.FSMFactory;
+import io.javaclasses.fsm.impl.FSMFactoryImpl;
+import io.javaclasses.runtime.Command;
+import io.javaclasses.runtime.IncorrectStatementException;
+import io.javaclasses.runtime.RuntimeEnvironment;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
@@ -31,8 +32,8 @@ class Monkey {
      * @param stringProgram is character iterator that stores program code
      * @param environment   is data structure that stores, output stream, system stack
      */
-    // todo: add throws section
-    public void interpret(String stringProgram, RuntimeEnvironment environment) {
+    public void interpret(String stringProgram, RuntimeEnvironment environment) throws
+                                                                                IncorrectStatementException {
 
         CharacterIterator program = new StringCharacterIterator(stringProgram);
         FSMFactory factory = new FSMFactoryImpl();
@@ -41,14 +42,15 @@ class Monkey {
 
         Optional<Command> command = compiler.compile(program);
 
-        if (command.isEmpty()) {
+        if (!command.isPresent()) {
 
             throw new IncorrectStatementException("Incorrectly entered statement in position " +
                     program.getIndex() + '.',
                     program.getIndex());
         }
-
+        environment.startStack();
         command.get().execute(environment);
+        environment.closeStack();
 
         if (environment.stack() != null) {
 

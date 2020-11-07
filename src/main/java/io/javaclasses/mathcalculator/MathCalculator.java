@@ -1,17 +1,17 @@
 package io.javaclasses.mathcalculator;
 
-import io.javaclasses.mathcalculator.fsm.api.CompilerElement;
-import io.javaclasses.mathcalculator.fsm.api.FSMFactory;
-import io.javaclasses.mathcalculator.fsm.impl.FSMFactoryImpl;
-import io.javaclasses.mathcalculator.runtime.Command;
-import io.javaclasses.mathcalculator.runtime.RuntimeEnvironment;
-import io.javaclasses.mathcalculator.runtime.ValueHolder;
+import io.javaclasses.fsm.api.CompilerElement;
+import io.javaclasses.fsm.api.FSMFactory;
+import io.javaclasses.fsm.impl.FSMFactoryImpl;
+import io.javaclasses.runtime.Command;
+import io.javaclasses.runtime.RuntimeEnvironment;
+import io.javaclasses.runtime.ValueHolder;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.Optional;
 
-import static io.javaclasses.mathcalculator.runtime.DoubleValueReader.readDouble;
+import static io.javaclasses.runtime.DoubleValueReader.readDouble;
 
 /**
  * This service calculates result of any mathematical expression.
@@ -42,15 +42,15 @@ class MathCalculator {
 
         Optional<Command> command = compilerElement.compile(stringNumber);
 
-        if (stringNumber.getIndex() != stringNumber.getEndIndex() || command.isEmpty()) {
+        if ( !command.isPresent()||stringNumber.getIndex()!=stringNumber.getEndIndex()) {
             throw new IncorrectMathExpressionException("Incorrectly entered mathematical " +
                     "expression in position " +
                     stringNumber.getIndex() + '.',
                     stringNumber.getIndex());
         }
 
+        environment.startStack();
         command.get().execute(environment);
-
         ValueHolder result = environment.stack().result();
 
         if (result == null) {
