@@ -29,6 +29,7 @@ class MonkeyTest {
 
     private static Stream<Arguments> initialization() {
         return Stream.of(
+               Arguments.of("a=5; print(a);", "5.0"),
                 Arguments.of("a=6; bb = a; a = 7; c= a*bb; print(c);", "42.0"),
                 Arguments.of("result = 5.7; print(result);", "5.7"),
                 Arguments.of("a = 5 ; b = a * 2 + 5 ; print ( b) ;", "15.0")
@@ -59,13 +60,29 @@ class MonkeyTest {
 
     private static Stream<Arguments> executeProcedureTestCases() {
         return Stream.of(
+                Arguments.of("print(1,2);", "1.0, 2.0"),
                 Arguments.of("a=6; print(a);", "6.0"),
-                Arguments.of("a=6; b= 7; print(a,b);", "6.0, 7.0"),
+                Arguments.of("a=6; b=7; print(a , b);", "6.0, 7.0"),
                 Arguments.of("a = 5 ; print (a*max(4,6)) ;", "30.0"),
                 Arguments.of("a = 5 ; b= 7; c =5*7 ; print(a,b,c);", "5.0, 7.0, 35.0")
 
         );
     }
+    @ParameterizedTest
+    @MethodSource("UnaryOperatorTestCases")
+    void testUnaryOperator(String input, String expected) {
+
+        assertOutputValue(input, expected, "Execution of procedures is broken.");
+    }
+
+    private static Stream<Arguments> UnaryOperatorTestCases() {
+        return Stream.of(
+                Arguments.of("a=1>5; b= !a; print(b);", "true"),
+                Arguments.of("a=1<5; b= !a; print(b);", "false"),
+                Arguments.of("a=1<5; b= !a; c=!(3>2); print(c);", "false")
+        );
+    }
+
 
     @ParameterizedTest
     @MethodSource("executeProcedureNegativeTestCases")

@@ -76,11 +76,35 @@ public class FiniteStateMachine<T> {
     private Optional<State<T>> stepForward(CharacterIterator inputChain, T outputChain,
                                            Iterable<State<T>> transitions) {
         for (State<T> state : transitions) {
-            if (state.accept(inputChain, outputChain)) {
+           if (state.accept(inputChain, outputChain)) {
                 return Optional.of(state);
             }
         }
+//        int maxIndex = inputChain.getIndex();
+//        T currentOutput = outputChain;
+//        T maxOutput = outputChain;
+//        CharacterIterator input = inputChain;
+//        Optional<State<T>> stateWithMaxIndex = Optional.empty();
+//        for (State<T> state : transitions) {
+//            input.setIndex(inputChain.getIndex());
+//            currentOutput = outputChain;
+//            if (state.accept(input, currentOutput)) {
+//                if(maxIndex<=input.getIndex())
+//                {
+//                    maxOutput=currentOutput;
+//                    stateWithMaxIndex=Optional.of(state);
+//                    maxIndex=inputChain.getIndex();
+//                   // inputChain.setIndex(currentIndex);
+//                    //outputChain=currentOutput;
+//                }
+//                //return Optional.of(state);
+//            }
+//        }
+//        outputChain=maxOutput;
+//        inputChain.setIndex(maxIndex);
+//        return stateWithMaxIndex;
         return Optional.empty();
+
     }
 
     private static void skipWhiteSpace(CharacterIterator inputChain, boolean isLexeme) {

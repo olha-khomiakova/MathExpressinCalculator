@@ -40,6 +40,7 @@ class FunctionFiniteStateMachine extends FiniteStateMachine<StringAndCommandsDat
         name.addTransmission(openingBrackets);
         openingBrackets.addTransmission(booleanExpression);
         openingBrackets.addTransmission(expression);
+        booleanExpression.addTransmission(comma);
         expression.addTransmission(comma);
         comma.addTransmission(booleanExpression);
         comma.addTransmission(expression);
@@ -67,7 +68,7 @@ class FunctionFiniteStateMachine extends FiniteStateMachine<StringAndCommandsDat
             return Optional.of(new FunctionFactory(nameAndParameters.name(),
                                                    nameAndParameters.parameters()).create());
         }
-        //input.setIndex(index);
+        input.setIndex(index);
         return Optional.empty();
     }
 }

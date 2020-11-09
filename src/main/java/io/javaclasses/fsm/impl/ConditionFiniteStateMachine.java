@@ -22,9 +22,9 @@ import static java.util.Arrays.asList;
  * 1) "5.25+(10*2.1)-7.77"
  * 2) "0.1*max(5,10)/2"
  */
-class BooleanExpressionFiniteStateMachine extends FiniteStateMachine<List<Command>> {
+class ConditionFiniteStateMachine extends FiniteStateMachine<List<Command>> {
 
-    BooleanExpressionFiniteStateMachine(FSMFactory factory) {
+    ConditionFiniteStateMachine(FSMFactory factory) {
 
         State<List<Command>> calculated1 = new State<>(false, new FSMStateAcceptor(factory,
                                                                                  FSMFactory.TypeFSM.EXPRESSION));
@@ -40,7 +40,7 @@ class BooleanExpressionFiniteStateMachine extends FiniteStateMachine<List<Comman
         calculated1.addTransmission(booleanOperation);
         booleanOperation.addTransmission(calculated2);
 
-        registerPossibleStartState(asList(calculated1));
+        registerPossibleStartState(Collections.singletonList(calculated1));
     }
 
     /**

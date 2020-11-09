@@ -10,6 +10,9 @@ import java.text.CharacterIterator;
 import java.util.Collections;
 import java.util.Optional;
 
+import static io.javaclasses.fsm.api.FSMFactory.TypeFSM.BOOLEAN_EXPRESSION;
+import static io.javaclasses.fsm.api.FSMFactory.TypeFSM.NEGATIVE_BOOLEAN;
+
 /**
  * Implementation of {@link FiniteStateMachine} to parse the variable initialization pattern from
  * string.
@@ -26,14 +29,21 @@ class InitializeVariableStatement extends FiniteStateMachine<StringAndCommandsDa
                                                                      new NameStateAcceptor());
         State<StringAndCommandsDataStructure> equalSign = new State<>(false,
                                                                       new RequiredCharacterStateAcceptorFunction(
-                                                             '='));
+                                                                              '='));
         State<StringAndCommandsDataStructure> expression = new State<>(true,
                                                                        new ExpressionStateAcceptorDataStructure(
-                                                              factory, FSMFactory.TypeFSM.EXPRESSION));
+                                                                               factory,
+                                                                               FSMFactory.TypeFSM.EXPRESSION));
+        State<StringAndCommandsDataStructure> negative = new State<>(true,
+                                                                     new ExpressionStateAcceptorDataStructure(
+                                                                             factory,
+                                                                             NEGATIVE_BOOLEAN));
         State<StringAndCommandsDataStructure> booleanExpression = new State<>(true,
-                                                                              new ExpressionStateAcceptorDataStructure(
-                                                                             factory, FSMFactory.TypeFSM.BOOLEAN_EXPRESSION ));
+                                                                     new ExpressionStateAcceptorDataStructure(
+                                                                             factory,
+                                                                             BOOLEAN_EXPRESSION));
         variable.addTransmission(equalSign);
+        equalSign.addTransmission(negative);
         equalSign.addTransmission(booleanExpression);
         equalSign.addTransmission(expression);
 
@@ -56,7 +66,8 @@ class InitializeVariableStatement extends FiniteStateMachine<StringAndCommandsDa
         Status status = run(input, nameAndParameters);
         if (status == Status.FINISHED) {
             return Optional.of(
-                    new InitializeVariableCommand(nameAndParameters.name(), nameAndParameters.parameters()));
+                    new InitializeVariableCommand(nameAndParameters.name(),
+                                                  nameAndParameters.parameters()));
         }
         return Optional.empty();
     }

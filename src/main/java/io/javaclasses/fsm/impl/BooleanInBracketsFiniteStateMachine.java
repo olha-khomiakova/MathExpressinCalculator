@@ -4,6 +4,7 @@ import io.javaclasses.fsm.api.FSMFactory;
 import io.javaclasses.fsm.base.FiniteStateMachine;
 import io.javaclasses.fsm.base.State;
 import io.javaclasses.runtime.Command;
+import io.javaclasses.runtime.PushBooleanExpressionCommand;
 import io.javaclasses.runtime.PushListCommand;
 
 import java.text.CharacterIterator;
@@ -18,20 +19,21 @@ import static java.util.Arrays.asList;
  * and evaluating calculated expression from string.
  * It may be numbers, expression in brackets, function, variable.
  */
-class CalculatedFiniteStateMachine extends FiniteStateMachine<List<Command>> {
+class BooleanInBracketsFiniteStateMachine extends FiniteStateMachine<List<Command>> {
 
-    CalculatedFiniteStateMachine(FSMFactory factory) {
-        State<List<Command>> number = new State<>(true, new NumberStateAcceptor(factory));
-        State<List<Command>> expressionWithBrackets = new State<>(true,
-                                                                  new FSMStateAcceptor(
-                                                                          factory,
-                                                                          FSMFactory.TypeFSM.EXPRESSION_WITH_BRACKETS));
-        State<List<Command>> function = new State<>(true, new FSMStateAcceptor(factory,
-                                                                               FSMFactory.TypeFSM.FUNCTION));
-        State<List<Command>> variable = new State<>(true, new FSMStateAcceptor(factory,
-                                                                               FSMFactory.TypeFSM.READ_VARIABLE));
+    BooleanInBracketsFiniteStateMachine(FSMFactory factory) {
+        State<List<Command>> openingBrackets = new State<>(false,
+                                                           new RequiredCharacterStateAcceptorListCommands(
+                                                                   '('));
+        State<List<Command>> closingBrackets = new State<>(true,
+                                                           new RequiredCharacterStateAcceptorListCommands(
+                                                                   ')'));
+        State<List<Command>> booleanExpression = new State<>(true, new FSMStateAcceptor(factory,
+                                                                                        FSMFactory.TypeFSM.BOOLEAN_EXPRESSION));
 
-        registerPossibleStartState(asList(number, expressionWithBrackets, function, variable));
+        openingBrackets.addTransmission(booleanExpression);
+        booleanExpression.addTransmission(closingBrackets);
+        registerPossibleStartState(asList(openingBrackets, booleanExpression));
     }
 
     /**
@@ -45,11 +47,13 @@ class CalculatedFiniteStateMachine extends FiniteStateMachine<List<Command>> {
      *         else return Optional.empty()
      */
     Optional<Command> compile(CharacterIterator input) {
+        int index = input.getIndex();
         List<Command> commands = new ArrayList<>();
         Status status = run(input, commands);
         if (status == Status.FINISHED) {
-            return Optional.of(new PushListCommand(commands));
+            return Optional.of(new PushBooleanExpressionCommand(commands));
         }
+        input.setIndex(index);
         return Optional.empty();
     }
 }

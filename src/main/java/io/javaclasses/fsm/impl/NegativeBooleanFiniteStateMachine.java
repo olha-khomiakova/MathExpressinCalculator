@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static io.javaclasses.fsm.api.FSMFactory.TypeFSM.BOOLEAN_IN_BRACKETS;
+import static io.javaclasses.fsm.api.FSMFactory.TypeFSM.NEGATIVE_BOOLEAN;
+import static io.javaclasses.fsm.api.FSMFactory.TypeFSM.READ_VARIABLE;
 import static java.util.Arrays.asList;
 
 /**
@@ -18,20 +21,16 @@ import static java.util.Arrays.asList;
  * and evaluating calculated expression from string.
  * It may be numbers, expression in brackets, function, variable.
  */
-class CalculatedFiniteStateMachine extends FiniteStateMachine<List<Command>> {
+class NegativeBooleanFiniteStateMachine extends FiniteStateMachine<List<Command>> {
 
-    CalculatedFiniteStateMachine(FSMFactory factory) {
-        State<List<Command>> number = new State<>(true, new NumberStateAcceptor(factory));
-        State<List<Command>> expressionWithBrackets = new State<>(true,
-                                                                  new FSMStateAcceptor(
-                                                                          factory,
-                                                                          FSMFactory.TypeFSM.EXPRESSION_WITH_BRACKETS));
-        State<List<Command>> function = new State<>(true, new FSMStateAcceptor(factory,
-                                                                               FSMFactory.TypeFSM.FUNCTION));
-        State<List<Command>> variable = new State<>(true, new FSMStateAcceptor(factory,
-                                                                               FSMFactory.TypeFSM.READ_VARIABLE));
+    NegativeBooleanFiniteStateMachine(FSMFactory factory) {
+        State<List<Command>> negationUnaryOperatorForCondition = new State<>(true,
+                                                                 new NegationUnaryOperatorStateAcceptor(factory,
+                                                                                                        BOOLEAN_IN_BRACKETS));
+        State<List<Command>> negationUnaryOperatorForVariable = new State<>(true,
+                                                                 new NegationUnaryOperatorStateAcceptor(factory, READ_VARIABLE));
 
-        registerPossibleStartState(asList(number, expressionWithBrackets, function, variable));
+        registerPossibleStartState(asList(negationUnaryOperatorForCondition, negationUnaryOperatorForVariable));
     }
 
     /**
@@ -45,11 +44,13 @@ class CalculatedFiniteStateMachine extends FiniteStateMachine<List<Command>> {
      *         else return Optional.empty()
      */
     Optional<Command> compile(CharacterIterator input) {
+        int index= input.getIndex();
         List<Command> commands = new ArrayList<>();
         Status status = run(input, commands);
         if (status == Status.FINISHED) {
             return Optional.of(new PushListCommand(commands));
         }
+        input.setIndex(index);
         return Optional.empty();
     }
 }

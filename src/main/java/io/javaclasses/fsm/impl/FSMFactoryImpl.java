@@ -36,7 +36,14 @@ public class FSMFactoryImpl implements FSMFactory {
 
         fsmMap.put(TypeFSM.PROGRAM, input -> new Program(this).compile(input));
 
-        fsmMap.put(TypeFSM.BOOLEAN_EXPRESSION, input -> new BooleanExpressionFiniteStateMachine(this).compile(input));
+        fsmMap.put(TypeFSM.BOOLEAN_EXPRESSION,
+                   input -> new ConditionFiniteStateMachine(this).compile(input));
+        fsmMap.put(TypeFSM.BOOLEAN_IN_BRACKETS,
+                   input -> new BooleanInBracketsFiniteStateMachine(this).compile(input));
+        fsmMap.put(TypeFSM.NEGATIVE_BOOLEAN,
+                   input -> new NegativeBooleanFiniteStateMachine(this).compile(input));
+        fsmMap.put(TypeFSM.READ_VARIABLE,
+                   input -> new ReadVariableFiniteStateMachine(this).compile(input));
 
     }
 
