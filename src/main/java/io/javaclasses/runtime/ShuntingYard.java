@@ -50,8 +50,8 @@ public class ShuntingYard {
         BinaryOperator operator = operators.pop();
         ValueHolder secondOperand = Objects.requireNonNull(operands.pop());
         ValueHolder firstOperand = Objects.requireNonNull(operands.pop());
-        this.operands.push(operator.apply(readDouble(firstOperand),
-                readDouble(secondOperand)));
+        this.operands.push(operator.apply(firstOperand,
+                secondOperand));
     }
 
     public void pushOperand(ValueHolder number) {

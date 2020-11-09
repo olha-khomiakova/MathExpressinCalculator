@@ -91,6 +91,7 @@ class MonkeyTest {
 
     private static Stream<Arguments> booleanExpression() {
         return Stream.of(
+                Arguments.of("a = (5<6)==(7<6); print(a);", "false"),
                 Arguments.of("a = 5==6; print(a);", "false"),
                 Arguments.of("a = 5!=6; print(a);", "true"),
                 Arguments.of("a = 6<=6; print(a);", "true"),

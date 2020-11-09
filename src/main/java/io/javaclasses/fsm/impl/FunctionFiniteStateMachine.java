@@ -17,27 +17,33 @@ import java.util.Optional;
  * 2) max(x,y)
  * 3) print(x)
  */
-class FunctionFiniteStateMachine extends FiniteStateMachine<NameAndParametersOutputChain> {
+class FunctionFiniteStateMachine extends FiniteStateMachine<StringAndCommandsDataStructure> {
 
     FunctionFiniteStateMachine(FSMFactory factory) {
-        State<NameAndParametersOutputChain> name = new State<>(false, new NameStateAcceptor());
-        State<NameAndParametersOutputChain> openingBrackets = new State<>(false,
-                                                           new RequiredCharacterStateAcceptorFunction(
+        State<StringAndCommandsDataStructure> name = new State<>(false, new NameStateAcceptor());
+        State<StringAndCommandsDataStructure> openingBrackets = new State<>(false,
+                                                                            new RequiredCharacterStateAcceptorFunction(
                                                                    '('));
-        State<NameAndParametersOutputChain> expression = new State<>(false,
-                                                      new ExpressionStateAcceptorDataStructure(
-                                                              factory));
-        State<NameAndParametersOutputChain> closingBrackets = new State<>(true,
-                                                           new RequiredCharacterStateAcceptorFunction(
+        State<StringAndCommandsDataStructure> expression = new State<>(false,
+                                                                       new ExpressionStateAcceptorDataStructure(
+                                                              factory, FSMFactory.TypeFSM.EXPRESSION));
+        State<StringAndCommandsDataStructure> booleanExpression = new State<>(false,
+                                                                              new ExpressionStateAcceptorDataStructure(
+                                                                             factory, FSMFactory.TypeFSM.BOOLEAN_EXPRESSION));
+        State<StringAndCommandsDataStructure> closingBrackets = new State<>(true,
+                                                                            new RequiredCharacterStateAcceptorFunction(
                                                                    ')'));
-        State<NameAndParametersOutputChain> comma = new State<>(false,
-                                                 new RequiredCharacterStateAcceptorFunction(
+        State<StringAndCommandsDataStructure> comma = new State<>(false,
+                                                                  new RequiredCharacterStateAcceptorFunction(
                                                          ','));
 
         name.addTransmission(openingBrackets);
+        openingBrackets.addTransmission(booleanExpression);
         openingBrackets.addTransmission(expression);
         expression.addTransmission(comma);
+        comma.addTransmission(booleanExpression);
         comma.addTransmission(expression);
+        booleanExpression.addTransmission(closingBrackets);
         expression.addTransmission(closingBrackets);
 
         registerPossibleStartState(Collections.singletonList(name));
@@ -54,12 +60,14 @@ class FunctionFiniteStateMachine extends FiniteStateMachine<NameAndParametersOut
      *         else return Optional.empty()
      */
     public Optional<Command> compile(CharacterIterator input) {
-        NameAndParametersOutputChain nameAndParameters = new NameAndParametersOutputChain();
+        int index = input.getIndex();
+        StringAndCommandsDataStructure nameAndParameters = new StringAndCommandsDataStructure();
         Status status = run(input, nameAndParameters);
         if (status == Status.FINISHED) {
             return Optional.of(new FunctionFactory(nameAndParameters.name(),
                                                    nameAndParameters.parameters()).create());
         }
+        //input.setIndex(index);
         return Optional.empty();
     }
 }

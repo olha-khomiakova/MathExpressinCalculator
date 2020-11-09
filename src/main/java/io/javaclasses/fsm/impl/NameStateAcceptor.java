@@ -13,23 +13,23 @@ import java.text.CharacterIterator;
  * whether the transition from one state to name state is possible.
  * And if it is possible adds it to the outputChain and moves an iterator forward in an inputChain.
  */
-public class NameStateAcceptor implements StateAcceptor<NameAndParametersOutputChain> {
+public class NameStateAcceptor implements StateAcceptor<StringAndCommandsDataStructure> {
 
     private final Logger logger = LoggerFactory.getLogger(NameStateAcceptor.class);
 
     /**
      * This API creates {@link StringWriter}, {@link NameBuilderFiniteStateMachine}, starts it,
-     * adds it to the {@link NameAndParametersOutputChain} and moves an iterator forward in an inputChain.
+     * adds it to the {@link StringAndCommandsDataStructure} and moves an iterator forward in an inputChain.
      *
      * @param inputChain
      *         is an iterable string with input data
      * @param outputChain
-     *         is an {@link NameAndParametersOutputChain} to which will be added something name.
+     *         is an {@link StringAndCommandsDataStructure} to which will be added something name.
      * @return true if it is possible to parse name and add it to the outputChain,
      *         otherwise it returns false
      */
     @Override
-    public boolean accept(CharacterIterator inputChain, NameAndParametersOutputChain outputChain) {
+    public boolean accept(CharacterIterator inputChain, StringAndCommandsDataStructure outputChain) {
 
         FiniteStateMachine<StringWriter> fsm =
                 new NameBuilderFiniteStateMachine();

@@ -20,7 +20,7 @@ public interface BinaryOperator {
      *         is double left operand
      * @return result of function apply
      */
-     ValueHolder apply(double firstOperand, double secondOperand);
+     ValueHolder apply(ValueHolder firstOperand, ValueHolder secondOperand);
 
      priority priority();
 }

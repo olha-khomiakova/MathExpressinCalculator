@@ -24,7 +24,7 @@ import java.util.Optional;
  * 2) "a=min(2,5)<4;"
  */
 
-class Monkey {
+public class Monkey {
 
     /**
      * This is API that compiles a program, gets {@link Command} and execute it.

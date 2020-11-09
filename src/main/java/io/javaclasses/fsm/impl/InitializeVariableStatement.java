@@ -18,20 +18,23 @@ import java.util.Optional;
  * 1) "a = 5"
  * 2) "res = 3<1"
  */
-class InitializeVariableStatement extends FiniteStateMachine<NameAndParametersOutputChain> {
+class InitializeVariableStatement extends FiniteStateMachine<StringAndCommandsDataStructure> {
 
     InitializeVariableStatement(FSMFactory factory) {
 
-        State<NameAndParametersOutputChain> variable = new State<>(false,
-                                                    new NameStateAcceptor());
-        State<NameAndParametersOutputChain> equalSign = new State<>(false,
-                                                     new RequiredCharacterStateAcceptorFunction(
+        State<StringAndCommandsDataStructure> variable = new State<>(false,
+                                                                     new NameStateAcceptor());
+        State<StringAndCommandsDataStructure> equalSign = new State<>(false,
+                                                                      new RequiredCharacterStateAcceptorFunction(
                                                              '='));
-        State<NameAndParametersOutputChain> expression = new State<>(true,
-                                                      new ExpressionStateAcceptorDataStructure(
-                                                              factory));
-
+        State<StringAndCommandsDataStructure> expression = new State<>(true,
+                                                                       new ExpressionStateAcceptorDataStructure(
+                                                              factory, FSMFactory.TypeFSM.EXPRESSION));
+        State<StringAndCommandsDataStructure> booleanExpression = new State<>(true,
+                                                                              new ExpressionStateAcceptorDataStructure(
+                                                                             factory, FSMFactory.TypeFSM.BOOLEAN_EXPRESSION ));
         variable.addTransmission(equalSign);
+        equalSign.addTransmission(booleanExpression);
         equalSign.addTransmission(expression);
 
         registerPossibleStartState(Collections.singletonList(variable));
@@ -49,7 +52,7 @@ class InitializeVariableStatement extends FiniteStateMachine<NameAndParametersOu
      */
     public Optional<Command> compile(CharacterIterator input) {
 
-        NameAndParametersOutputChain nameAndParameters = new NameAndParametersOutputChain();
+        StringAndCommandsDataStructure nameAndParameters = new StringAndCommandsDataStructure();
         Status status = run(input, nameAndParameters);
         if (status == Status.FINISHED) {
             return Optional.of(

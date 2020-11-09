@@ -35,10 +35,11 @@ class ExpressionWithBracketsFiniteStateMachine extends FiniteStateMachine<List<C
                                                              new FSMStateAcceptor(factory,
                                                                                   FSMFactory.TypeFSM.BOOLEAN_EXPRESSION));
 
-        expression.addTransmission(closingBrackets);
-        openingBrackets.addTransmission(expression);
+
         booleanExpression.addTransmission(closingBrackets);
         openingBrackets.addTransmission(booleanExpression);
+        openingBrackets.addTransmission(expression);
+        expression.addTransmission(closingBrackets);
 
         registerPossibleStartState(Collections.singletonList(openingBrackets));
     }

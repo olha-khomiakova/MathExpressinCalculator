@@ -3,6 +3,7 @@ package io.javaclasses.fsm.impl;
 import io.javaclasses.fsm.base.StateAcceptor;
 import io.javaclasses.runtime.BinaryOperator;
 import io.javaclasses.runtime.BinaryOperatorsFactory;
+import io.javaclasses.runtime.BooleanOperatorsFactory;
 import io.javaclasses.runtime.Command;
 import io.javaclasses.runtime.PushBinaryOperatorCommand;
 import org.slf4j.Logger;
@@ -17,7 +18,7 @@ import java.util.Optional;
  * whether the transition from one state to binary operator state is possible.
  * And if possible adds it to the outputChain and moves an iterator forward in an inputChain.
  */
-public class BinaryOperatorStateAcceptor implements StateAcceptor<List<Command>> {
+public class BooleanOperatorStateAcceptor implements StateAcceptor<List<Command>> {
 
     /**
      * This API creates binary operator, adds it to the command list
@@ -32,21 +33,27 @@ public class BinaryOperatorStateAcceptor implements StateAcceptor<List<Command>>
      */
     @Override
     public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
-        final Logger logger = LoggerFactory.getLogger(BinaryOperatorStateAcceptor.class);
+        final Logger logger = LoggerFactory.getLogger(BooleanOperatorStateAcceptor.class);
 
+        int index = inputChain.getIndex();
+        String binaryOperatorCharacters = String.valueOf(inputChain.current());
+        inputChain.next();
         char currentCharacter = inputChain.current();
-
+        if (currentCharacter == '=') {
+            binaryOperatorCharacters += currentCharacter;
+            inputChain.next();
+        }
         Optional<BinaryOperator> binaryOperator =
-                new BinaryOperatorsFactory().getBinaryOperator(currentCharacter);
+                new BooleanOperatorsFactory().getBinaryOperator(binaryOperatorCharacters);
         if (binaryOperator.isPresent()) {
             outputChain.add(new PushBinaryOperatorCommand(binaryOperator.get()));
             if (logger.isInfoEnabled()) {
                 logger.info(this.getClass()
-                                .getSimpleName() + " add " + currentCharacter);
+                                .getSimpleName() + " add " + binaryOperatorCharacters);
             }
-            inputChain.next();
             return true;
         }
+        inputChain.setIndex(index);
         return false;
     }
 

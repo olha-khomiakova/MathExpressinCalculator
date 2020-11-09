@@ -22,9 +22,9 @@ public class EqualsBooleanOperator implements BinaryOperator {
      * @return true if left operands is greater then right, otherwise false
      */
     @Override
-    public ValueHolder apply(double firstOperand, double secondOperand) {
-        return new BooleanValueHolder(String.valueOf(firstOperand)
-                                            .equals(String.valueOf(secondOperand)));
+    public ValueHolder apply(ValueHolder firstOperand, ValueHolder secondOperand) {
+        return new BooleanValueHolder((firstOperand).toString()
+                                            .equals((secondOperand).toString()));
     }
 
     @Override

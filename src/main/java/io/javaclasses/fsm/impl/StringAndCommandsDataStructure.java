@@ -8,11 +8,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This is a data structure that stores a name and values or parameters of functions, variable
- * or procedure.
+ * This is a data structure that stores a String and command list.
  */
-// todo: consider name FunctionOutputStructure
-class NameAndParametersOutputChain {
+class StringAndCommandsDataStructure {
 
     private StringWriter name;
     private final List<Command> parameters = new ArrayList<>();

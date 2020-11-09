@@ -1,5 +1,7 @@
 package io.javaclasses.runtime;
 
+import static io.javaclasses.runtime.DoubleValueReader.readDouble;
+
 /**
  * Implementation of {@link BinaryOperator} that calculates the multiplication of two operands .
  */
@@ -21,8 +23,8 @@ public class MultiplicationBinaryOperator implements BinaryOperator {
      * @return multiplication result
      */
     @Override
-    public ValueHolder apply(double firstOperand, double secondOperand) {
-        return new DoubleValueHolder(firstOperand * secondOperand);
+    public ValueHolder apply(ValueHolder firstOperand, ValueHolder secondOperand) {
+        return new DoubleValueHolder(readDouble(firstOperand) * readDouble( secondOperand));
     }
 
     @Override
