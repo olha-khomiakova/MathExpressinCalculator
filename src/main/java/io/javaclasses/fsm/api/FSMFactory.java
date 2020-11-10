@@ -18,7 +18,8 @@ public interface FSMFactory {
         BOOLEAN_EXPRESSION,
         NEGATIVE_BOOLEAN,
         BOOLEAN_IN_BRACKETS,
-        READ_VARIABLE
+        READ_VARIABLE,
+        WHILE_CYCLE
     }
 
     /**

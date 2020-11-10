@@ -42,15 +42,9 @@ class ReadVariableFiniteStateMachine extends FiniteStateMachine<List<Command>> {
      */
     Optional<Command> compile(CharacterIterator input) {
 
-        final Logger logger = LoggerFactory.getLogger(ReadVariableFiniteStateMachine.class);
-
         StringWriter output = new StringWriter();
         Status status = new NameBuilderFiniteStateMachine().run(input, output);
         if (status == Status.FINISHED) {
-            if (logger.isInfoEnabled()) {
-                logger.info(this.getClass()
-                                .getSimpleName() + " finished:  " + output);
-            }
             return Optional.of(new ReadVariableCommand(output));
         }
         return Optional.empty();

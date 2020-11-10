@@ -44,6 +44,9 @@ public class FSMFactoryImpl implements FSMFactory {
                    input -> new NegativeBooleanFiniteStateMachine(this).compile(input));
         fsmMap.put(TypeFSM.READ_VARIABLE,
                    input -> new ReadVariableFiniteStateMachine(this).compile(input));
+        fsmMap.put(TypeFSM.WHILE_CYCLE,
+                   input -> new WhileLoopFiniteStateMachine(this).compile(input));
+
 
     }
 

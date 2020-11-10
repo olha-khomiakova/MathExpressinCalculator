@@ -39,15 +39,15 @@ class MonkeyTest {
 
     @ParameterizedTest
     @MethodSource("incorrectInitialization")
-    void testIncorrectInitialization(String program) {
-        assertException(program, "position ");
+    void testIncorrectInitialization(String program,String message) {
+        assertException(program, message);
     }
 
     private static Stream<Arguments> incorrectInitialization() {
         return Stream.of(
-                Arguments.of("a=6n;"),
-                Arguments.of("result = 1 2;"),
-                Arguments.of("a = a; ")
+                Arguments.of("a=6n;","in position"),
+                Arguments.of("result = 1 2;","in position"),
+                Arguments.of("a = a; ", "Cannot resolve")
         );
     }
 
@@ -72,12 +72,13 @@ class MonkeyTest {
     @MethodSource("UnaryOperatorTestCases")
     void testUnaryOperator(String input, String expected) {
 
-        assertOutputValue(input, expected, "Execution of procedures is broken.");
+        assertOutputValue(input, expected, "Execution of unary operator is broken.");
     }
 
     private static Stream<Arguments> UnaryOperatorTestCases() {
         return Stream.of(
                 Arguments.of("a=1>5; b= !a; print(b);", "true"),
+                Arguments.of("a=1>5; print(!a);", "true"),
                 Arguments.of("a=1<5; b= !a; print(b);", "false"),
                 Arguments.of("a=1<5; b= !a; c=!(3>2); print(c);", "false")
         );
@@ -103,7 +104,7 @@ class MonkeyTest {
     @MethodSource("booleanExpression")
     void testCorrectBooleanExpression(String input, String expected) {
 
-        assertOutputValue(input, expected, "Incorrect boolean expression.");
+        assertOutputValue(input, expected, "Execution of boolean expression is broken.");
     }
 
     private static Stream<Arguments> booleanExpression() {
@@ -119,7 +120,22 @@ class MonkeyTest {
                              "true, 3.9543")
         );
     }
+    @ParameterizedTest
+    @MethodSource("WhileLoopTestCases")
+    void testWhileLoop(String input, String expected) {
 
+        assertOutputValue(input, expected, "While loop is broken.");
+    }
+
+    private static Stream<Arguments> WhileLoopTestCases() {
+        return Stream.of(
+                Arguments.of("a = 6; b = 7; while(a!=8){ a= b+1;} b=a +1; print(a, b);", "8.0, 9.0"),
+                Arguments.of("a = 6; b = 7; while(a!=9){ a= b+1; a= a+1;} b=a +1; print(a, b);", "9.0, 10.0"),
+                Arguments.of("a = 6; b = 7; while(a<10){ while(b<10){a= b+1; b= b+1;}} print(a, b);", "10.0, 10.0")
+
+
+        );
+    }
     private void assertOutputValue(String program, String expectedOutputValue,
                                    String assertMessage) {
 

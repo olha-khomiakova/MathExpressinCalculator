@@ -36,14 +36,21 @@ class FunctionFiniteStateMachine extends FiniteStateMachine<StringAndCommandsDat
         State<StringAndCommandsDataStructure> comma = new State<>(false,
                                                                   new RequiredCharacterStateAcceptorFunction(
                                                          ','));
+        State<StringAndCommandsDataStructure> negativeBooleanExpression = new State<>(false,
+                                                                              new ExpressionStateAcceptorDataStructure(
+                                                                                      factory, FSMFactory.TypeFSM.NEGATIVE_BOOLEAN));
 
         name.addTransmission(openingBrackets);
+        openingBrackets.addTransmission(negativeBooleanExpression);
         openingBrackets.addTransmission(booleanExpression);
         openingBrackets.addTransmission(expression);
+        negativeBooleanExpression.addTransmission(comma);
         booleanExpression.addTransmission(comma);
         expression.addTransmission(comma);
+        comma.addTransmission(negativeBooleanExpression);
         comma.addTransmission(booleanExpression);
         comma.addTransmission(expression);
+        negativeBooleanExpression.addTransmission(closingBrackets);
         booleanExpression.addTransmission(closingBrackets);
         expression.addTransmission(closingBrackets);
 

@@ -29,8 +29,10 @@ public class Monkey {
     /**
      * This is API that compiles a program, gets {@link Command} and execute it.
      *
-     * @param stringProgram is character iterator that stores program code
-     * @param environment   is data structure that stores, output stream, system stack
+     * @param stringProgram
+     *         is character iterator that stores program code
+     * @param environment
+     *         is data structure that stores, output stream, system stack
      */
     public void interpret(String stringProgram, RuntimeEnvironment environment) throws
                                                                                 IncorrectStatementException {
@@ -42,14 +44,15 @@ public class Monkey {
 
         Optional<Command> command = compiler.compile(program);
 
-        if (!command.isPresent()) {
+        if (!command.isPresent() && !(program.getIndex() == program.getEndIndex())) {
 
             throw new IncorrectStatementException("Incorrectly entered statement in position " +
-                    program.getIndex() + '.',
-                    program.getIndex());
+                                                          program.getIndex() + '.',
+                                                  program.getIndex());
         }
         environment.startStack();
-        command.get().execute(environment);
+        command.get()
+               .execute(environment);
         environment.closeStack();
 
         if (environment.stack() != null) {
