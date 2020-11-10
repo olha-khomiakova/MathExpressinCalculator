@@ -1,6 +1,7 @@
 package io.javaclasses.fsm.impl;
 
-import io.javaclasses.fsm.api.FSMFactory;
+import io.javaclasses.fsm.api.CompilerFactory;
+import io.javaclasses.fsm.api.CompilerType;
 import io.javaclasses.fsm.base.FiniteStateMachine;
 import io.javaclasses.fsm.base.State;
 import io.javaclasses.runtime.Command;
@@ -21,7 +22,7 @@ import java.util.Optional;
  */
 class ExpressionWithBracketsFiniteStateMachine extends FiniteStateMachine<List<Command>> {
 
-    ExpressionWithBracketsFiniteStateMachine(FSMFactory factory) {
+    ExpressionWithBracketsFiniteStateMachine(CompilerFactory factory) {
         State<List<Command>> openingBrackets = new State<>(false,
                                                            new RequiredCharacterStateAcceptorListCommands(
                                                                    '('));
@@ -30,11 +31,10 @@ class ExpressionWithBracketsFiniteStateMachine extends FiniteStateMachine<List<C
                                                                    ')'));
         State<List<Command>> expression = new State<>(false,
                                                       new FSMStateAcceptor(factory,
-                                                                           FSMFactory.TypeFSM.EXPRESSION));
+                                                                           CompilerType.EXPRESSION));
         State<List<Command>> booleanExpression = new State<>(false,
                                                              new FSMStateAcceptor(factory,
-                                                                                  FSMFactory.TypeFSM.BOOLEAN_EXPRESSION));
-
+                                                                                  CompilerType.BOOLEAN_EXPRESSION));
 
         booleanExpression.addTransmission(closingBrackets);
         openingBrackets.addTransmission(booleanExpression);

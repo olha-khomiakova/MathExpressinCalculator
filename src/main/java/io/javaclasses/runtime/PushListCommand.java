@@ -23,11 +23,11 @@ public class PushListCommand implements Command {
     /**
      * This API push expression to the ShuntingYard.
      *
-     * @param environment is data structure for storing {@link Memory}, {@link java.util.Deque<ShuntingYard>},
+     * @param environment
+     *         is data structure for storing {@link Memory}, {@link java.util.Deque<ShuntingYard>},
      */
     @Override
     public void execute(RuntimeEnvironment environment) {
-
 
         for (Command command : commandList) {
             command.execute(environment);
@@ -35,7 +35,8 @@ public class PushListCommand implements Command {
 
         if (logger.isInfoEnabled()) {
 
-            logger.info(this.getClass().getSimpleName());
+            logger.info(this.getClass()
+                            .getSimpleName());
         }
 
     }

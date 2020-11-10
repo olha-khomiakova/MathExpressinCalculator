@@ -27,12 +27,12 @@ public class DoubleValueReader implements ValueHolderVisitor {
 
     @Override
     public void visit(StringValueHolder holder) {
-        throw new IllegalStateException("Double value expected. ");
+        throw new MonkeyException("Double value expected. ");
     }
 
     @Override
     public void visit(BooleanValueHolder holder) {
-        throw new IllegalStateException("Double value expected.");
+        throw new MonkeyException("Double value expected.");
 
     }
 //

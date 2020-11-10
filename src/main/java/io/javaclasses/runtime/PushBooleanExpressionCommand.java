@@ -23,7 +23,8 @@ public class PushBooleanExpressionCommand implements Command {
     /**
      * This API push expression to the ShuntingYard.
      *
-     * @param environment is data structure for storing {@link Memory}, {@link java.util.Deque<ShuntingYard>},
+     * @param environment
+     *         is data structure for storing {@link Memory}, {@link java.util.Deque<ShuntingYard>},
      */
     @Override
     public void execute(RuntimeEnvironment environment) {
@@ -33,15 +34,18 @@ public class PushBooleanExpressionCommand implements Command {
         for (Command command : commandList) {
             command.execute(environment);
         }
-        ValueHolder result = environment.stack().result();
+        ValueHolder result = environment.stack()
+                                        .result();
 
         environment.closeStack();
 
-        environment.stack().pushOperand(result);
+        environment.stack()
+                   .pushOperand(result);
 
         if (logger.isInfoEnabled()) {
 
-            logger.info(this.getClass().getSimpleName() + " : " + result);
+            logger.info(this.getClass()
+                            .getSimpleName() + " : " + result);
         }
 
     }

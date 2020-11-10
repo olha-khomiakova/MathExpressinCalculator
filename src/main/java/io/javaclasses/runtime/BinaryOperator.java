@@ -5,7 +5,7 @@ package io.javaclasses.runtime;
  */
 public interface BinaryOperator {
 
-     enum priority {
+    enum priority {
         MORE_THEN_LOW, // boolean operators
         LOW, // - +
         MEDIUM //* /
@@ -20,7 +20,7 @@ public interface BinaryOperator {
      *         is double left operand
      * @return result of function apply
      */
-     ValueHolder apply(ValueHolder firstOperand, ValueHolder secondOperand);
+    ValueHolder apply(ValueHolder firstOperand, ValueHolder secondOperand);
 
-     priority priority();
+    priority priority();
 }

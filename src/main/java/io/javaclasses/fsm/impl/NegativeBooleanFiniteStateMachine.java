@@ -1,6 +1,6 @@
 package io.javaclasses.fsm.impl;
 
-import io.javaclasses.fsm.api.FSMFactory;
+import io.javaclasses.fsm.api.CompilerFactory;
 import io.javaclasses.fsm.base.FiniteStateMachine;
 import io.javaclasses.fsm.base.State;
 import io.javaclasses.runtime.Command;
@@ -11,9 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static io.javaclasses.fsm.api.FSMFactory.TypeFSM.BOOLEAN_IN_BRACKETS;
-import static io.javaclasses.fsm.api.FSMFactory.TypeFSM.NEGATIVE_BOOLEAN;
-import static io.javaclasses.fsm.api.FSMFactory.TypeFSM.READ_VARIABLE;
+import static io.javaclasses.fsm.api.CompilerType.BOOLEAN_IN_BRACKETS;
+import static io.javaclasses.fsm.api.CompilerType.READ_VARIABLE;
 import static java.util.Arrays.asList;
 
 /**
@@ -23,14 +22,18 @@ import static java.util.Arrays.asList;
  */
 class NegativeBooleanFiniteStateMachine extends FiniteStateMachine<List<Command>> {
 
-    NegativeBooleanFiniteStateMachine(FSMFactory factory) {
-        State<List<Command>> negationUnaryOperatorForCondition = new State<>(true,
-                                                                 new NegationUnaryOperatorStateAcceptor(factory,
-                                                                                                        BOOLEAN_IN_BRACKETS));
-        State<List<Command>> negationUnaryOperatorForVariable = new State<>(true,
-                                                                 new NegationUnaryOperatorStateAcceptor(factory, READ_VARIABLE));
+    NegativeBooleanFiniteStateMachine(CompilerFactory factory) {
+        State<List<Command>> negativeCondition = new State<>(true,
+                                                                             new NegationUnaryOperatorStateAcceptor(
+                                                                                     factory,
+                                                                                     BOOLEAN_IN_BRACKETS));
+        State<List<Command>> negativeVariable = new State<>(true,
+                                                                            new NegationUnaryOperatorStateAcceptor(
+                                                                                    factory,
+                                                                                    READ_VARIABLE));
 
-        registerPossibleStartState(asList(negationUnaryOperatorForCondition, negationUnaryOperatorForVariable));
+        registerPossibleStartState(
+                asList(negativeCondition, negativeVariable));
     }
 
     /**
@@ -44,7 +47,7 @@ class NegativeBooleanFiniteStateMachine extends FiniteStateMachine<List<Command>
      *         else return Optional.empty()
      */
     Optional<Command> compile(CharacterIterator input) {
-        int index= input.getIndex();
+        int index = input.getIndex();
         List<Command> commands = new ArrayList<>();
         Status status = run(input, commands);
         if (status == Status.FINISHED) {

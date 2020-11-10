@@ -1,6 +1,7 @@
 package io.javaclasses.fsm.impl;
 
-import io.javaclasses.fsm.api.FSMFactory;
+import io.javaclasses.fsm.api.CompilerFactory;
+import io.javaclasses.fsm.api.CompilerType;
 import io.javaclasses.fsm.base.FiniteStateMachine;
 import io.javaclasses.fsm.base.State;
 import io.javaclasses.runtime.Command;
@@ -8,7 +9,6 @@ import io.javaclasses.runtime.PushListCommand;
 
 import java.text.CharacterIterator;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,20 +23,21 @@ import static java.util.Arrays.asList;
  */
 class Program extends FiniteStateMachine<List<Command>> {
 
-    Program(FSMFactory factory) {
+    Program(CompilerFactory factory) {
 
         State<List<Command>> statement = new State<>(false, new FSMStateAcceptor(factory,
-                FSMFactory.TypeFSM.STATEMENT));
+                                                                                 CompilerType.STATEMENT));
 
         State<List<Command>> semicolon = new State<>(true,
-                new RequiredCharacterStateAcceptorListCommands(';'));
+                                                     new RequiredCharacterStateAcceptorListCommands(
+                                                             ';'));
 
         State<List<Command>> whileCycle = new State<>(true, new FSMStateAcceptor(factory,
-                                                                                 FSMFactory.TypeFSM.WHILE_CYCLE));
-
+                                                                                 CompilerType.WHILE_CYCLE));
 
         State<List<Command>> endOfProgram = new State<>(true,
-                new RequiredCharacterStateAcceptorListCommands(CharacterIterator.DONE));
+                                                        new RequiredCharacterStateAcceptorListCommands(
+                                                                CharacterIterator.DONE));
 
         statement.addTransmission(semicolon);
         semicolon.addTransmission(whileCycle);
@@ -53,9 +54,10 @@ class Program extends FiniteStateMachine<List<Command>> {
      * If the status is FINISHED, it returns the {@link Optional<Command>}
      * in which the parsed commands are stored, else return Optional.empty();
      *
-     * @param input is an iterable string with input data
+     * @param input
+     *         is an iterable string with input data
      * @return {@link Optional<Command>}, if the status of run is FINISHED,
-     * else return Optional.empty()
+     *         else return Optional.empty()
      */
     Optional<Command> compile(CharacterIterator input) {
         List<Command> commands = new ArrayList<>();

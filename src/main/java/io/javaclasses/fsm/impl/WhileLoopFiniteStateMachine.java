@@ -1,6 +1,6 @@
 package io.javaclasses.fsm.impl;
 
-import io.javaclasses.fsm.api.FSMFactory;
+import io.javaclasses.fsm.api.CompilerFactory;
 import io.javaclasses.fsm.base.FiniteStateMachine;
 import io.javaclasses.fsm.base.State;
 import io.javaclasses.runtime.Command;
@@ -19,19 +19,19 @@ import java.util.Optional;
  */
 class WhileLoopFiniteStateMachine extends FiniteStateMachine<DataStructureForLoop> {
 
-    WhileLoopFiniteStateMachine(FSMFactory factory) {
-        State<DataStructureForLoop> nameWhile = new State<>(false, new ReservedNameStateAcceptor("while"));
-        State<DataStructureForLoop> condition = new State<>(false, new ConditionForLoopAcceptor(factory));
+    WhileLoopFiniteStateMachine(CompilerFactory factory) {
+        State<DataStructureForLoop> nameWhile = new State<>(false,
+                                                            new ReservedNameStateAcceptor("while"));
+        State<DataStructureForLoop> condition = new State<>(false,
+                                                            new ConditionForLoopAcceptor(factory));
         State<DataStructureForLoop> openingCurlyBrackets = new State<>(false,
                                                                        new RequiredCharacterStateAcceptorLoop(
-                                                                        '{'));
-        State<DataStructureForLoop> statements = new State<>(false, new StatementForLoopAcceptor(factory));
+                                                                               '{'));
+        State<DataStructureForLoop> statements = new State<>(false,
+                                                             new StatementForLoopAcceptor(factory));
         State<DataStructureForLoop> closingCurlyBrackets = new State<>(true,
                                                                        new RequiredCharacterStateAcceptorLoop(
-                                                                        '}'));
-        State<DataStructureForLoop> semicolon = new State<>(true,
-                                                            new RequiredCharacterStateAcceptorLoop(
-                                                                                ';'));
+                                                                               '}'));
 
         nameWhile.addTransmission(condition);
         condition.addTransmission(openingCurlyBrackets);
@@ -56,7 +56,8 @@ class WhileLoopFiniteStateMachine extends FiniteStateMachine<DataStructureForLoo
         DataStructureForLoop dataStructure = new DataStructureForLoop();
         Status status = run(input, dataStructure);
         if (status == Status.FINISHED) {
-            return Optional.of(new PushLoopCommand(dataStructure.condition(), dataStructure.statements()));
+            return Optional.of(
+                    new PushLoopCommand(dataStructure.condition(), dataStructure.statements()));
         }
         return Optional.empty();
     }

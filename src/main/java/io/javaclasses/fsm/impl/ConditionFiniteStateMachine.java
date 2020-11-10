@@ -1,19 +1,17 @@
 package io.javaclasses.fsm.impl;
 
-import io.javaclasses.fsm.api.FSMFactory;
+import io.javaclasses.fsm.api.CompilerFactory;
+import io.javaclasses.fsm.api.CompilerType;
 import io.javaclasses.fsm.base.FiniteStateMachine;
 import io.javaclasses.fsm.base.State;
 import io.javaclasses.runtime.Command;
 import io.javaclasses.runtime.PushBooleanExpressionCommand;
-import io.javaclasses.runtime.PushExpressionCommand;
 
 import java.text.CharacterIterator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-import static java.util.Arrays.asList;
 
 /**
  * Implementation of {@link FiniteStateMachine} for parsing mathematical expression from string.
@@ -24,17 +22,17 @@ import static java.util.Arrays.asList;
  */
 class ConditionFiniteStateMachine extends FiniteStateMachine<List<Command>> {
 
-    ConditionFiniteStateMachine(FSMFactory factory) {
+    ConditionFiniteStateMachine(CompilerFactory factory) {
 
         State<List<Command>> calculated1 = new State<>(false, new FSMStateAcceptor(factory,
-                                                                                 FSMFactory.TypeFSM.EXPRESSION));
+                                                                                   CompilerType.EXPRESSION));
 
         State<List<Command>> booleanOperation = new State<>(false,
-                                                           new BooleanOperatorStateAcceptor());
+                                                            new BooleanOperatorStateAcceptor());
         State<List<Command>> booleanCalculated2 = new State<>(true, new FSMStateAcceptor(factory,
-                                                                                  FSMFactory.TypeFSM.BOOLEAN_EXPRESSION));
+                                                                                         CompilerType.BOOLEAN_EXPRESSION));
         State<List<Command>> calculated2 = new State<>(true, new FSMStateAcceptor(factory,
-                                                                                  FSMFactory.TypeFSM.EXPRESSION));
+                                                                                  CompilerType.EXPRESSION));
 
         booleanOperation.addTransmission(booleanCalculated2);
         calculated1.addTransmission(booleanOperation);

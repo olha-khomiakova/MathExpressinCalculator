@@ -1,7 +1,8 @@
 package io.javaclasses.fsm.impl;
 
-import io.javaclasses.fsm.api.CompilerElement;
-import io.javaclasses.fsm.api.FSMFactory;
+import io.javaclasses.fsm.api.Compiler;
+import io.javaclasses.fsm.api.CompilerFactory;
+import io.javaclasses.fsm.api.CompilerType;
 import io.javaclasses.fsm.base.StateAcceptor;
 import io.javaclasses.runtime.Command;
 import org.slf4j.Logger;
@@ -20,11 +21,11 @@ import java.util.Optional;
 
 public class ConditionForLoopAcceptor implements StateAcceptor<DataStructureForLoop> {
 
-    private final FSMFactory factory;
-   // private final FSMFactory.TypeFSM typeFSM;
+    private final CompilerFactory factory;
+    // private final CompilerFactory.CompilerType typeFSM;
     private final Logger logger = LoggerFactory.getLogger(ConditionForLoopAcceptor.class);
 
-    ConditionForLoopAcceptor(FSMFactory factory) {
+    ConditionForLoopAcceptor(CompilerFactory factory) {
         this.factory = factory;
         //this.typeFSM = typeFSM;
     }
@@ -44,8 +45,8 @@ public class ConditionForLoopAcceptor implements StateAcceptor<DataStructureForL
     @Override
     public boolean accept(CharacterIterator inputChain, DataStructureForLoop outputChain) {
         int indexInputChain = inputChain.getIndex();
-        CompilerElement compilerElement = factory.create(FSMFactory.TypeFSM.BOOLEAN_IN_BRACKETS);
-        Optional<Command> command = compilerElement.compile(inputChain);
+        Compiler compiler = factory.create(CompilerType.BOOLEAN_IN_BRACKETS);
+        Optional<Command> command = compiler.compile(inputChain);
         if (command.isPresent()) {
             outputChain.pushCondition(command.get());
 

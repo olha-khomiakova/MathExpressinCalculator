@@ -1,7 +1,8 @@
 package io.javaclasses.fsm.impl;
 
-import io.javaclasses.fsm.api.CompilerElement;
-import io.javaclasses.fsm.api.FSMFactory;
+import io.javaclasses.fsm.api.Compiler;
+import io.javaclasses.fsm.api.CompilerFactory;
+import io.javaclasses.fsm.api.CompilerType;
 import io.javaclasses.fsm.base.StateAcceptor;
 import io.javaclasses.runtime.Command;
 import io.javaclasses.runtime.PushNegationUnaryOperatorCommand;
@@ -19,12 +20,13 @@ import java.util.Optional;
  */
 public class NegationUnaryOperatorStateAcceptor implements StateAcceptor<List<Command>> {
 
-    private final FSMFactory factory;
-    private final FSMFactory.TypeFSM type;
+    private final CompilerFactory factory;
+    private final CompilerType type;
 
-    public NegationUnaryOperatorStateAcceptor(FSMFactory factory, FSMFactory.TypeFSM typeFSM) {
+    public NegationUnaryOperatorStateAcceptor(CompilerFactory factory,
+                                              CompilerType FSMtype) {
         this.factory = factory;
-        this.type =typeFSM;
+        this.type = FSMtype;
     }
 
     /**
@@ -47,8 +49,8 @@ public class NegationUnaryOperatorStateAcceptor implements StateAcceptor<List<Co
 
             inputChain.next();
 
-            CompilerElement compilerElement = factory.create(type);
-            Optional<Command> command = compilerElement.compile(inputChain);
+            Compiler compiler = factory.create(type);
+            Optional<Command> command = compiler.compile(inputChain);
             if (command.isPresent()) {
                 outputChain.add(new PushNegationUnaryOperatorCommand(command.get()));
                 if (logger.isInfoEnabled()) {

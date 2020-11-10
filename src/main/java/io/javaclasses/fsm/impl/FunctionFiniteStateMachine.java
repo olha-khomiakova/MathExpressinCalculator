@@ -1,6 +1,7 @@
 package io.javaclasses.fsm.impl;
 
-import io.javaclasses.fsm.api.FSMFactory;
+import io.javaclasses.fsm.api.CompilerFactory;
+import io.javaclasses.fsm.api.CompilerType;
 import io.javaclasses.fsm.base.FiniteStateMachine;
 import io.javaclasses.fsm.base.State;
 import io.javaclasses.runtime.Command;
@@ -19,26 +20,29 @@ import java.util.Optional;
  */
 class FunctionFiniteStateMachine extends FiniteStateMachine<StringAndCommandsDataStructure> {
 
-    FunctionFiniteStateMachine(FSMFactory factory) {
+    FunctionFiniteStateMachine(CompilerFactory factory) {
         State<StringAndCommandsDataStructure> name = new State<>(false, new NameStateAcceptor());
         State<StringAndCommandsDataStructure> openingBrackets = new State<>(false,
                                                                             new RequiredCharacterStateAcceptorFunction(
-                                                                   '('));
+                                                                                    '('));
         State<StringAndCommandsDataStructure> expression = new State<>(false,
                                                                        new ExpressionStateAcceptorDataStructure(
-                                                              factory, FSMFactory.TypeFSM.EXPRESSION));
+                                                                               factory,
+                                                                               CompilerType.EXPRESSION));
         State<StringAndCommandsDataStructure> booleanExpression = new State<>(false,
                                                                               new ExpressionStateAcceptorDataStructure(
-                                                                             factory, FSMFactory.TypeFSM.BOOLEAN_EXPRESSION));
+                                                                                      factory,
+                                                                                      CompilerType.BOOLEAN_EXPRESSION));
         State<StringAndCommandsDataStructure> closingBrackets = new State<>(true,
                                                                             new RequiredCharacterStateAcceptorFunction(
-                                                                   ')'));
+                                                                                    ')'));
         State<StringAndCommandsDataStructure> comma = new State<>(false,
                                                                   new RequiredCharacterStateAcceptorFunction(
-                                                         ','));
+                                                                          ','));
         State<StringAndCommandsDataStructure> negativeBooleanExpression = new State<>(false,
-                                                                              new ExpressionStateAcceptorDataStructure(
-                                                                                      factory, FSMFactory.TypeFSM.NEGATIVE_BOOLEAN));
+                                                                                      new ExpressionStateAcceptorDataStructure(
+                                                                                              factory,
+                                                                                              CompilerType.NEGATIVE_BOOLEAN));
 
         name.addTransmission(openingBrackets);
         openingBrackets.addTransmission(negativeBooleanExpression);

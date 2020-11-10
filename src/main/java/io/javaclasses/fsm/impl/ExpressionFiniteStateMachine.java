@@ -1,6 +1,7 @@
 package io.javaclasses.fsm.impl;
 
-import io.javaclasses.fsm.api.FSMFactory;
+import io.javaclasses.fsm.api.CompilerFactory;
+import io.javaclasses.fsm.api.CompilerType;
 import io.javaclasses.fsm.base.FiniteStateMachine;
 import io.javaclasses.fsm.base.State;
 import io.javaclasses.runtime.Command;
@@ -21,9 +22,9 @@ import java.util.Optional;
  */
 class ExpressionFiniteStateMachine extends FiniteStateMachine<List<Command>> {
 
-    ExpressionFiniteStateMachine(FSMFactory factory) {
+    ExpressionFiniteStateMachine(CompilerFactory factory) {
         State<List<Command>> calculated = new State<>(true, new FSMStateAcceptor(factory,
-                                                                                 FSMFactory.TypeFSM.CALCULATED));
+                                                                                 CompilerType.CALCULATED));
         State<List<Command>> binaryOperation = new State<>(false,
                                                            new BinaryOperatorStateAcceptor());
 

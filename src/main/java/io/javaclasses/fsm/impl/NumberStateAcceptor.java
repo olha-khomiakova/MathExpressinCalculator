@@ -1,7 +1,8 @@
 package io.javaclasses.fsm.impl;
 
-import io.javaclasses.fsm.api.CompilerElement;
-import io.javaclasses.fsm.api.FSMFactory;
+import io.javaclasses.fsm.api.Compiler;
+import io.javaclasses.fsm.api.CompilerFactory;
+import io.javaclasses.fsm.api.CompilerType;
 import io.javaclasses.fsm.base.StateAcceptor;
 import io.javaclasses.runtime.Command;
 
@@ -11,21 +12,21 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Implementation of {@link StateAcceptor} that creates {@link CompilerElement}, starts it and
+ * Implementation of {@link StateAcceptor} that creates {@link Compiler}, starts it and
  * defines whether the transition from one state to number state is possible
  * and if it is possible adds result to the outputChain.
  */
 public class NumberStateAcceptor implements StateAcceptor<List<Command>> {
 
-    private final FSMFactory factory;
+    private final CompilerFactory factory;
 
-    NumberStateAcceptor(FSMFactory factory) {
+    NumberStateAcceptor(CompilerFactory factory) {
         this.factory = factory;
     }
 
     /**
      * This API creates {@link StringWriter} for {@link NumberFiniteStateMachine},
-     * starts {@link CompilerElement} and adds result of shunting yard to the outputChain.
+     * starts {@link Compiler} and adds result of shunting yard to the outputChain.
      *
      * @param inputChain
      *         is an iterable string with input data
@@ -37,8 +38,8 @@ public class NumberStateAcceptor implements StateAcceptor<List<Command>> {
     @Override
     public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
 
-        CompilerElement compilerElement = factory.create(FSMFactory.TypeFSM.NUMBER);
-        Optional<Command> command = compilerElement.compile(inputChain);
+        Compiler compiler = factory.create(CompilerType.NUMBER);
+        Optional<Command> command = compiler.compile(inputChain);
         if (command.isPresent()) {
             outputChain.add(command.get());
             return true;

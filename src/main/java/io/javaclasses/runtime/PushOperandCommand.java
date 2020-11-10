@@ -4,8 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This is implementation of {@link Function} for push operand to the
- * {@link java.util.Deque<ShuntingYard>}.
+ * This is implementation of {@link Command} for pushing operand to the {@link ShuntingYard}.
+ *
+ * Usually {@link PushExpressionCommand} uses this command to fill the {@link ShuntingYard} with
+ * data.
  */
 public class PushOperandCommand implements Command {
 
@@ -17,10 +19,12 @@ public class PushOperandCommand implements Command {
     }
 
     /**
-     * This API push binary operand to the ShuntingYard.
+     * This API push operand to the {@link ShuntingYard}.
      *
      * @param environment
-     *         is data structure for storing {@link Memory}, {@link java.util.Deque<ShuntingYard>},
+     *         is data structure for storing {@link io.javaclasses.runtime.Memory},
+     *         {@link java.util.Deque<ShuntingYard>},
+     *         {@link java.io.ByteArrayOutputStream} and processing them
      */
     @Override
     public void execute(RuntimeEnvironment environment) {

@@ -24,7 +24,4 @@ public class Memory {
         return memory.get(readString(variableName));
     }
 
-    void replace(String name, ValueHolder variableName) {
-        memory.replace(name, variableName);
-    }
 }

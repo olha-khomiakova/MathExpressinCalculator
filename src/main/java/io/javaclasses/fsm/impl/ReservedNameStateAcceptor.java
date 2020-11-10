@@ -33,11 +33,9 @@ public class ReservedNameStateAcceptor implements StateAcceptor<DataStructureFor
     public boolean accept(CharacterIterator inputChain, DataStructureForLoop outputChain) {
         StringWriter stringWriter = new StringWriter();
         NameBuilderFiniteStateMachine fsm = new NameBuilderFiniteStateMachine();
-        if (fsm.run(inputChain, stringWriter) == FiniteStateMachine.Status.FINISHED &&
-                stringWriter.toString().equals(reservedName)) {
-            return true;
-        }
-        return false;
+        return fsm.run(inputChain, stringWriter) == FiniteStateMachine.Status.FINISHED &&
+                stringWriter.toString()
+                            .equals(reservedName);
     }
 
     @Override

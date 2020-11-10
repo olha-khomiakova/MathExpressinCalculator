@@ -24,7 +24,9 @@ public class InitializeVariableCommand implements Command {
     /**
      * This API push binary variable to the ShuntingYard.
      *
-     * @param environment is data structure for storing {@link io.javaclasses.runtime.Memory}, {@link java.util.Deque<ShuntingYard>},
+     * @param environment
+     *         is data structure for storing {@link io.javaclasses.runtime.Memory}, {@link
+     *         java.util.Deque<ShuntingYard>},
      */
     @Override
     public void execute(RuntimeEnvironment environment) {
@@ -35,16 +37,18 @@ public class InitializeVariableCommand implements Command {
             command.execute(environment);
         }
 
-        ValueHolder result = environment.stack().result();
+        ValueHolder result = environment.stack()
+                                        .result();
 
         environment.closeStack();
 
-        environment.memory().put(nameVariable, result);
+        environment.memory()
+                   .put(nameVariable, result);
 
         if (logger.isInfoEnabled()) {
             logger.info(this.getClass()
-                    .getSimpleName() + " :" + nameVariable +
-                    '=' + result);
+                            .getSimpleName() + " :" + nameVariable +
+                                '=' + result);
         }
 
     }

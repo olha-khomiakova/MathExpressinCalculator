@@ -24,7 +24,7 @@ public class EqualsBooleanOperator implements BinaryOperator {
     @Override
     public ValueHolder apply(ValueHolder firstOperand, ValueHolder secondOperand) {
         return new BooleanValueHolder((firstOperand).toString()
-                                            .equals((secondOperand).toString()));
+                                                    .equals((secondOperand).toString()));
     }
 
     @Override

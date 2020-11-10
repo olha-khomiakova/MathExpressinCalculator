@@ -23,10 +23,10 @@ public class BooleanValueHolder implements ValueHolder {
         visitor.visit(this);
     }
 
-        public boolean value()
-    {
+    public boolean value() {
         return value;
     }
+
     @Override
     public String toString() {
         return String.valueOf(value);

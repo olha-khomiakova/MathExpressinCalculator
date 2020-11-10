@@ -1,8 +1,9 @@
 package io.javaclasses.mathcalculator;
 
-import io.javaclasses.fsm.api.CompilerElement;
-import io.javaclasses.fsm.api.FSMFactory;
-import io.javaclasses.fsm.impl.FSMFactoryImpl;
+import io.javaclasses.fsm.api.Compiler;
+import io.javaclasses.fsm.api.CompilerFactory;
+import io.javaclasses.fsm.api.CompilerType;
+import io.javaclasses.fsm.impl.CompilerFactoryImpl;
 import io.javaclasses.runtime.Command;
 import io.javaclasses.runtime.RuntimeEnvironment;
 import io.javaclasses.runtime.ValueHolder;
@@ -28,37 +29,39 @@ class MathCalculator {
     /**
      * This is API that calculates result of mathematical expression.
      *
-     * @param mathExpression is an expression that should be calculated
+     * @param mathExpression
+     *         is an expression that should be calculated
      * @return result of the mathematical expression
-     * occurs if the expression format is incorrect
+     *         occurs if the expression format is incorrect
      */
     public double evaluate(String mathExpression) {
 
         CharacterIterator stringNumber = new StringCharacterIterator(mathExpression);
         RuntimeEnvironment environment = new RuntimeEnvironment();
 
-        FSMFactory factory = new FSMFactoryImpl();
-        CompilerElement compilerElement = factory.create(FSMFactory.TypeFSM.EXPRESSION);
+        CompilerFactory factory = new CompilerFactoryImpl();
+        Compiler compiler = factory.create(CompilerType.EXPRESSION);
 
-        Optional<Command> command = compilerElement.compile(stringNumber);
+        Optional<Command> command = compiler.compile(stringNumber);
 
-        if ( !command.isPresent()||stringNumber.getIndex()!=stringNumber.getEndIndex()) {
+        if (!command.isPresent() || stringNumber.getIndex() != stringNumber.getEndIndex()) {
             throw new IncorrectMathExpressionException("Incorrectly entered mathematical " +
-                    "expression in position " +
-                    stringNumber.getIndex() + '.',
-                    stringNumber.getIndex());
+                                                               "expression in position " +
+                                                               stringNumber.getIndex() + '.',
+                                                       stringNumber.getIndex());
         }
 
         environment.startStack();
-        command.get().execute(environment);
-        ValueHolder result = environment.stack().result();
+        command.get()
+               .execute(environment);
+        ValueHolder result = environment.stack()
+                                        .result();
 
         if (result == null) {
 
-
             throw new IncorrectMathExpressionException("Impossible to calculate the expression " +
-                    stringNumber.getIndex() + '.',
-                    stringNumber.getIndex());
+                                                               stringNumber.getIndex() + '.',
+                                                       stringNumber.getIndex());
 
         }
 

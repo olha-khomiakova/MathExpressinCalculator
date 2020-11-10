@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import static io.javaclasses.runtime.BooleanValueReader.readBoolean;
 
@@ -16,9 +16,9 @@ public class PushLoopCommand implements Command {
 
     private final Logger logger = LoggerFactory.getLogger(PushLoopCommand.class);
     private final Command condition;
-    private final List<Command> statements = new ArrayList<>();
+    private final Collection<Command> statements = new ArrayList<>();
 
-    public PushLoopCommand(Command condition, List<Command> statements) {
+    public PushLoopCommand(Command condition, Collection<Command> statements) {
         this.condition = condition;
         this.statements.addAll(statements);
     }
@@ -50,10 +50,10 @@ public class PushLoopCommand implements Command {
 
         }
 
-//        if (logger.isInfoEnabled()) {
-//            logger.info(this.getClass()
-//                            .getSimpleName() + " :" + operand);
-//
-//        }
+        if (logger.isInfoEnabled()) {
+            logger.info(this.getClass()
+                            .getSimpleName() + " end");
+
+        }
     }
 }

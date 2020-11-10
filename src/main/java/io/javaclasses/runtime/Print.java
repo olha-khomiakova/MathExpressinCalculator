@@ -20,24 +20,26 @@ public class Print extends Function {
     /**
      * This API add data to {@link java.io.ByteArrayOutputStream}.
      *
-     * @param environment is data structure for storing {@link Memory}, {@link java.util.Deque<ShuntingYard>},
+     * @param environment
+     *         is data structure for storing {@link Memory}, {@link java.util.Deque<ShuntingYard>},
      */
     @Override
     public void execute(RuntimeEnvironment environment) {
         List<ValueHolder> parameters = parameters(environment);
-        for(int i=0;i<parameters.size();i++)
-        {
-            environment.output().append(parameters.get(i).toString());
-            if(i<parameters.size()-1)
-            {
-                environment.output().append(", ");
+        for (int i = 0; i < parameters.size(); i++) {
+            environment.output()
+                       .append(parameters.get(i)
+                                         .toString());
+            if (i < parameters.size() - 1) {
+                environment.output()
+                           .append(", ");
             }
         }
 
         if (logger.isInfoEnabled()) {
             logger.info(this.getClass() + " :" + this.getClass()
-                    .getName()
-                    .toLowerCase() + "()");
+                                                     .getName()
+                                                     .toLowerCase() + "()");
         }
     }
 

@@ -1,7 +1,8 @@
 package io.javaclasses.fsm.impl;
 
-import io.javaclasses.fsm.api.CompilerElement;
-import io.javaclasses.fsm.api.FSMFactory;
+import io.javaclasses.fsm.api.Compiler;
+import io.javaclasses.fsm.api.CompilerFactory;
+import io.javaclasses.fsm.api.CompilerType;
 import io.javaclasses.fsm.base.StateAcceptor;
 import io.javaclasses.runtime.Command;
 import org.slf4j.Logger;
@@ -20,13 +21,13 @@ import java.util.Optional;
 
 public class FSMStateAcceptor implements StateAcceptor<List<Command>> {
 
-    private final FSMFactory factory;
-    private final FSMFactory.TypeFSM typeFSM;
+    private final CompilerFactory factory;
+    private final CompilerType fsmType;
     private final Logger logger = LoggerFactory.getLogger(FSMStateAcceptor.class);
 
-    FSMStateAcceptor(FSMFactory factory, FSMFactory.TypeFSM typeFSM) {
+    FSMStateAcceptor(CompilerFactory factory, CompilerType fsmType) {
         this.factory = factory;
-        this.typeFSM = typeFSM;
+        this.fsmType = fsmType;
     }
 
     /**
@@ -44,8 +45,8 @@ public class FSMStateAcceptor implements StateAcceptor<List<Command>> {
     @Override
     public boolean accept(CharacterIterator inputChain, List<Command> outputChain) {
         int indexInputChain = inputChain.getIndex();
-        CompilerElement compilerElement = factory.create(typeFSM);
-        Optional<Command> command = compilerElement.compile(inputChain);
+        Compiler compiler = factory.create(fsmType);
+        Optional<Command> command = compiler.compile(inputChain);
         if (command.isPresent()) {
             outputChain.add(command.get());
 

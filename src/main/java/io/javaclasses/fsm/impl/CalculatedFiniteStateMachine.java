@@ -1,6 +1,7 @@
 package io.javaclasses.fsm.impl;
 
-import io.javaclasses.fsm.api.FSMFactory;
+import io.javaclasses.fsm.api.CompilerFactory;
+import io.javaclasses.fsm.api.CompilerType;
 import io.javaclasses.fsm.base.FiniteStateMachine;
 import io.javaclasses.fsm.base.State;
 import io.javaclasses.runtime.Command;
@@ -20,16 +21,16 @@ import static java.util.Arrays.asList;
  */
 class CalculatedFiniteStateMachine extends FiniteStateMachine<List<Command>> {
 
-    CalculatedFiniteStateMachine(FSMFactory factory) {
+    CalculatedFiniteStateMachine(CompilerFactory factory) {
         State<List<Command>> number = new State<>(true, new NumberStateAcceptor(factory));
         State<List<Command>> expressionWithBrackets = new State<>(true,
                                                                   new FSMStateAcceptor(
                                                                           factory,
-                                                                          FSMFactory.TypeFSM.EXPRESSION_WITH_BRACKETS));
+                                                                          CompilerType.EXPRESSION_WITH_BRACKETS));
         State<List<Command>> function = new State<>(true, new FSMStateAcceptor(factory,
-                                                                               FSMFactory.TypeFSM.FUNCTION));
+                                                                               CompilerType.FUNCTION));
         State<List<Command>> variable = new State<>(true, new FSMStateAcceptor(factory,
-                                                                               FSMFactory.TypeFSM.READ_VARIABLE));
+                                                                               CompilerType.READ_VARIABLE));
 
         registerPossibleStartState(asList(number, expressionWithBrackets, function, variable));
     }

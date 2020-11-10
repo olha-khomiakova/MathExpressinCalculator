@@ -2,7 +2,6 @@ package io.javaclasses.fsm.impl;
 
 import io.javaclasses.fsm.base.StateAcceptor;
 import io.javaclasses.runtime.BinaryOperator;
-import io.javaclasses.runtime.BinaryOperatorsFactory;
 import io.javaclasses.runtime.BooleanOperatorsFactory;
 import io.javaclasses.runtime.Command;
 import io.javaclasses.runtime.PushBinaryOperatorCommand;

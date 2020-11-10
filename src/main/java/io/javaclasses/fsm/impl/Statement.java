@@ -1,6 +1,7 @@
 package io.javaclasses.fsm.impl;
 
-import io.javaclasses.fsm.api.FSMFactory;
+import io.javaclasses.fsm.api.CompilerFactory;
+import io.javaclasses.fsm.api.CompilerType;
 import io.javaclasses.fsm.base.FiniteStateMachine;
 import io.javaclasses.fsm.base.State;
 import io.javaclasses.runtime.Command;
@@ -22,11 +23,11 @@ import static java.util.Arrays.asList;
  */
 class Statement extends FiniteStateMachine<List<Command>> {
 
-    Statement(FSMFactory factory) {
+    Statement(CompilerFactory factory) {
         State<List<Command>> initialization = new State<>(true, new FSMStateAcceptor(factory,
-                                                                                     FSMFactory.TypeFSM.INITIALIZATION));
+                                                                                     CompilerType.INITIALIZATION));
         State<List<Command>> procedure = new State<>(true, new FSMStateAcceptor(factory,
-                                                                                FSMFactory.TypeFSM.FUNCTION));
+                                                                                CompilerType.FUNCTION));
 
         registerPossibleStartState(asList(initialization, procedure));
     }

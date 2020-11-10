@@ -1,7 +1,5 @@
 package io.javaclasses.runtime;
 
-import static io.javaclasses.runtime.DoubleValueReader.readDouble;
-
 /**
  * Implementation of {@link BinaryOperator} that return
  * the boolean value depending on the relation.
@@ -25,7 +23,8 @@ public class NotEqualsBooleanOperator implements BinaryOperator {
      */
     @Override
     public ValueHolder apply(ValueHolder firstOperand, ValueHolder secondOperand) {
-        return new BooleanValueHolder(!firstOperand.toString().equals(secondOperand.toString()));
+        return new BooleanValueHolder(!firstOperand.toString()
+                                                   .equals(secondOperand.toString()));
     }
 
     @Override

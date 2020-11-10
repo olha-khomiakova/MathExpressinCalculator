@@ -19,7 +19,8 @@ public class NameStateAcceptor implements StateAcceptor<StringAndCommandsDataStr
 
     /**
      * This API creates {@link StringWriter}, {@link NameBuilderFiniteStateMachine}, starts it,
-     * adds it to the {@link StringAndCommandsDataStructure} and moves an iterator forward in an inputChain.
+     * adds it to the {@link StringAndCommandsDataStructure} and moves an iterator forward in an
+     * inputChain.
      *
      * @param inputChain
      *         is an iterable string with input data
@@ -29,7 +30,8 @@ public class NameStateAcceptor implements StateAcceptor<StringAndCommandsDataStr
      *         otherwise it returns false
      */
     @Override
-    public boolean accept(CharacterIterator inputChain, StringAndCommandsDataStructure outputChain) {
+    public boolean accept(CharacterIterator inputChain,
+                          StringAndCommandsDataStructure outputChain) {
 
         FiniteStateMachine<StringWriter> fsm =
                 new NameBuilderFiniteStateMachine();

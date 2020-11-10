@@ -4,8 +4,6 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Objects;
 
-import static io.javaclasses.runtime.DoubleValueReader.readDouble;
-
 /**
  * This is implementation of shunting yard algorithm
  * You can read about it at {@link "https://en.wikipedia.org/wiki/Shunting-yard_algorithm#:~:text=In%20computer%20science%2C%20the%20shunting,abstract%20syntax%20tree%20(AST)."}
@@ -34,10 +32,10 @@ public class ShuntingYard {
 
         if (operators.peek() != null) {
             if (operator.priority()
-                    .ordinal() <=
+                        .ordinal() <=
                     Objects.requireNonNull(operators.peek())
-                            .priority()
-                            .ordinal()) {
+                           .priority()
+                           .ordinal()) {
                 calculatePreviousOperator();
                 pushBinaryOperator(operator);
                 return;
@@ -51,7 +49,7 @@ public class ShuntingYard {
         ValueHolder secondOperand = Objects.requireNonNull(operands.pop());
         ValueHolder firstOperand = Objects.requireNonNull(operands.pop());
         this.operands.push(operator.apply(firstOperand,
-                secondOperand));
+                                          secondOperand));
     }
 
     public void pushOperand(ValueHolder number) {

@@ -28,7 +28,8 @@ public class RequiredCharacterStateAcceptorFunction implements StateAcceptor<Str
      *         otherwise it returns false
      */
     @Override
-    public boolean accept(CharacterIterator inputChain, StringAndCommandsDataStructure outputChain) {
+    public boolean accept(CharacterIterator inputChain,
+                          StringAndCommandsDataStructure outputChain) {
 
         char currentCharacter = inputChain.current();
         if (this.requiredCharacter == currentCharacter) {

@@ -28,9 +28,11 @@ public class PushNegationUnaryOperatorCommand implements Command {
     public void execute(RuntimeEnvironment environment) {
         environment.startStack();
         command.execute(environment);
-        boolean result = !readBoolean(environment.stack().result());
+        boolean result = !readBoolean(environment.stack()
+                                                 .result());
         environment.closeStack();
-        environment.stack().pushOperand(new BooleanValueHolder(result));
+        environment.stack()
+                   .pushOperand(new BooleanValueHolder(result));
 
         if (logger.isInfoEnabled()) {
             logger.info(this.getClass()

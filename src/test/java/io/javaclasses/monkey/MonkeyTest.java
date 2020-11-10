@@ -1,6 +1,6 @@
 package io.javaclasses.monkey;
 
-import io.javaclasses.runtime.IncorrectStatementException;
+import io.javaclasses.runtime.MonkeyException;
 import io.javaclasses.runtime.RuntimeEnvironment;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -39,7 +39,7 @@ class MonkeyTest {
 
     @ParameterizedTest
     @MethodSource("incorrectInitialization")
-    void testIncorrectInitialization(String program,String message) {
+    void testIncorrectInitialization(String program, CharSequence message) {
         assertException(program, message);
     }
 
@@ -86,6 +86,19 @@ class MonkeyTest {
 
 
     @ParameterizedTest
+    @MethodSource("UnaryOperatorNegativeTestCases")
+    void testUnaryOperatorNegativeTestCases(String program, CharSequence message) {
+        assertException(program, message);
+    }
+
+    private static Stream<Arguments> UnaryOperatorNegativeTestCases() {
+        return Stream.of(
+                Arguments.of("a=6+1; b = !a; print(b);","Boolean"),
+                Arguments.of("print(!(1+2));"," in position")
+        );
+    }
+
+    @ParameterizedTest
     @MethodSource("executeProcedureNegativeTestCases")
     void testProcedureCompilationErrors(String program, CharSequence expectedOutput) {
         assertException(program, expectedOutput.toString());
@@ -120,23 +133,36 @@ class MonkeyTest {
                              "true, 3.9543")
         );
     }
+
     @ParameterizedTest
-    @MethodSource("WhileLoopTestCases")
+    @MethodSource("whileLoopTestCases")
     void testWhileLoop(String input, String expected) {
 
         assertOutputValue(input, expected, "While loop is broken.");
     }
 
-    private static Stream<Arguments> WhileLoopTestCases() {
+    private static Stream<Arguments> whileLoopTestCases() {
         return Stream.of(
                 Arguments.of("a = 6; b = 7; while(a!=8){ a= b+1;} b=a +1; print(a, b);", "8.0, 9.0"),
                 Arguments.of("a = 6; b = 7; while(a!=9){ a= b+1; a= a+1;} b=a +1; print(a, b);", "9.0, 10.0"),
                 Arguments.of("a = 6; b = 7; while(a<10){ while(b<10){a= b+1; b= b+1;}} print(a, b);", "10.0, 10.0")
-
-
         );
     }
-    private void assertOutputValue(String program, String expectedOutputValue,
+
+    @ParameterizedTest
+    @MethodSource("whileLoopNegativeTestCases")
+    void testWhileLoopNegativeTestCases(String program, CharSequence expectedOutput) {
+        assertException(program, expectedOutput.toString());
+    }
+
+    private static Stream<Arguments> whileLoopNegativeTestCases() {
+        return Stream.of(
+                Arguments.of("a = 6; b = 7; while(a!=8) a =b+1;", "Cannot resolve \"while\"")
+        );
+    }
+
+
+        private void assertOutputValue(String program, String expectedOutputValue,
                                    String assertMessage) {
 
         RuntimeEnvironment environment = new RuntimeEnvironment();
@@ -150,8 +176,8 @@ class MonkeyTest {
     private void assertException(String program, CharSequence expectedOutputValue) {
 
         RuntimeEnvironment environment = new RuntimeEnvironment();
-        IncorrectStatementException ex =
-                assertThrows(IncorrectStatementException.class, () ->
+        MonkeyException ex =
+                assertThrows(MonkeyException.class, () ->
                         compiler.interpret(program, environment));
         assertThat(ex).hasMessageThat()
                       .contains(expectedOutputValue);

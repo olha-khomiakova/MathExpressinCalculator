@@ -1,8 +1,9 @@
 package io.javaclasses.monkey;
 
-import io.javaclasses.fsm.api.CompilerElement;
-import io.javaclasses.fsm.api.FSMFactory;
-import io.javaclasses.fsm.impl.FSMFactoryImpl;
+import io.javaclasses.fsm.api.Compiler;
+import io.javaclasses.fsm.api.CompilerFactory;
+import io.javaclasses.fsm.api.CompilerType;
+import io.javaclasses.fsm.impl.CompilerFactoryImpl;
 import io.javaclasses.runtime.Command;
 import io.javaclasses.runtime.IncorrectStatementException;
 import io.javaclasses.runtime.RuntimeEnvironment;
@@ -38,9 +39,9 @@ public class Monkey {
                                                                                 IncorrectStatementException {
 
         CharacterIterator program = new StringCharacterIterator(stringProgram);
-        FSMFactory factory = new FSMFactoryImpl();
+        CompilerFactory factory = new CompilerFactoryImpl();
 
-        CompilerElement compiler = factory.create(FSMFactory.TypeFSM.PROGRAM);
+        Compiler compiler = factory.create(CompilerType.PROGRAM);
 
         Optional<Command> command = compiler.compile(program);
 
@@ -50,6 +51,7 @@ public class Monkey {
                                                           program.getIndex() + '.',
                                                   program.getIndex());
         }
+
         environment.startStack();
         command.get()
                .execute(environment);

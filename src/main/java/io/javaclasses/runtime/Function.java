@@ -28,8 +28,9 @@ public abstract class Function implements Command {
     /**
      * This is API that defines the parameters in numerical form.
      *
-     * @param environment is data structure for storing {@link Memory}, {@link java.util.Deque<ShuntingYard>},
-     *                    {@link java.io.ByteArrayOutputStream} and processing them
+     * @param environment
+     *         is data structure for storing {@link Memory}, {@link java.util.Deque<ShuntingYard>},
+     *         {@link java.io.ByteArrayOutputStream} and processing them
      * @return list of function or procedure parameters
      */
     List<ValueHolder> parameters(RuntimeEnvironment environment) {
@@ -41,7 +42,8 @@ public abstract class Function implements Command {
             environment.startStack();
             command.execute(environment);
 
-            ValueHolder result = environment.stack().result();
+            ValueHolder result = environment.stack()
+                                            .result();
 
             parameters.add(result);
             environment.closeStack();
@@ -53,10 +55,10 @@ public abstract class Function implements Command {
         if (numberOfParameters > maximumNumberOfParameters ||
                 numberOfParameters < minimumNumberOfParameters) {
             throw new IncorrectFunctionException("Wrong number of function parameters! " +
-                    functionName + " function can have " +
-                    minimumNumberOfParameters + " to " +
-                    maximumNumberOfParameters +
-                    " parameters.");
+                                                         functionName + " function can have " +
+                                                         minimumNumberOfParameters + " to " +
+                                                         maximumNumberOfParameters +
+                                                         " parameters.");
         }
     }
 

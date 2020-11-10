@@ -24,7 +24,7 @@ public class MultiplicationBinaryOperator implements BinaryOperator {
      */
     @Override
     public ValueHolder apply(ValueHolder firstOperand, ValueHolder secondOperand) {
-        return new DoubleValueHolder(readDouble(firstOperand) * readDouble( secondOperand));
+        return new DoubleValueHolder(readDouble(firstOperand) * readDouble(secondOperand));
     }
 
     @Override
