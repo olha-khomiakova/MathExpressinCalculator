@@ -1,13 +1,9 @@
 plugins {
     id 'java'
-    id("net.ltgt.errorprone") version "1.3.0"
 }
 
-
-group 'org.example'
+group 'io.javaclasses'
 version '1.0-SNAPSHOT'
-
-
 
 repositories {
     mavenCentral()
@@ -22,13 +18,9 @@ ext {
     tomcatVersion = '9.0.1'
 }
 dependencies {
-//    implementation project(':Spark')
-//    implementation project(':MonkeyCompiler')
-    //implementation project(':Web')
-
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1'
-    errorprone 'com.google.errorprone:error_prone_core:2.4.0'
-    errorproneJavac 'com.google.errorprone:javac:9+181-r4173-1'
+    //errorprone 'com.google.errorprone:error_prone_core:2.4.0'
+    //errorproneJavac 'com.google.errorprone:javac:9+181-r4173-1'
     implementation('com.google.guava:guava:' + "${guavaVersion}")
     compile 'org.apache.logging.log4j:log4j-slf4j-impl:' + "${log4jVersion}"
     compile group: 'org.slf4j', name: 'slf4j-api', version: "${slf4jVersion}"
@@ -36,8 +28,5 @@ dependencies {
     implementation 'org.junit.jupiter:junit-jupiter:' + "${junitJupiterVersion}"
     testImplementation 'junit:junit:' + "${junitVeersion}"
     implementation 'junit:junit:' + "${junitVeersion}"
-}
-
-test {
-    useJUnitPlatform()
+    testCompile group: 'junit', name: 'junit', version: '4.12'
 }

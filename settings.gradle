@@ -1,0 +1,16 @@
+rootProject.name = 'MathExpressionCalculator'
+include 'Spark'
+include 'MonkeyCompiler'
+include 'MyWeb'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.bmuschko:gradle-cargo-plugin:2.7.1'
+    }
+}
+
+

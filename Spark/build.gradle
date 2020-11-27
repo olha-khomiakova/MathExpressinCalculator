@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+group 'io.javaclasses'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+ext {
+    log4jVersion = '2.13.3'
+    slf4jVersion = '1.7.30'
+    truthVersion = '1.1'
+    junitJupiterVersion = '5.4.2'
+    junitVeersion = '4.12'
+    guavaVersion = '29.0-jre'
+    tomcatVersion = '9.0.1'
+}
+dependencies {
+    implementation project(':MonkeyCompiler')
+    compile "com.sparkjava:spark-core:2.9.3"
+    compile 'org.apache.logging.log4j:log4j-slf4j-impl:' + "${log4jVersion}"
+    compile group: 'org.slf4j', name: 'slf4j-api', version: "${slf4jVersion}"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
