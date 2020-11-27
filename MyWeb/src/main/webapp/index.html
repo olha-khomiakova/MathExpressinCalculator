@@ -19,9 +19,9 @@
     request.onreadystatechange = function() {
         if(request.readyState === 4 && request.status === 200) {
             result.innerHTML = request.responseText;
-        } else {
-            result.innerHTML = 'An error occurred during your request: ' +  request.status + ' ' + request.statusText;
-        }
+<!--        } else {-->
+<!--            result.innerHTML = 'An error occurred during your request: ' +  request.status + ' ' + request.statusText;-->
+<!--        }-->
     }
 
     btn.addEventListener('click', function() {
